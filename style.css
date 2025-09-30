@@ -1303,3 +1303,206 @@ body.dark-theme .bg-warning {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
+
+/* ===== VS CODE INTEGRATION STYLES ===== */
+
+/* VS Code Modal Styles */
+.vscode-instructions {
+    padding: 1rem;
+}
+
+.instruction-step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    border-radius: 12px;
+    border-left: 4px solid #4CAF50;
+    transition: all 0.3s ease;
+}
+
+.instruction-step:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+}
+
+.step-number {
+    background: linear-gradient(45deg, #4CAF50, #2196F3);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h6 {
+    color: #4CAF50;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.step-content p {
+    color: #B0BEC5;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.code-block {
+    background: #1e1e1e;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    position: relative;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.code-block code {
+    color: #4CAF50;
+    background: none;
+    padding: 0;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.copy-btn {
+    margin-left: 1rem;
+    border: 1px solid #4CAF50;
+    color: #4CAF50;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+    background: #4CAF50;
+    color: white;
+}
+
+.quick-actions {
+    padding: 1.5rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 12px;
+    border: 1px solid #4CAF50;
+}
+
+.quick-actions h6 {
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+.quick-actions .btn {
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.quick-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Keyboard key styling */
+kbd {
+    background: linear-gradient(135deg, #2d2d44, #1e1e2e);
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+    border-radius: 6px;
+    padding: 0.2rem 0.5rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin: 0 0.2rem;
+}
+
+/* Extension Modal Styles */
+.extension-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.extension-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.extension-item:hover {
+    border-color: #4CAF50;
+    transform: translateX(5px);
+}
+
+.extension-item i {
+    font-size: 2rem;
+    margin-right: 1rem;
+    width: 40px;
+    text-align: center;
+}
+
+.extension-item h6 {
+    color: #4CAF50;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.extension-item small {
+    color: #B0BEC5;
+    line-height: 1.4;
+}
+
+/* Mobile Responsiveness for VS Code Modal */
+@media (max-width: 768px) {
+    .instruction-step {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .step-number {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .code-block {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .copy-btn {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+    
+    .quick-actions .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .extension-item {
+        text-align: center;
+        flex-direction: column;
+    }
+    
+    .extension-item i {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+}

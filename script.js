@@ -12,6 +12,9 @@ $(document).ready(function() {
         $(element).text("I've been clicked!").addClass("text-success fw-bold");
     };
     
+    // Initialize homepage animations and functionality FIRST
+    initializeHomepage();
+    
     // ===== NAVBAR FUNCTIONALITY =====
     
     // Simple and reliable dropdown functionality
@@ -513,9 +516,16 @@ function setupHeroButtons() {
     $('#startCodingBtn').click(function() {
         showLoadingIndicator();
         
+        $(this).html('<i class="fas fa-spinner fa-spin"></i> Opening VS Code...');
+        
         setTimeout(() => {
             hideLoadingIndicator();
-            showNotification('Opening your coding environment...', 'success');
+            $(this).html('<i class="fas fa-code"></i> Start Coding');
+            
+            // Try to open VS Code with the current project
+            openVSCode();
+            
+            showNotification('Opening VS Code with your project...', 'success');
             
             // Scroll to tools section
             $('html, body').animate({
@@ -527,8 +537,11 @@ function setupHeroButtons() {
     $('#exploreProjectsBtn').click(function() {
         showLoadingIndicator();
         
+        $(this).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+        
         setTimeout(() => {
             hideLoadingIndicator();
+            $(this).html('<i class="fas fa-eye"></i> Explore Projects');
             showNotification('Loading project gallery...', 'info');
             
             // Scroll to projects section
@@ -536,6 +549,128 @@ function setupHeroButtons() {
                 scrollTop: $('.projects-section').offset().top - 100
             }, 1000);
         }, 800);
+    });
+}
+
+// Function to open VS Code
+function openVSCode() {
+    try {
+        // Try multiple methods to open VS Code
+        
+        // Method 1: Try to open current directory in VS Code
+        const currentPath = window.location.pathname.replace('/index.html', '').replace('/', '');
+        
+        // Create a temporary link to try opening VS Code
+        const vscodeUrl = `vscode://file/${currentPath}`;
+        
+        // Try to open VS Code protocol
+        const link = document.createElement('a');
+        link.href = vscodeUrl;
+        link.click();
+        
+        // Fallback: Show VS Code opening instructions
+        setTimeout(() => {
+            showVSCodeModal();
+        }, 2000);
+        
+    } catch (error) {
+        console.log('VS Code protocol not available, showing instructions');
+        showVSCodeModal();
+    }
+}
+
+// Show VS Code modal with instructions
+function showVSCodeModal() {
+    const vscodeModal = $(`
+        <div class="modal fade" id="vscodeModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-code text-primary me-2"></i>Open Project in VS Code
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="vscode-instructions">
+                            <div class="instruction-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h6>Open Terminal in VS Code</h6>
+                                    <p>Press <kbd>Ctrl</kbd> + <kbd>\`</kbd> to open the integrated terminal</p>
+                                </div>
+                            </div>
+                            
+                            <div class="instruction-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h6>Navigate to Your Project</h6>
+                                    <div class="code-block">
+                                        <code>cd "d:\\Noroff Backend\\Visual studio code Prosjekter\\Git Noroff school\\Programming page"</code>
+                                        <button class="btn btn-sm btn-outline-primary copy-btn" onclick="copyToClipboard(this)">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="instruction-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h6>Open Current Directory</h6>
+                                    <div class="code-block">
+                                        <code>code .</code>
+                                        <button class="btn btn-sm btn-outline-primary copy-btn" onclick="copyToClipboard(this)">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="instruction-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h6>Start Coding! 🚀</h6>
+                                    <p>Your DevSpace project will open in VS Code ready for development</p>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-actions mt-4">
+                                <h6>Quick Actions:</h6>
+                                <button class="btn btn-primary me-2" onclick="startLiveServer()">
+                                    <i class="fas fa-play"></i> Start Live Server
+                                </button>
+                                <button class="btn btn-success me-2" onclick="openGitPanel()">
+                                    <i class="fab fa-git-alt"></i> Open Git Panel
+                                </button>
+                                <button class="btn btn-info" onclick="showExtensions()">
+                                    <i class="fas fa-puzzle-piece"></i> Recommended Extensions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-outline-success" onclick="refreshPage()">
+                            <i class="fas fa-sync-alt"></i> Refresh Page
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    // Remove existing modal
+    $('#vscodeModal').remove();
+    
+    // Add and show modal
+    $('body').append(vscodeModal);
+    const modal = new bootstrap.Modal(document.getElementById('vscodeModal'));
+    modal.show();
+    
+    // Clean up
+    $('#vscodeModal').on('hidden.bs.modal', function() {
+        $(this).remove();
     });
 }
 
@@ -588,9 +723,17 @@ function setupDevTools() {
     
     // Insert new tools at the beginning of the dropdown
     $('.dropdown-menu.programming-dropdown').first().prepend(newToolsHtml);
+    
+    // Make sure dropdown tool clicks work
+    $(document).on('click', '.dropdown-item[data-tool]', function(e) {
+        e.preventDefault();
+        const tool = $(this).data('tool');
+        openTool(tool);
+    });
 }
 
-function openTool(toolType) {
+// Make openTool function globally accessible
+window.openTool = function(toolType) {
     const toolModal = new bootstrap.Modal(document.getElementById('devToolModal'));
     const modalTitle = $('#toolModalTitle');
     const modalBody = $('#toolModalBody');
@@ -603,7 +746,7 @@ function openTool(toolType) {
             content: `
                 <div class="tool-input-group">
                     <label for="jsonInput">Enter JSON to format:</label>
-                    <textarea id="jsonInput" rows="8" placeholder='{"name": "John", "age": 30, "city": "New York"}'></textarea>
+                    <textarea id="jsonInput" class="form-control" rows="8" placeholder='{"name": "John", "age": 30, "city": "New York"}'></textarea>
                 </div>
                 <div class="tool-output" id="jsonOutput" style="display: none;"></div>
             `,
@@ -616,11 +759,11 @@ function openTool(toolType) {
                     <div class="col-md-6">
                         <div class="tool-input-group">
                             <label for="colorPicker">Pick a Color:</label>
-                            <input type="color" id="colorPicker" value="#4CAF50" style="width: 100%; height: 60px;">
+                            <input type="color" id="colorPicker" class="form-control" value="#4CAF50" style="height: 60px;">
                         </div>
                         <div class="tool-input-group">
                             <label for="hexInput">Or Enter Hex Code:</label>
-                            <input type="text" id="hexInput" placeholder="#4CAF50" value="#4CAF50">
+                            <input type="text" id="hexInput" class="form-control" placeholder="#4CAF50" value="#4CAF50">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -640,7 +783,7 @@ function openTool(toolType) {
             content: `
                 <div class="tool-input-group">
                     <label for="base64Input">Enter text to encode/decode:</label>
-                    <textarea id="base64Input" rows="6" placeholder="Hello World!"></textarea>
+                    <textarea id="base64Input" class="form-control" rows="6" placeholder="Hello World!"></textarea>
                 </div>
                 <div class="d-flex gap-2 mb-3">
                     <button class="btn btn-success" onclick="encodeBase64()">Encode</button>
@@ -655,7 +798,7 @@ function openTool(toolType) {
             content: `
                 <div class="tool-input-group">
                     <label for="urlInput">Enter URL or text:</label>
-                    <textarea id="urlInput" rows="6" placeholder="https://example.com/search?q=hello world"></textarea>
+                    <textarea id="urlInput" class="form-control" rows="6" placeholder="https://example.com/search?q=hello world"></textarea>
                 </div>
                 <div class="d-flex gap-2 mb-3">
                     <button class="btn btn-success" onclick="encodeURL()">Encode</button>
@@ -670,7 +813,7 @@ function openTool(toolType) {
             content: `
                 <div class="tool-input-group">
                     <label for="qrInput">Enter text or URL for QR code:</label>
-                    <textarea id="qrInput" rows="4" placeholder="https://yourwebsite.com"></textarea>
+                    <textarea id="qrInput" class="form-control" rows="4" placeholder="https://yourwebsite.com"></textarea>
                 </div>
                 <div class="tool-input-group">
                     <label for="qrSize">QR Code Size:</label>
@@ -692,7 +835,7 @@ function openTool(toolType) {
             content: `
                 <div class="tool-input-group">
                     <label for="hashInput">Enter text to hash:</label>
-                    <textarea id="hashInput" rows="6" placeholder="Your text here..."></textarea>
+                    <textarea id="hashInput" class="form-control" rows="6" placeholder="Your text here..."></textarea>
                 </div>
                 <div class="tool-input-group">
                     <label for="hashType">Hash Type:</label>
@@ -724,7 +867,7 @@ function openTool(toolType) {
     }
     
     toolModal.show();
-}
+};
 
 function processToolAction(toolType) {
     switch(toolType) {
@@ -750,7 +893,7 @@ function processToolAction(toolType) {
 }
 
 // JSON Formatter
-function formatJSON() {
+window.formatJSON = function() {
     const input = $('#jsonInput').val().trim();
     const output = $('#jsonOutput');
     
@@ -810,7 +953,7 @@ function updateColorInfo(hex) {
     }
 }
 
-function generateColorPalette() {
+window.generateColorPalette = function() {
     const baseColor = $('#colorPicker').val();
     const palette = generatePaletteColors(baseColor);
     
@@ -827,7 +970,7 @@ function generateColorPalette() {
 }
 
 // Base64 Functions
-function encodeBase64() {
+window.encodeBase64 = function() {
     const input = $('#base64Input').val();
     if (!input) {
         showNotification('Please enter text to encode!', 'warning');
@@ -846,7 +989,7 @@ function encodeBase64() {
     }
 }
 
-function decodeBase64() {
+window.decodeBase64 = function() {
     const input = $('#base64Input').val();
     if (!input) {
         showNotification('Please enter Base64 to decode!', 'warning');
@@ -870,7 +1013,7 @@ function decodeBase64() {
 }
 
 // URL Functions
-function encodeURL() {
+window.encodeURL = function() {
     const input = $('#urlInput').val();
     if (!input) {
         showNotification('Please enter URL to encode!', 'warning');
@@ -885,7 +1028,7 @@ function encodeURL() {
     showNotification('URL encoded successfully!', 'success');
 }
 
-function decodeURL() {
+window.decodeURL = function() {
     const input = $('#urlInput').val();
     if (!input) {
         showNotification('Please enter encoded URL to decode!', 'warning');
@@ -905,7 +1048,7 @@ function decodeURL() {
 }
 
 // QR Code Generator
-function generateQRCode() {
+window.generateQRCode = function() {
     const input = $('#qrInput').val();
     const size = $('#qrSize').val();
     
@@ -931,7 +1074,7 @@ function generateQRCode() {
 }
 
 // Hash Generator (Simple implementation - for production use crypto library)
-function generateHash() {
+window.generateHash = function() {
     const input = $('#hashInput').val();
     const hashType = $('#hashType').val();
     
@@ -1419,4 +1562,118 @@ function animatePreviewNumbers() {
             $this.text(current);
         }, 30);
     });
+}
+
+// ===== VS CODE INTEGRATION FUNCTIONS =====
+
+// Copy to clipboard function
+function copyToClipboard(button) {
+    const codeBlock = $(button).siblings('code');
+    const text = codeBlock.text();
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            $(button).html('<i class="fas fa-check"></i>');
+            setTimeout(() => {
+                $(button).html('<i class="fas fa-copy"></i>');
+            }, 2000);
+        });
+    } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        $(button).html('<i class="fas fa-check"></i>');
+        setTimeout(() => {
+            $(button).html('<i class="fas fa-copy"></i>');
+        }, 2000);
+    }
+}
+
+// Start Live Server instructions
+function startLiveServer() {
+    showNotification('Install "Live Server" extension in VS Code, then right-click index.html → "Open with Live Server"', 'info');
+}
+
+// Open Git Panel instructions
+function openGitPanel() {
+    showNotification('Press Ctrl+Shift+G to open Git panel in VS Code', 'info');
+}
+
+// Show recommended extensions
+function showExtensions() {
+    const extensionsModal = $(`
+        <div class="modal fade" id="extensionsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-puzzle-piece text-success me-2"></i>Recommended VS Code Extensions
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="extension-list">
+                            <div class="extension-item">
+                                <i class="fas fa-server text-primary"></i>
+                                <div>
+                                    <h6>Live Server</h6>
+                                    <small>Launch a development local server with live reload</small>
+                                </div>
+                            </div>
+                            <div class="extension-item">
+                                <i class="fab fa-html5 text-warning"></i>
+                                <div>
+                                    <h6>HTML CSS Support</h6>
+                                    <small>CSS Intellisense for HTML</small>
+                                </div>
+                            </div>
+                            <div class="extension-item">
+                                <i class="fab fa-js-square text-warning"></i>
+                                <div>
+                                    <h6>JavaScript (ES6) Snippets</h6>
+                                    <small>Code snippets for JavaScript ES6 syntax</small>
+                                </div>
+                            </div>
+                            <div class="extension-item">
+                                <i class="fas fa-palette text-info"></i>
+                                <div>
+                                    <h6>Prettier - Code Formatter</h6>
+                                    <small>Code formatter using prettier</small>
+                                </div>
+                            </div>
+                            <div class="extension-item">
+                                <i class="fab fa-git-alt text-success"></i>
+                                <div>
+                                    <h6>GitLens</h6>
+                                    <small>Supercharge Git capabilities</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#extensionsModal').remove();
+    $('body').append(extensionsModal);
+    const modal = new bootstrap.Modal(document.getElementById('extensionsModal'));
+    modal.show();
+    
+    $('#extensionsModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Refresh page function
+function refreshPage() {
+    location.reload();
 }
