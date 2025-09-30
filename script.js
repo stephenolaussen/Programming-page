@@ -520,6 +520,47 @@ Branching:
 • git branch -d <name> - Delete branch
 
 More at: https://git-scm.com/docs`);
+            } else if (tool === 'docker') {
+                alert(`🐳 Docker Commands:
+
+Basic Commands:
+• docker --version - Check Docker version
+• docker pull <image> - Download image
+• docker run <image> - Run container
+• docker ps - List running containers
+• docker stop <container> - Stop container
+• docker rm <container> - Remove container
+• docker images - List images
+• docker rmi <image> - Remove image
+
+Build & Deploy:
+• docker build -t <name> . - Build image
+• docker push <image> - Push to registry
+• docker-compose up - Start services
+• docker-compose down - Stop services
+
+Learn more: https://docs.docker.com/`);
+            } else if (tool === 'api') {
+                alert(`🔌 API Testing Tools:
+
+Popular Tools:
+• Postman - GUI API testing
+• Insomnia - REST client
+• Thunder Client - VS Code extension
+• curl - Command line tool
+• Swagger UI - API documentation
+
+Common HTTP Methods:
+• GET - Retrieve data
+• POST - Create new data
+• PUT - Update existing data
+• DELETE - Remove data
+• PATCH - Partial update
+
+Testing URLs:
+• JSONPlaceholder: https://jsonplaceholder.typicode.com/
+• Postman Echo: https://postman-echo.com/
+• HTTP Bin: https://httpbin.org/`);
             } else {
                 alert(`${tool} tool coming soon!`);
             }
