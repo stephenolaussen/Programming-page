@@ -370,6 +370,9 @@ function openSettingsModal() {
     });
 }
 
+// Make function globally available
+window.openSettingsModal = openSettingsModal;
+
 // Achievements Modal Function
 function openAchievementsModal() {
     const achievements = [
@@ -429,6 +432,9 @@ function openAchievementsModal() {
     });
 }
 
+// Make function globally available
+window.openAchievementsModal = openAchievementsModal;
+
 // Enhanced Logout Function
 function handleLogout() {
     const logoutModal = $(`
@@ -472,6 +478,9 @@ function handleLogout() {
         $(this).remove();
     });
 }
+
+// Make function globally available
+window.handleLogout = handleLogout;
 
 // Save Settings Function
 function saveSettings() {
