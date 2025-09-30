@@ -432,6 +432,29 @@ $(document).ready(function() {
     // Welcome message
     showNotification('Welcome to DevSpace! Your awesome programming hub is ready! 🚀', 'success');
     
+    // Debug the navbar dropdown after everything is loaded
+    setTimeout(() => {
+        console.log('🔍 FINAL DEBUG: Checking navbar dropdown state...');
+        const $navDropdown = $('#devToolsDropdown');
+        const $navMenu = $navDropdown.siblings('.dropdown-menu');
+        const tools = $navMenu.find('[data-tool]');
+        
+        console.log('🔍 Final navbar dropdown check:', {
+            'dropdown button exists': $navDropdown.length,
+            'dropdown menu exists': $navMenu.length,
+            'tools in navbar': tools.length,
+            'tool types': tools.map(function() { return $(this).data('tool'); }).get(),
+            'full navbar menu HTML': $navMenu.length > 0 ? $navMenu[0].outerHTML : 'Not found'
+        });
+        
+        // Test if we can manually trigger openTool
+        if (typeof window.openTool === 'function') {
+            console.log('✅ openTool function is available globally');
+        } else {
+            console.error('❌ openTool function NOT available globally');
+        }
+    }, 2000);
+    
     // Debug: Test if buttons are clickable
     console.log('🔍 DevSpace Debug Info:');
     console.log('- jQuery loaded:', typeof $ !== 'undefined');
@@ -1105,6 +1128,36 @@ function setupDevTools() {
             console.error('❌ openTool function not available');
         }
     };
+    
+    // Add emergency direct click handlers for navbar dropdown as backup
+    setTimeout(() => {
+        console.log('🚨 Adding emergency direct handlers for navbar dev tools...');
+        
+        // Direct click handlers for each tool in navbar
+        $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').each(function() {
+            const tool = $(this).data('tool');
+            $(this).off('click.emergency').on('click.emergency', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🚨 EMERGENCY HANDLER: Navbar tool clicked:', tool);
+                
+                // Close dropdown
+                $('#devToolsDropdown').siblings('.dropdown-menu').removeClass('show').hide();
+                $('#devToolsDropdown').removeClass('active');
+                
+                if (typeof window.openTool === 'function') {
+                    console.log('✅ EMERGENCY: Calling openTool for:', tool);
+                    window.openTool(tool);
+                } else {
+                    console.error('❌ EMERGENCY: openTool not available');
+                    alert(`${tool} tool clicked but openTool not available!`);
+                }
+            });
+        });
+        
+        const handlerCount = $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').length;
+        console.log(`🚨 Emergency handlers added: ${handlerCount} tools`);
+    }, 1000);
     
     console.log('🧪 Test function added: Use window.testDevTool("json") to test manually');
 }
