@@ -481,6 +481,77 @@ function initializeHomepage() {
         }
     });
     
+    // Handle dropdown item clicks
+    $('.dropdown-item').on('click', function(e) {
+        e.preventDefault();
+        const $item = $(this);
+        const tool = $item.data('tool');
+        const lang = $item.data('lang');
+        const profile = $item.data('profile');
+        const itemId = $item.attr('id');
+        
+        console.log('🎯 Dropdown item clicked:', { tool, lang, profile, itemId });
+        
+        // Close all dropdowns first
+        $('.dropdown-menu').removeClass('show').hide();
+        
+        // Handle dev tools
+        if (tool) {
+            console.log('🛠️ Opening dev tool:', tool);
+            if (tool === 'vscode') {
+                $('#vscodeModal').modal('show');
+            } else if (tool === 'git') {
+                window.open('https://github.com/stephenolaussen', '_blank');
+            } else {
+                alert(`${tool} tool coming soon!`);
+            }
+            return;
+        }
+        
+        // Handle languages
+        if (lang) {
+            console.log('💬 Language selected:', lang);
+            const langUrls = {
+                javascript: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+                python: 'https://docs.python.org/3/',
+                java: 'https://docs.oracle.com/en/java/',
+                react: 'https://reactjs.org/docs/',
+                php: 'https://www.php.net/docs.php'
+            };
+            
+            if (langUrls[lang]) {
+                window.open(langUrls[lang], '_blank');
+            } else {
+                alert(`${lang} resources coming soon!`);
+            }
+            return;
+        }
+        
+        // Handle profile actions
+        if (profile) {
+            console.log('👤 Profile action:', profile);
+            if (profile === 'profile') {
+                window.open('https://github.com/stephenolaussen', '_blank');
+            } else if (profile === 'repos') {
+                window.open('https://github.com/stephenolaussen?tab=repositories', '_blank');
+            } else {
+                alert(`${profile} coming soon!`);
+            }
+            return;
+        }
+        
+        // Handle specific IDs
+        if (itemId === 'more-languages') {
+            alert('More languages: TypeScript, C++, C#, Go, Rust, Ruby, Swift, Kotlin');
+            return;
+        }
+        
+        if (itemId === 'logoutBtn') {
+            alert('Logout functionality coming soon!');
+            return;
+        }
+    });
+    
     // Typing animation for code window
     startTypingAnimation();
     
