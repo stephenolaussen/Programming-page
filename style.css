@@ -269,22 +269,373 @@
     }
 }
 
-/* Dark theme styles */
+/* Enhanced Dark theme styles with cool effects */
 body.dark-theme {
-    background: #121212;
-    color: #ffffff;
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+    color: #e8e8e8;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.dark-theme .container-fluid {
-    background: #121212;
+    background: transparent;
 }
 
-body.dark-theme .bg-success {
-    background: #1e1e2e !important;
+body.dark-theme .programming-navbar {
+    background: rgba(20, 20, 40, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-body.dark-theme .bg-warning {
-    background: #2d2d44 !important;
+body.dark-theme .nav-link {
+    color: #e8e8e8 !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+body.dark-theme .nav-link:hover {
+    color: #64ffda !important;
+    text-shadow: 0 0 15px rgba(100, 255, 218, 0.6);
+}
+
+body.dark-theme .btn-primary {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+body.dark-theme .btn-outline-success {
+    border-color: #64ffda;
+    color: #64ffda;
+}
+
+body.dark-theme .btn-outline-success:hover {
+    background: #64ffda;
+    color: #0c0c0c;
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.6);
+}
+
+body.dark-theme .hero-title {
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+body.dark-theme .text-gradient {
+    background: linear-gradient(45deg, #64ffda, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.dark-theme .tool-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+body.dark-theme .tool-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #64ffda;
+    box-shadow: 0 10px 40px rgba(100, 255, 218, 0.3);
+    transform: translateY(-5px);
+}
+
+body.dark-theme .skill-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e8e8e8;
+}
+
+body.dark-theme .skill-item:hover {
+    background: rgba(100, 255, 218, 0.1);
+    border-color: #64ffda;
+    color: #64ffda;
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+}
+
+/* Cool theme transition */
+.theme-transition {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Theme toggle button animations */
+#themeToggle {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#themeToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.theme-switching {
+    animation: themeSwitch 0.6s ease;
+}
+
+@keyframes themeSwitch {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(180deg); }
+    100% { transform: scale(1) rotate(360deg); }
+}
+
+/* Awesome stars animation for dark mode */
+.stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.stars, .stars2, .stars3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.stars {
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.8), transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: twinkle 3s infinite;
+}
+
+.stars2 {
+    background-image: 
+        radial-gradient(1px 1px at 40px 60px, rgba(100,255,218,0.8), transparent),
+        radial-gradient(1px 1px at 80px 10px, rgba(100,255,218,0.6), transparent),
+        radial-gradient(1px 1px at 120px 50px, rgba(100,255,218,0.8), transparent);
+    background-repeat: repeat;
+    background-size: 180px 120px;
+    animation: twinkle 2s infinite 0.5s;
+}
+
+.stars3 {
+    background-image: 
+        radial-gradient(1px 1px at 60px 20px, rgba(102,126,234,0.8), transparent),
+        radial-gradient(1px 1px at 100px 90px, rgba(102,126,234,0.6), transparent),
+        radial-gradient(1px 1px at 140px 40px, rgba(102,126,234,0.8), transparent);
+    background-repeat: repeat;
+    background-size: 220px 140px;
+    animation: twinkle 4s infinite 1s;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* Settings Modal Styles */
+.settings-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.setting-group {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.setting-group h6 {
+    color: #64ffda;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.setting-item {
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-item label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-check-input:checked {
+    background-color: #64ffda;
+    border-color: #64ffda;
+}
+
+.form-select {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e8e8e8;
+}
+
+.form-select:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #64ffda;
+    box-shadow: 0 0 0 0.25rem rgba(100, 255, 218, 0.25);
+    color: #e8e8e8;
+}
+
+/* Achievements Modal Styles */
+.achievements-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.achievement-item.unlocked {
+    background: rgba(100, 255, 218, 0.1);
+    border-color: rgba(100, 255, 218, 0.3);
+}
+
+.achievement-item.unlocked:hover {
+    background: rgba(100, 255, 218, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(100, 255, 218, 0.2);
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    width: 60px;
+    text-align: center;
+}
+
+.achievement-info {
+    flex: 1;
+}
+
+.achievement-info h6 {
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.achievement-info p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.achievement-status {
+    font-size: 1.5rem;
+}
+
+/* Enhanced notification styles */
+.custom-notification.alert-dark {
+    background: linear-gradient(45deg, #1a1a2e, #16213e);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    color: #64ffda;
+}
+
+/* Enhanced button animations */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Project Demo Modal Styles */
+.demo-container {
+    padding: 1rem;
+}
+
+.demo-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-content {
+    margin-bottom: 1rem;
+}
+
+.demo-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.demo-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.demo-list li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #64ffda;
+    font-weight: bold;
+}
+
+.demo-list li:last-child {
+    border-bottom: none;
+}
+
+/* Enhanced project card hover effects */
+.project-card {
+    transition: all 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.project-actions .btn {
+    transition: all 0.3s ease;
+    margin: 0.25rem;
+}
+
+.project-actions .btn:hover {
+    transform: scale(1.05);
 }
 
 /* Animation for navbar items */

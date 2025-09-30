@@ -2,11 +2,7 @@
 
 $(document).ready(function() {
     
-    // Prevent multiple initializations
-    if (window.devSpaceInitialized) {
-        return;
-    }
-    window.devSpaceInitialized = true;
+    console.log('🚀 DevSpace initializing...');
     
     // Clear any existing typing intervals
     if (window.typingInterval) {
@@ -31,11 +27,11 @@ $(document).ready(function() {
     
     // Simple and reliable dropdown functionality
     function initDropdowns() {
+        console.log('🔧 Initializing dropdowns...');
+        
         // Remove any existing event handlers first
-        $('.dropdown-toggle').off('click.dropdown');
+        $('.dropdown-toggle').off('click');
         $(document).off('click.dropdown');
-        $('.dropdown-menu').off('click');
-        $('.dropdown-item').off('click.dropdown');
         
         // Close all dropdowns
         function closeAllDropdowns() {
@@ -55,27 +51,37 @@ $(document).ready(function() {
             if (!isOpen) {
                 $menu.addClass('show').show();
                 $toggle.addClass('active');
+                console.log('✅ Dropdown opened:', $toggle.attr('id'));
             }
         }
         
         // Languages dropdown
-        $('#languagesDropdown').on('click.dropdown', function(e) {
+        $('#languagesDropdown').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
+            console.log('🗣️ Languages dropdown clicked');
             toggleDropdown($(this));
         });
         
         // Dev Tools dropdown
-        $('#devToolsDropdown').on('click.dropdown', function(e) {
+        $('#devToolsDropdown').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            console.log('🛠️ Dev Tools dropdown clicked');
+            
+            // Prevent Bootstrap from managing this dropdown
+            e.stopImmediatePropagation();
+            
             toggleDropdown($(this));
         });
         
         // Profile dropdown
-        $('#profileDropdown').on('click.dropdown', function(e) {
+        $('#profileDropdown').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
+            console.log('👤 Profile dropdown clicked');
             toggleDropdown($(this));
         });
         
@@ -91,12 +97,10 @@ $(document).ready(function() {
             e.stopPropagation();
         });
         
-        // Close dropdown when clicking menu items (except tools)
-        $('.dropdown-item:not([data-tool])').on('click.dropdown', function() {
-            closeAllDropdowns();
-        });
-        
-        console.log('✅ Dropdowns initialized successfully');
+        console.log('✅ Dropdowns initialized');
+        console.log('- Languages dropdown:', $('#languagesDropdown').length > 0 ? 'Found' : 'NOT FOUND');
+        console.log('- Dev Tools dropdown:', $('#devToolsDropdown').length > 0 ? 'Found' : 'NOT FOUND');
+        console.log('- Profile dropdown:', $('#profileDropdown').length > 0 ? 'Found' : 'NOT FOUND');
     }
     
     // Initialize dropdowns
@@ -194,36 +198,320 @@ $(document).ready(function() {
     // GitHub button functionality
     $('#githubBtn').off('click').on('click', function(e) {
         e.preventDefault();
-        console.log('🐙 GitHub button clicked!');
-        showLoadingIndicator();
+        console.log('🐙 GitHub button clicked - Opening GitHub profile!');
         
-        $(this).html('<i class="fab fa-github fa-spin"></i> Loading Profile...');
+        // Open GitHub profile in new tab
+        window.open('https://github.com/stephenolaussen', '_blank');
         
-        // Load GitHub profile
-        loadGitHubProfile('stephenolaussen');
+        // Visual feedback
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+        $btn.html('<i class="fab fa-github"></i> Opening...');
+        
+        setTimeout(() => {
+            $btn.html(originalHtml);
+        }, 1000);
     });
     
-    // Theme toggle functionality
-    let isDarkTheme = false;
+    // Enhanced theme toggle functionality with cool animations
+    let isDarkTheme = localStorage.getItem('darkTheme') === 'true' || false;
+    
+    // Initialize theme on page load
+    function initializeTheme() {
+        if (isDarkTheme) {
+            $('body').addClass('dark-theme');
+            $('#themeToggle').html('<i class="fas fa-sun"></i>');
+        } else {
+            $('body').removeClass('dark-theme');
+            $('#themeToggle').html('<i class="fas fa-moon"></i>');
+        }
+    }
+    
+    // Initialize theme
+    initializeTheme();
+    
     $('#themeToggle').click(function() {
         isDarkTheme = !isDarkTheme;
+        localStorage.setItem('darkTheme', isDarkTheme);
+        
+        // Cool theme transition with ripple effect
+        const $btn = $(this);
+        $btn.addClass('theme-switching');
         
         if (isDarkTheme) {
             $('body').addClass('dark-theme');
-            $(this).html('<i class="fas fa-sun"></i>');
-            showNotification('Dark theme activated!', 'info');
+            $btn.html('<i class="fas fa-sun"></i>');
+            showNotification('🌙 Dark mode activated! Your eyes will thank you.', 'dark');
+            
+            // Add stars animation
+            createStarsAnimation();
         } else {
             $('body').removeClass('dark-theme');
-            $(this).html('<i class="fas fa-moon"></i>');
-            showNotification('Light theme activated!', 'info');
+            $btn.html('<i class="fas fa-moon"></i>');
+            showNotification('☀️ Light mode activated! Rise and shine!', 'warning');
+            
+            // Remove stars
+            $('.stars-container').remove();
         }
         
-        // Animate the theme change
+        // Enhanced theme transition with ripple effect
         $('body').addClass('theme-transition');
-        setTimeout(function() {
+        
+        setTimeout(() => {
             $('body').removeClass('theme-transition');
-        }, 500);
+            $btn.removeClass('theme-switching');
+        }, 600);
     });
+    
+    // Create cool stars animation for dark mode
+    function createStarsAnimation() {
+        if ($('.stars-container').length > 0) return; // Don't create if already exists
+        
+        const starsHTML = `
+            <div class="stars-container">
+                <div class="stars"></div>
+                <div class="stars2"></div>
+                <div class="stars3"></div>
+            </div>
+        `;
+        $('body').append(starsHTML);
+    }
+
+// Settings Modal Function
+function openSettingsModal() {
+    const settingsModal = $(`
+        <div class="modal fade" id="settingsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-cog text-primary me-2"></i>Developer Settings
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="settings-container">
+                            <div class="setting-group">
+                                <h6><i class="fas fa-palette me-2"></i>Theme Preferences</h6>
+                                <div class="setting-item">
+                                    <label>Auto Dark Mode</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="autoDarkMode">
+                                        <label class="form-check-label" for="autoDarkMode">
+                                            Enable automatic dark mode (6 PM - 6 AM)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <label>Theme Animation</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="themeAnimation" checked>
+                                        <label class="form-check-label" for="themeAnimation">
+                                            Enable smooth theme transitions
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <h6><i class="fas fa-code me-2"></i>Developer Preferences</h6>
+                                <div class="setting-item">
+                                    <label>Code Syntax</label>
+                                    <select class="form-select" id="codeSyntax">
+                                        <option value="javascript">JavaScript</option>
+                                        <option value="python">Python</option>
+                                        <option value="java">Java</option>
+                                        <option value="cpp">C++</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label>Notifications</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notifications" checked>
+                                        <label class="form-check-label" for="notifications">
+                                            Enable notifications
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <h6><i class="fas fa-tools me-2"></i>Quick Tools</h6>
+                                <div class="setting-item">
+                                    <label>Auto-save Tool Settings</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="autoSave" checked>
+                                        <label class="form-check-label" for="autoSave">
+                                            Remember tool preferences
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-success" onclick="saveSettings()">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#settingsModal').remove();
+    $('body').append(settingsModal);
+    const modal = new bootstrap.Modal(document.getElementById('settingsModal'));
+    modal.show();
+    
+    $('#settingsModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Make function globally available
+window.openSettingsModal = openSettingsModal;
+
+// Achievements Modal Function
+function openAchievementsModal() {
+    const achievements = [
+        { icon: 'fas fa-rocket', title: 'First Launch', desc: 'Opened DevSpace for the first time', unlocked: true },
+        { icon: 'fas fa-code', title: 'Code Explorer', desc: 'Used dev tools 5 times', unlocked: true },
+        { icon: 'fas fa-moon', title: 'Night Owl', desc: 'Activated dark mode', unlocked: isDarkTheme },
+        { icon: 'fas fa-star', title: 'Tech Enthusiast', desc: 'Clicked on 10 different technologies', unlocked: false },
+        { icon: 'fas fa-github', title: 'GitHub Explorer', desc: 'Visited GitHub profile', unlocked: false },
+        { icon: 'fas fa-trophy', title: 'Master Developer', desc: 'Used all dev tools', unlocked: false }
+    ];
+    
+    const achievementsList = achievements.map(achievement => `
+        <div class="achievement-item ${achievement.unlocked ? 'unlocked' : 'locked'}">
+            <div class="achievement-icon">
+                <i class="${achievement.icon} ${achievement.unlocked ? 'text-warning' : 'text-muted'}"></i>
+            </div>
+            <div class="achievement-info">
+                <h6 class="${achievement.unlocked ? 'text-light' : 'text-muted'}">${achievement.title}</h6>
+                <p class="text-muted">${achievement.desc}</p>
+            </div>
+            <div class="achievement-status">
+                ${achievement.unlocked ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-lock text-muted"></i>'}
+            </div>
+        </div>
+    `).join('');
+    
+    const achievementsModal = $(`
+        <div class="modal fade" id="achievementsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-trophy text-warning me-2"></i>Developer Achievements
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="achievements-container">
+                            ${achievementsList}
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#achievementsModal').remove();
+    $('body').append(achievementsModal);
+    const modal = new bootstrap.Modal(document.getElementById('achievementsModal'));
+    modal.show();
+    
+    $('#achievementsModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Make function globally available
+window.openAchievementsModal = openAchievementsModal;
+
+// Enhanced Logout Function
+function handleLogout() {
+    const logoutModal = $(`
+        <div class="modal fade" id="logoutModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-sign-out-alt text-warning me-2"></i>Confirm Logout
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to logout from DevSpace?</p>
+                        <div class="logout-options">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="clearData">
+                                <label class="form-check-label" for="clearData">
+                                    Clear local settings and preferences
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-danger" onclick="performLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#logoutModal').remove();
+    $('body').append(logoutModal);
+    const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+    modal.show();
+    
+    $('#logoutModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Make function globally available
+window.handleLogout = handleLogout;
+
+// Save Settings Function
+function saveSettings() {
+    const settings = {
+        autoDarkMode: $('#autoDarkMode').prop('checked'),
+        themeAnimation: $('#themeAnimation').prop('checked'),
+        codeSyntax: $('#codeSyntax').val(),
+        notifications: $('#notifications').prop('checked'),
+        autoSave: $('#autoSave').prop('checked')
+    };
+    
+    localStorage.setItem('devSpaceSettings', JSON.stringify(settings));
+    $('#settingsModal').modal('hide');
+    showNotification('⚙️ Settings saved successfully!', 'success');
+}
+
+// Perform Logout Function
+function performLogout() {
+    if ($('#clearData').prop('checked')) {
+        localStorage.clear();
+        showNotification('🧹 Local data cleared!', 'warning');
+    }
+    
+    $('#logoutModal').modal('hide');
+    showNotification('👋 Logged out successfully! See you next time!', 'info');
+    
+    // Simulate logout by reloading page after a delay
+    setTimeout(() => {
+        location.reload();
+    }, 2000);
+}
     
     // Profile dropdown actions
     $('.dropdown-item[data-profile]').click(function(e) {
@@ -428,6 +716,29 @@ $(document).ready(function() {
     // Welcome message
     showNotification('Welcome to DevSpace! Your awesome programming hub is ready! 🚀', 'success');
     
+    // Debug the navbar dropdown after everything is loaded
+    setTimeout(() => {
+        console.log('🔍 FINAL DEBUG: Checking navbar dropdown state...');
+        const $navDropdown = $('#devToolsDropdown');
+        const $navMenu = $navDropdown.siblings('.dropdown-menu');
+        const tools = $navMenu.find('[data-tool]');
+        
+        console.log('🔍 Final navbar dropdown check:', {
+            'dropdown button exists': $navDropdown.length,
+            'dropdown menu exists': $navMenu.length,
+            'tools in navbar': tools.length,
+            'tool types': tools.map(function() { return $(this).data('tool'); }).get(),
+            'full navbar menu HTML': $navMenu.length > 0 ? $navMenu[0].outerHTML : 'Not found'
+        });
+        
+        // Test if we can manually trigger openTool
+        if (typeof window.openTool === 'function') {
+            console.log('✅ openTool function is available globally');
+        } else {
+            console.error('❌ openTool function NOT available globally');
+        }
+    }, 2000);
+    
     // Debug: Test if buttons are clickable
     console.log('🔍 DevSpace Debug Info:');
     console.log('- jQuery loaded:', typeof $ !== 'undefined');
@@ -468,6 +779,240 @@ function initializeHomepage() {
     
     console.log('🏠 Initializing homepage...');
     
+    // Initialize basic dropdowns
+    $('.dropdown-toggle').on('click', function(e) {
+        e.preventDefault();
+        const $menu = $(this).siblings('.dropdown-menu');
+        $('.dropdown-menu').not($menu).removeClass('show').hide();
+        $menu.toggleClass('show').toggle();
+    });
+    
+    // Close dropdowns when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown-menu').removeClass('show').hide();
+        }
+    });
+    
+    // Handle dropdown item clicks
+    $('.dropdown-item').on('click', function(e) {
+        e.preventDefault();
+        const $item = $(this);
+        const tool = $item.data('tool');
+        const lang = $item.data('lang');
+        const profile = $item.data('profile');
+        const itemId = $item.attr('id');
+        
+        console.log('🎯 Dropdown item clicked:', { tool, lang, profile, itemId });
+        
+        // Close all dropdowns first
+        $('.dropdown-menu').removeClass('show').hide();
+        
+        // Handle dev tools
+        if (tool) {
+            console.log('🛠️ Opening dev tool:', tool);
+            console.log('🛠️ Item element:', $item[0]);
+            console.log('🛠️ window.openTool available:', typeof window.openTool);
+            
+            if (tool === 'vscode') {
+                console.log('📝 Opening VS Code modal');
+                $('#vscodeModal').modal('show');
+            } else if (tool === 'git') {
+                console.log('📋 Showing Git commands alert');
+                alert(`📋 Git Commands:
+
+Basic Commands:
+• git init - Initialize repository
+• git clone <url> - Clone repository
+• git add . - Stage all changes
+• git commit -m "message" - Commit changes
+• git push - Push to remote
+• git pull - Pull from remote
+• git status - Check status
+• git log - View commit history
+
+Branching:
+• git branch - List branches
+• git checkout -b <name> - Create new branch
+• git merge <branch> - Merge branch
+• git branch -d <name> - Delete branch
+
+More at: https://git-scm.com/docs`);
+            } else if (tool === 'docker') {
+                console.log('🐳 Showing Docker commands alert');
+                alert(`🐳 Docker Commands:
+
+Basic Commands:
+• docker --version - Check Docker version
+• docker pull <image> - Download image
+• docker run <image> - Run container
+• docker ps - List running containers
+• docker stop <container> - Stop container
+• docker rm <container> - Remove container
+• docker images - List images
+• docker rmi <image> - Remove image
+
+Build & Deploy:
+• docker build -t <name> . - Build image
+• docker push <image> - Push to registry
+• docker-compose up - Start services
+• docker-compose down - Stop services
+
+Learn more: https://docs.docker.com/`);
+            } else if (tool === 'api') {
+                console.log('🔌 Showing API testing alert');
+                alert(`🔌 API Testing Tools:
+
+Popular Tools:
+• Postman - GUI API testing
+• Insomnia - REST client
+• Thunder Client - VS Code extension
+• curl - Command line tool
+• Swagger UI - API documentation
+
+Common HTTP Methods:
+• GET - Retrieve data
+• POST - Create new data
+• PUT - Update existing data
+• DELETE - Remove data
+• PATCH - Partial update
+
+Testing URLs:
+• JSONPlaceholder: https://jsonplaceholder.typicode.com/
+• Postman Echo: https://postman-echo.com/
+• HTTP Bin: https://httpbin.org/`);
+            } else {
+                // Handle other dev tools (json, color, base64, url, qr, hash)
+                console.log('🔧 Attempting to open dev tool:', tool);
+                console.log('🔧 window.openTool available:', typeof window.openTool);
+                if (window.openTool) {
+                    console.log('✅ Calling openTool for:', tool);
+                    try {
+                        window.openTool(tool);
+                        console.log('✅ openTool call successful');
+                    } catch (error) {
+                        console.error('❌ Error calling openTool:', error);
+                    }
+                } else {
+                    console.log('❌ openTool function not available');
+                    alert(`${tool} tool coming soon!`);
+                }
+            }
+            return;
+        }
+        
+        // Handle languages
+        if (lang) {
+            console.log('💬 Language selected:', lang);
+            const langUrls = {
+                javascript: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+                python: 'https://docs.python.org/3/',
+                java: 'https://docs.oracle.com/en/java/',
+                react: 'https://reactjs.org/docs/',
+                php: 'https://www.php.net/docs.php'
+            };
+            
+            if (langUrls[lang]) {
+                window.open(langUrls[lang], '_blank');
+            } else {
+                alert(`${lang} resources coming soon!`);
+            }
+            return;
+        }
+        
+        // Handle profile actions
+        if (profile) {
+            console.log('👤 Profile action:', profile);
+            if (profile === 'profile') {
+                window.open('https://github.com/stephenolaussen', '_blank');
+            } else if (profile === 'repos') {
+                window.open('https://github.com/stephenolaussen?tab=repositories', '_blank');
+            } else {
+                alert(`${profile} coming soon!`);
+            }
+            return;
+        }
+        
+        // Handle specific IDs
+        if (itemId === 'more-languages') {
+            alert('More languages: TypeScript, C++, C#, Go, Rust, Ruby, Swift, Kotlin');
+            return;
+        }
+        
+        if (itemId === 'logoutBtn') {
+            alert('Logout functionality coming soon!');
+            return;
+        }
+    });
+    
+    // Make skill items clickable with hover effects
+    $('.skill-item').on('click', function(e) {
+        e.preventDefault();
+        const skillName = $(this).text().trim();
+        console.log('🎯 Skill clicked:', skillName);
+        
+        // Technology documentation URLs
+        const techLinks = {
+            // Frontend
+            'HTML5': 'https://developer.mozilla.org/en-US/docs/Web/HTML',
+            'CSS3': 'https://developer.mozilla.org/en-US/docs/Web/CSS',
+            'JavaScript': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+            'React': 'https://reactjs.org/docs/',
+            'Vue.js': 'https://vuejs.org/guide/',
+            'Bootstrap': 'https://getbootstrap.com/docs/',
+            
+            // Backend
+            'Node.js': 'https://nodejs.org/en/docs/',
+            'Python': 'https://docs.python.org/3/',
+            'PHP': 'https://www.php.net/docs.php',
+            'Express': 'https://expressjs.com/en/starter/installing.html',
+            'Django': 'https://docs.djangoproject.com/',
+            'FastAPI': 'https://fastapi.tiangolo.com/',
+            
+            // Database
+            'MySQL': 'https://dev.mysql.com/doc/',
+            'PostgreSQL': 'https://www.postgresql.org/docs/',
+            'MongoDB': 'https://docs.mongodb.com/',
+            'Redis': 'https://redis.io/documentation',
+            'SQLite': 'https://sqlite.org/docs.html',
+            'Firebase': 'https://firebase.google.com/docs',
+            
+            // DevOps
+            'Docker': 'https://docs.docker.com/',
+            'Git': 'https://git-scm.com/doc',
+            'Linux': 'https://www.linux.org/pages/download/',
+            'AWS': 'https://docs.aws.amazon.com/',
+            'Nginx': 'https://nginx.org/en/docs/',
+            'CI/CD': 'https://about.gitlab.com/topics/ci-cd/'
+        };
+        
+        if (techLinks[skillName]) {
+            window.open(techLinks[skillName], '_blank');
+            console.log(`✅ Opening ${skillName} documentation`);
+        } else {
+            alert(`${skillName} documentation coming soon!`);
+        }
+    });
+    
+    // Add hover effect to skill items
+    $('.skill-item').hover(
+        function() {
+            $(this).css({
+                'cursor': 'pointer',
+                'transform': 'scale(1.05)',
+                'transition': 'all 0.2s ease'
+            });
+        },
+        function() {
+            $(this).css({
+                'transform': 'scale(1)',
+                'transition': 'all 0.2s ease'
+            });
+        }
+    );
+    
+    console.log('✅ Skill items made clickable:', $('.skill-item').length, 'items found');
+    
     // Typing animation for code window
     startTypingAnimation();
     
@@ -482,6 +1027,9 @@ function initializeHomepage() {
     
     // Setup contact links
     setupContactLinks();
+    
+    // Setup project buttons
+    setupProjectButtons();
     
     console.log('✅ Homepage initialized successfully');
 }
@@ -575,55 +1123,58 @@ function animateCounters() {
 }
 
 function setupHeroButtons() {
+    console.log('🔧 Setting up hero buttons...');
+    
     // Remove any existing handlers first
     $('#startCodingBtn').off('click');
     $('#exploreProjectsBtn').off('click');
     
+    // Start Coding Button - Direct VS Code modal
     $('#startCodingBtn').on('click', function(e) {
         e.preventDefault();
-        console.log('🚀 Start Coding button clicked!');
+        console.log('🚀 START CODING BUTTON CLICKED!');
         
-        showLoadingIndicator();
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+        $btn.html('<i class="fas fa-spinner fa-spin"></i> Opening VS Code...');
         
-        $(this).html('<i class="fas fa-spinner fa-spin"></i> Opening VS Code...');
-        
+        // Open VS Code modal directly
         setTimeout(() => {
-            hideLoadingIndicator();
-            $(this).html('<i class="fas fa-code"></i> Start Coding');
-            
-            // Try to open VS Code with the current project
-            openVSCode();
-            
-            showNotification('Opening VS Code with your project...', 'success');
-            
-            // Scroll to tools section
-            $('html, body').animate({
-                scrollTop: $('.quick-tools-section').offset().top - 100
-            }, 1000);
-        }, 1200);
-    });
-    
-    $('#exploreProjectsBtn').on('click', function(e) {
-        e.preventDefault();
-        console.log('👁️ Explore Projects button clicked!');
-        
-        showLoadingIndicator();
-        
-        $(this).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
-        
-        setTimeout(() => {
-            hideLoadingIndicator();
-            $(this).html('<i class="fas fa-eye"></i> Explore Projects');
-            showNotification('Loading project gallery...', 'info');
-            
-            // Scroll to projects section
-            $('html, body').animate({
-                scrollTop: $('.projects-section').offset().top - 100
-            }, 1000);
+            $btn.html(originalHtml);
+            $('#vscodeModal').modal('show');
+            console.log('✅ VS Code modal opened');
         }, 800);
     });
     
-    console.log('✅ Hero buttons initialized');
+    // Explore Projects Button  
+    $('#exploreProjectsBtn').on('click', function(e) {
+        e.preventDefault();
+        console.log('👁️ EXPLORE PROJECTS BUTTON CLICKED!');
+        
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+        $btn.html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+        
+        setTimeout(() => {
+            $btn.html(originalHtml);
+            
+            // Scroll to GitHub preview section
+            const $target = $('#github-preview');
+            if ($target.length > 0) {
+                $('html, body').animate({
+                    scrollTop: $target.offset().top - 100
+                }, 1000);
+                console.log('✅ Scrolled to GitHub preview section');
+            } else {
+                console.log('❌ GitHub preview section not found');
+            }
+        }, 800);
+    });
+    
+    console.log('✅ Hero buttons setup complete');
+    console.log('- Start Coding button:', $('#startCodingBtn').length > 0 ? 'Found' : 'NOT FOUND');
+    console.log('- Explore Projects button:', $('#exploreProjectsBtn').length > 0 ? 'Found' : 'NOT FOUND');
+    console.log('- VS Code modal:', $('#vscodeModal').length > 0 ? 'Found' : 'NOT FOUND');
 }
 
 // Function to open VS Code
@@ -769,22 +1320,218 @@ function setupContactLinks() {
     });
 }
 
+function setupProjectButtons() {
+    console.log('🚀 Setting up project buttons...');
+    
+    // Add click handlers to project buttons
+    $('.project-actions .btn').each(function() {
+        const $btn = $(this);
+        const text = $btn.text().trim();
+        const icon = $btn.find('i').attr('class');
+        
+        $btn.off('click').on('click', function(e) {
+            e.preventDefault();
+            
+            const $projectCard = $(this).closest('.project-card');
+            const projectTitle = $projectCard.find('h4').text().trim();
+            
+            console.log('📁 Project button clicked:', {
+                project: projectTitle,
+                action: text,
+                icon: icon
+            });
+            
+            if (text.includes('View Code') || icon && icon.includes('github')) {
+                // GitHub links for different projects
+                const githubLinks = {
+                    'React Dashboard': 'https://github.com/stephenolaussen/react-dashboard',
+                    'API Management': 'https://github.com/stephenolaussen/api-management',
+                    'DevTools Suite': 'https://github.com/stephenolaussen/Programming-page'
+                };
+                
+                const link = githubLinks[projectTitle] || 'https://github.com/stephenolaussen';
+                window.open(link, '_blank');
+                showNotification(`🔗 Opening ${projectTitle} repository...`, 'info');
+                
+            } else if (text.includes('Live Demo') || text.includes('Try API') || text.includes('Use Tools')) {
+                // Handle demo/live links
+                if (projectTitle === 'React Dashboard') {
+                    showProjectDemo('react-dashboard');
+                } else if (projectTitle === 'API Management') {
+                    showProjectDemo('api-management');
+                } else if (projectTitle === 'DevTools Suite') {
+                    // Scroll to dev tools section since this page IS the DevTools Suite
+                    $('html, body').animate({
+                        scrollTop: $('.quick-tools-section').offset().top - 100
+                    }, 1000);
+                    showNotification('🛠️ Here are the DevTools! You\'re already using them!', 'success');
+                } else {
+                    showProjectDemo('general');
+                }
+            }
+        });
+    });
+    
+    console.log('✅ Project buttons setup complete');
+}
+
+function showProjectDemo(projectType) {
+    const demos = {
+        'react-dashboard': {
+            title: 'React Dashboard Demo',
+            content: `
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <h5><i class="fab fa-react text-info"></i> React Dashboard Features</h5>
+                    </div>
+                    <div class="demo-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-chart-bar"></i> Dashboard Features:</h6>
+                                <ul class="demo-list">
+                                    <li>Interactive Charts & Graphs</li>
+                                    <li>Real-time Data Updates</li>
+                                    <li>Responsive Design</li>
+                                    <li>Dark/Light Theme Toggle</li>
+                                    <li>User Authentication</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-code"></i> Tech Stack:</h6>
+                                <ul class="demo-list">
+                                    <li>React 18 with Hooks</li>
+                                    <li>TypeScript for type safety</li>
+                                    <li>Bootstrap 5 for styling</li>
+                                    <li>Chart.js for visualizations</li>
+                                    <li>JWT Authentication</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            demoUrl: 'https://stephenolaussen.github.io/react-dashboard'
+        },
+        'api-management': {
+            title: 'API Management Demo',
+            content: `
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <h5><i class="fab fa-python text-warning"></i> API Management System</h5>
+                    </div>
+                    <div class="demo-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-server"></i> API Features:</h6>
+                                <ul class="demo-list">
+                                    <li>RESTful API Endpoints</li>
+                                    <li>JWT Authentication</li>
+                                    <li>Rate Limiting</li>
+                                    <li>API Documentation</li>
+                                    <li>Database Integration</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-tools"></i> Backend Stack:</h6>
+                                <ul class="demo-list">
+                                    <li>Python Flask Framework</li>
+                                    <li>PostgreSQL Database</li>
+                                    <li>Redis for Caching</li>
+                                    <li>Docker Containerization</li>
+                                    <li>Swagger Documentation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            demoUrl: 'https://api.stephenolaussen.dev'
+        },
+        'general': {
+            title: 'Project Demo',
+            content: `
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <h5><i class="fas fa-rocket"></i> Project Showcase</h5>
+                    </div>
+                    <div class="demo-content">
+                        <p>This project demonstrates modern web development practices and technologies.</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6><i class="fas fa-star"></i> Key Highlights:</h6>
+                                <ul class="demo-list">
+                                    <li>Clean, maintainable code</li>
+                                    <li>Responsive design</li>
+                                    <li>Modern development practices</li>
+                                    <li>Cross-browser compatibility</li>
+                                    <li>Performance optimized</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            demoUrl: '#'
+        }
+    };
+    
+    const demo = demos[projectType] || demos['general'];
+    
+    const demoModal = $(`
+        <div class="modal fade" id="projectDemoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">${demo.title}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ${demo.content}
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        ${demo.demoUrl !== '#' ? `
+                            <button type="button" class="btn btn-success" onclick="window.open('${demo.demoUrl}', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> Visit Live Demo
+                            </button>
+                        ` : ''}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#projectDemoModal').remove();
+    $('body').append(demoModal);
+    const modal = new bootstrap.Modal(document.getElementById('projectDemoModal'));
+    modal.show();
+    
+    $('#projectDemoModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
 // ===== DEV TOOLS FUNCTIONALITY =====
 
 function setupDevTools() {
-    // Check if tools are already added to prevent duplicates
-    if ($('.dropdown-item[data-tool="json"]').length > 0) {
-        console.log('ℹ️ Dev tools already added, skipping...');
-        return; // Tools already added
-    }
+    console.log('🛠️ Setting up dev tools in navbar dropdown...');
     
-    console.log('🛠️ Setting up dev tools...');
+    // Debug: Check if navbar dropdown exists
+    const $navDropdown = $('#devToolsDropdown');
+    const $navDropdownMenu = $navDropdown.siblings('.dropdown-menu');
     
-    // Clear any existing tools first
-    $('.dropdown-menu.programming-dropdown').first().find('.dropdown-item[data-tool]').remove();
-    $('.dropdown-menu.programming-dropdown').first().find('.dropdown-divider').first().remove();
+    console.log('🔍 Navbar dropdown debug:', {
+        'devToolsDropdown exists': $navDropdown.length > 0,
+        'dropdown menu exists': $navDropdownMenu.length > 0,
+        'existing tools in navbar': $navDropdownMenu.find('[data-tool]').length,
+        'dropdown menu HTML': $navDropdownMenu.length > 0 ? $navDropdownMenu[0].outerHTML : 'Not found'
+    });
     
-    // Add new tools at the beginning of the dropdown
+    // Clear any existing tools first from the navbar Dev Tools dropdown only
+    $navDropdownMenu.find('.dropdown-item[data-tool]').parent().remove();
+    $navDropdownMenu.find('.dropdown-divider').first().remove();
+    
+    // Add new tools at the beginning of the Dev Tools dropdown
     const newToolsHtml = `
         <li><a class="dropdown-item" href="#" data-tool="json">
             <i class="fas fa-code text-info"></i> JSON Formatter
@@ -807,162 +1554,371 @@ function setupDevTools() {
         <li><hr class="dropdown-divider"></li>
     `;
     
-    $('.dropdown-menu.programming-dropdown').first().prepend(newToolsHtml);
+    $navDropdownMenu.prepend(newToolsHtml);
     
-    // Remove any existing event handlers to prevent duplicates
-    $(document).off('click.devtools', '.dropdown-item[data-tool]');
+    console.log('✅ Dev tools added to navbar dropdown');
+    console.log('- Navbar dropdown menu element:', $navDropdownMenu[0]);
+    console.log('- Total tool items in navbar dropdown:', $navDropdownMenu.find('[data-tool]').length);
+    console.log('- Navbar tool items:', $navDropdownMenu.find('[data-tool]').map(function() { 
+        return $(this).data('tool'); 
+    }).get());
     
-    // Add single event handler for all tool clicks
-    $(document).on('click.devtools', '.dropdown-item[data-tool]', function(e) {
+    // Remove any existing navbar dropdown event handlers to prevent duplicates
+    $(document).off('click.navdevtools', '#devToolsDropdown ~ .dropdown-menu .dropdown-item[data-tool]');
+    
+    // Add specific event handler for navbar dropdown tools only
+    $(document).on('click.navdevtools', '#devToolsDropdown ~ .dropdown-menu .dropdown-item[data-tool]', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        
         const tool = $(this).data('tool');
-        console.log('🔧 Dropdown tool clicked:', tool);
-        if (window.openTool) {
+        const itemText = $(this).text().trim();
+        
+        console.log('🔧 Navbar dropdown tool clicked:', {
+            tool: tool,
+            text: itemText,
+            element: this,
+            isNavbarDropdown: true
+        });
+        
+        // Close navbar dropdown first
+        $('#devToolsDropdown').siblings('.dropdown-menu').removeClass('show').hide();
+        $('#devToolsDropdown').removeClass('active');
+        
+        // Handle the tool
+        if (tool && typeof window.openTool === 'function') {
+            console.log('✅ Calling openTool for navbar tool:', tool);
             window.openTool(tool);
         } else {
-            console.error('❌ openTool function not available');
+            console.error('❌ openTool not available for navbar tool:', tool);
+            alert(`${itemText} tool is being loaded...`);
         }
     });
     
     console.log('✅ Dev tools setup complete');
+    
+    // Add manual test function for debugging
+    window.testDevTool = function(toolName) {
+        console.log('🧪 Manual test for tool:', toolName);
+        if (typeof window.openTool === 'function') {
+            window.openTool(toolName);
+        } else {
+            console.error('❌ openTool function not available');
+        }
+    };
+    
+    // Add emergency direct click handlers for navbar dropdown as backup
+    setTimeout(() => {
+        console.log('🚨 Adding emergency direct handlers for ALL navbar dropdowns...');
+        
+        // Disable Bootstrap dropdown for ALL navbar dropdowns
+        $('#devToolsDropdown, #languagesDropdown, #profileDropdown').removeAttr('data-bs-toggle').removeAttr('aria-expanded');
+        
+        // Fix Dev Tools dropdown
+        $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').each(function() {
+            const tool = $(this).data('tool');
+            
+            // Remove all existing handlers first
+            $(this).off('click');
+            
+            // Add our handler
+            $(this).on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                console.log('🚨 EMERGENCY DEV TOOLS: Tool clicked:', tool);
+                
+                // Close dropdown immediately
+                const $dropdown = $('#devToolsDropdown').siblings('.dropdown-menu');
+                $dropdown.removeClass('show').hide();
+                $('#devToolsDropdown').removeClass('active');
+                
+                // Small delay then open tool
+                setTimeout(() => {
+                    if (typeof window.openTool === 'function') {
+                        console.log('✅ EMERGENCY: Calling openTool for:', tool);
+                        window.openTool(tool);
+                    } else {
+                        console.error('❌ EMERGENCY: openTool not available');
+                        alert(`${tool} tool clicked but openTool not available!`);
+                    }
+                }, 100);
+            });
+        });
+        
+        // Fix Languages dropdown
+        $('#languagesDropdown').siblings('.dropdown-menu').find('[data-lang]').each(function() {
+            const lang = $(this).data('lang');
+            const langName = $(this).text().trim();
+            
+            $(this).off('click');
+            $(this).on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                console.log('🚨 EMERGENCY LANGUAGES: Language clicked:', lang);
+                
+                // Close dropdown
+                $('#languagesDropdown').siblings('.dropdown-menu').removeClass('show').hide();
+                $('#languagesDropdown').removeClass('active');
+                
+                // Handle language selection
+                const langUrls = {
+                    javascript: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+                    python: 'https://docs.python.org/3/',
+                    java: 'https://docs.oracle.com/en/java/',
+                    react: 'https://reactjs.org/docs/',
+                    php: 'https://www.php.net/docs.php'
+                };
+                
+                if (langUrls[lang]) {
+                    window.open(langUrls[lang], '_blank');
+                    console.log(`✅ Opening ${lang} documentation`);
+                } else {
+                    alert(`${langName} resources coming soon!`);
+                }
+            });
+        });
+        
+        // Fix Profile dropdown
+        $('#profileDropdown').siblings('.dropdown-menu').find('[data-profile], #logoutBtn').each(function() {
+            const profile = $(this).data('profile');
+            const itemId = $(this).attr('id');
+            const itemText = $(this).text().trim();
+            
+            $(this).off('click');
+            $(this).on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                console.log('🚨 EMERGENCY PROFILE: Item clicked:', profile || itemId);
+                console.log('🚨 Available functions:', {
+                    openSettingsModal: typeof openSettingsModal,
+                    openAchievementsModal: typeof openAchievementsModal,
+                    handleLogout: typeof handleLogout
+                });
+                
+                // Close dropdown
+                $('#profileDropdown').siblings('.dropdown-menu').removeClass('show').hide();
+                $('#profileDropdown').removeClass('active');
+                
+                // Handle profile actions
+                if (profile === 'profile') {
+                    window.open('https://github.com/stephenolaussen', '_blank');
+                } else if (profile === 'repos') {
+                    window.open('https://github.com/stephenolaussen?tab=repositories', '_blank');
+                } else if (profile === 'settings') {
+                    console.log('🚨 Calling openSettingsModal...');
+                    if (typeof openSettingsModal === 'function') {
+                        openSettingsModal();
+                    } else {
+                        alert('Settings functionality is loading...');
+                    }
+                } else if (profile === 'achievements') {
+                    console.log('🚨 Calling openAchievementsModal...');
+                    if (typeof openAchievementsModal === 'function') {
+                        openAchievementsModal();
+                    } else {
+                        alert('Achievements functionality is loading...');
+                    }
+                } else if (itemId === 'logoutBtn') {
+                    console.log('🚨 Calling handleLogout...');
+                    if (typeof handleLogout === 'function') {
+                        handleLogout();
+                    } else {
+                        alert('Logout functionality is loading...');
+                    }
+                } else {
+                    alert(`${itemText} coming soon!`);
+                }
+            });
+        });
+        
+        const devToolsCount = $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').length;
+        const languagesCount = $('#languagesDropdown').siblings('.dropdown-menu').find('[data-lang]').length;
+        const profileCount = $('#profileDropdown').siblings('.dropdown-menu').find('[data-profile], #logoutBtn').length;
+        
+        console.log(`🚨 Emergency handlers added:`, {
+            'Dev Tools': devToolsCount,
+            'Languages': languagesCount,
+            'Profile': profileCount
+        });
+        
+        // Also add a direct test for the dropdown itself
+        window.testNavDropdown = function() {
+            console.log('🧪 Testing nav dropdown...');
+            const $dropdown = $('#devToolsDropdown').siblings('.dropdown-menu');
+            const tools = $dropdown.find('[data-tool]');
+            console.log('Tools found:', tools.length);
+            tools.each(function() {
+                console.log('- Tool:', $(this).data('tool'), 'Text:', $(this).text().trim());
+            });
+        };
+        
+    }, 1000);
+    
+    console.log('🧪 Test function added: Use window.testDevTool("json") to test manually');
 }
 
 // Make openTool function globally accessible
 window.openTool = function(toolType) {
-    const toolModal = new bootstrap.Modal(document.getElementById('devToolModal'));
-    const modalTitle = $('#toolModalTitle');
-    const modalBody = $('#toolModalBody');
-    const actionBtn = $('#toolActionBtn');
+    console.log('🔧 openTool called with:', toolType);
     
-    // Tool configurations
-    const tools = {
-        json: {
-            title: '<i class="fas fa-code"></i> JSON Formatter & Validator',
-            content: `
-                <div class="tool-input-group">
-                    <label for="jsonInput">Enter JSON to format:</label>
-                    <textarea id="jsonInput" class="form-control" rows="8" placeholder='{"name": "John", "age": 30, "city": "New York"}'></textarea>
-                </div>
-                <div class="tool-output" id="jsonOutput" style="display: none;"></div>
-            `,
-            action: 'Format JSON'
-        },
-        color: {
-            title: '<i class="fas fa-palette"></i> Color Picker & Palette Generator',
-            content: `
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="tool-input-group">
-                            <label for="colorPicker">Pick a Color:</label>
-                            <input type="color" id="colorPicker" class="form-control" value="#4CAF50" style="height: 60px;">
+    // Close any open dropdowns first
+    $('.dropdown-menu').removeClass('show').hide();
+    $('.dropdown-toggle').removeClass('active');
+    
+    // Small delay to ensure dropdown closes
+    setTimeout(() => {
+        const toolModal = new bootstrap.Modal(document.getElementById('devToolModal'));
+        const modalTitle = $('#toolModalTitle');
+        const modalBody = $('#toolModalBody');
+        const actionBtn = $('#toolActionBtn');
+        
+        console.log('🔧 Modal elements found:', {
+            modal: toolModal,
+            title: modalTitle.length,
+            body: modalBody.length,
+            button: actionBtn.length
+        });
+        
+        // Tool configurations
+        const tools = {
+            json: {
+                title: '<i class="fas fa-code"></i> JSON Formatter & Validator',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="jsonInput">Enter JSON to format:</label>
+                        <textarea id="jsonInput" class="form-control" rows="8" placeholder='{"name": "John", "age": 30, "city": "New York"}'></textarea>
+                    </div>
+                    <div class="tool-output" id="jsonOutput" style="display: none;"></div>
+                `,
+                action: 'Format JSON'
+            },
+            color: {
+                title: '<i class="fas fa-palette"></i> Color Picker & Palette Generator',
+                content: `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-input-group">
+                                <label for="colorPicker">Pick a Color:</label>
+                                <input type="color" id="colorPicker" class="form-control" value="#4CAF50" style="height: 60px;">
+                            </div>
+                            <div class="tool-input-group">
+                                <label for="hexInput">Or Enter Hex Code:</label>
+                                <input type="text" id="hexInput" class="form-control" placeholder="#4CAF50" value="#4CAF50">
+                            </div>
                         </div>
-                        <div class="tool-input-group">
-                            <label for="hexInput">Or Enter Hex Code:</label>
-                            <input type="text" id="hexInput" class="form-control" placeholder="#4CAF50" value="#4CAF50">
+                        <div class="col-md-6">
+                            <div class="tool-output" id="colorOutput">
+                                <h6>Color Information:</h6>
+                                <div id="colorInfo"></div>
+                                <h6 class="mt-3">Color Palette:</h6>
+                                <div id="colorPalette" class="d-flex flex-wrap gap-2"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="tool-output" id="colorOutput">
-                            <h6>Color Information:</h6>
-                            <div id="colorInfo"></div>
-                            <h6 class="mt-3">Color Palette:</h6>
-                            <div id="colorPalette" class="d-flex flex-wrap gap-2"></div>
-                        </div>
+                `,
+                action: 'Generate Palette'
+            },
+            base64: {
+                title: '<i class="fas fa-key"></i> Base64 Encoder/Decoder',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="base64Input">Enter text to encode/decode:</label>
+                        <textarea id="base64Input" class="form-control" rows="6" placeholder="Hello World!"></textarea>
                     </div>
-                </div>
-            `,
-            action: 'Generate Palette'
-        },
-        base64: {
-            title: '<i class="fas fa-key"></i> Base64 Encoder/Decoder',
-            content: `
-                <div class="tool-input-group">
-                    <label for="base64Input">Enter text to encode/decode:</label>
-                    <textarea id="base64Input" class="form-control" rows="6" placeholder="Hello World!"></textarea>
-                </div>
-                <div class="d-flex gap-2 mb-3">
-                    <button class="btn btn-success" onclick="encodeBase64()">Encode</button>
-                    <button class="btn btn-warning" onclick="decodeBase64()">Decode</button>
-                </div>
-                <div class="tool-output" id="base64Output" style="display: none;"></div>
-            `,
-            action: 'Encode'
-        },
-        url: {
-            title: '<i class="fas fa-link"></i> URL Encoder/Decoder',
-            content: `
-                <div class="tool-input-group">
-                    <label for="urlInput">Enter URL or text:</label>
-                    <textarea id="urlInput" class="form-control" rows="6" placeholder="https://example.com/search?q=hello world"></textarea>
-                </div>
-                <div class="d-flex gap-2 mb-3">
-                    <button class="btn btn-success" onclick="encodeURL()">Encode</button>
-                    <button class="btn btn-warning" onclick="decodeURL()">Decode</button>
-                </div>
-                <div class="tool-output" id="urlOutput" style="display: none;"></div>
-            `,
-            action: 'Encode'
-        },
-        qr: {
-            title: '<i class="fas fa-qrcode"></i> QR Code Generator',
-            content: `
-                <div class="tool-input-group">
-                    <label for="qrInput">Enter text or URL for QR code:</label>
-                    <textarea id="qrInput" class="form-control" rows="4" placeholder="https://yourwebsite.com"></textarea>
-                </div>
-                <div class="tool-input-group">
-                    <label for="qrSize">QR Code Size:</label>
-                    <select id="qrSize" class="form-control">
-                        <option value="200">200x200</option>
-                        <option value="300" selected>300x300</option>
-                        <option value="400">400x400</option>
-                        <option value="500">500x500</option>
-                    </select>
-                </div>
-                <div class="tool-output" id="qrOutput" style="display: none;">
-                    <div id="qrCodeContainer" class="text-center"></div>
-                </div>
-            `,
-            action: 'Generate QR'
-        },
-        hash: {
-            title: '<i class="fas fa-hashtag"></i> Hash Generator',
-            content: `
-                <div class="tool-input-group">
-                    <label for="hashInput">Enter text to hash:</label>
-                    <textarea id="hashInput" class="form-control" rows="6" placeholder="Your text here..."></textarea>
-                </div>
-                <div class="tool-input-group">
-                    <label for="hashType">Hash Type:</label>
-                    <select id="hashType" class="form-control">
-                        <option value="md5">MD5</option>
-                        <option value="sha1">SHA-1</option>
-                        <option value="sha256" selected>SHA-256</option>
-                    </select>
-                </div>
-                <div class="tool-output" id="hashOutput" style="display: none;"></div>
-            `,
-            action: 'Generate Hash'
+                    <div class="d-flex gap-2 mb-3">
+                        <button class="btn btn-success" onclick="encodeBase64()">Encode</button>
+                        <button class="btn btn-warning" onclick="decodeBase64()">Decode</button>
+                    </div>
+                    <div class="tool-output" id="base64Output" style="display: none;"></div>
+                `,
+                action: 'Encode'
+            },
+            url: {
+                title: '<i class="fas fa-link"></i> URL Encoder/Decoder',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="urlInput">Enter URL or text:</label>
+                        <textarea id="urlInput" class="form-control" rows="6" placeholder="https://example.com/search?q=hello world"></textarea>
+                    </div>
+                    <div class="d-flex gap-2 mb-3">
+                        <button class="btn btn-success" onclick="encodeURL()">Encode</button>
+                        <button class="btn btn-warning" onclick="decodeURL()">Decode</button>
+                    </div>
+                    <div class="tool-output" id="urlOutput" style="display: none;"></div>
+                `,
+                action: 'Encode'
+            },
+            qr: {
+                title: '<i class="fas fa-qrcode"></i> QR Code Generator',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="qrInput">Enter text or URL for QR code:</label>
+                        <textarea id="qrInput" class="form-control" rows="4" placeholder="https://yourwebsite.com"></textarea>
+                    </div>
+                    <div class="tool-input-group">
+                        <label for="qrSize">QR Code Size:</label>
+                        <select id="qrSize" class="form-control">
+                            <option value="200">200x200</option>
+                            <option value="300" selected>300x300</option>
+                            <option value="400">400x400</option>
+                            <option value="500">500x500</option>
+                        </select>
+                    </div>
+                    <div class="tool-output" id="qrOutput" style="display: none;">
+                        <div id="qrCodeContainer" class="text-center"></div>
+                    </div>
+                `,
+                action: 'Generate QR'
+            },
+            hash: {
+                title: '<i class="fas fa-hashtag"></i> Hash Generator',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="hashInput">Enter text to hash:</label>
+                        <textarea id="hashInput" class="form-control" rows="6" placeholder="Your text here..."></textarea>
+                    </div>
+                    <div class="tool-input-group">
+                        <label for="hashType">Hash Type:</label>
+                        <select id="hashType" class="form-control">
+                            <option value="md5">MD5</option>
+                            <option value="sha1">SHA-1</option>
+                            <option value="sha256" selected>SHA-256</option>
+                        </select>
+                    </div>
+                    <div class="tool-output" id="hashOutput" style="display: none;"></div>
+                `,
+                action: 'Generate Hash'
+            }
+        };
+        
+        const tool = tools[toolType];
+        if (!tool) {
+            console.error('❌ Tool not found:', toolType);
+            return;
         }
-    };
-    
-    const tool = tools[toolType];
-    if (!tool) return;
-    
-    modalTitle.html(tool.title);
-    modalBody.html(tool.content);
-    actionBtn.text(tool.action);
-    
-    // Set up tool-specific functionality
-    actionBtn.off('click').on('click', () => processToolAction(toolType));
-    
-    // Initialize tool-specific features
-    if (toolType === 'color') {
-        initColorTool();
-    }
-    
-    toolModal.show();
+        
+        console.log('✅ Setting up tool:', toolType);
+        modalTitle.html(tool.title);
+        modalBody.html(tool.content);
+        actionBtn.text(tool.action);
+        
+        // Set up tool-specific functionality
+        actionBtn.off('click').on('click', () => processToolAction(toolType));
+        
+        // Initialize tool-specific features
+        if (toolType === 'color') {
+            initColorTool();
+        }
+        
+        console.log('✅ Showing modal for:', toolType);
+        toolModal.show();
+    }, 100);
 };
 
 function processToolAction(toolType) {
