@@ -504,9 +504,14 @@ function initializeHomepage() {
         // Handle dev tools
         if (tool) {
             console.log('🛠️ Opening dev tool:', tool);
+            console.log('🛠️ Item element:', $item[0]);
+            console.log('🛠️ window.openTool available:', typeof window.openTool);
+            
             if (tool === 'vscode') {
+                console.log('📝 Opening VS Code modal');
                 $('#vscodeModal').modal('show');
             } else if (tool === 'git') {
+                console.log('📋 Showing Git commands alert');
                 alert(`📋 Git Commands:
 
 Basic Commands:
@@ -527,6 +532,7 @@ Branching:
 
 More at: https://git-scm.com/docs`);
             } else if (tool === 'docker') {
+                console.log('🐳 Showing Docker commands alert');
                 alert(`🐳 Docker Commands:
 
 Basic Commands:
@@ -547,6 +553,7 @@ Build & Deploy:
 
 Learn more: https://docs.docker.com/`);
             } else if (tool === 'api') {
+                console.log('🔌 Showing API testing alert');
                 alert(`🔌 API Testing Tools:
 
 Popular Tools:
@@ -573,8 +580,12 @@ Testing URLs:
                 console.log('🔧 window.openTool available:', typeof window.openTool);
                 if (window.openTool) {
                     console.log('✅ Calling openTool for:', tool);
-                    window.openTool(tool);
-                    // Don't return early - let dropdown close normally
+                    try {
+                        window.openTool(tool);
+                        console.log('✅ openTool call successful');
+                    } catch (error) {
+                        console.error('❌ Error calling openTool:', error);
+                    }
                 } else {
                     console.log('❌ openTool function not available');
                     alert(`${tool} tool coming soon!`);
@@ -1039,6 +1050,13 @@ function setupDevTools() {
     
     $('#devToolsDropdown').siblings('.dropdown-menu').prepend(newToolsHtml);
     
+    console.log('✅ Dev tools added to dropdown');
+    console.log('- Dropdown menu element:', $('#devToolsDropdown').siblings('.dropdown-menu')[0]);
+    console.log('- Total tool items in dropdown:', $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').length);
+    console.log('- Tool items:', $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').map(function() { 
+        return $(this).data('tool'); 
+    }).get());
+    
     // Remove any existing event handlers to prevent duplicates
     $(document).off('click.devtools', '.dropdown-item[data-tool]');
     
@@ -1048,8 +1066,18 @@ function setupDevTools() {
         e.stopPropagation();
         const tool = $(this).data('tool');
         console.log('🔧 Dropdown tool clicked:', tool);
+        console.log('🔧 Element:', this);
+        console.log('🔧 Parent dropdown:', $(this).closest('.dropdown-menu').prev().attr('id'));
+        console.log('🔧 window.openTool available:', typeof window.openTool);
+        
         if (window.openTool) {
-            window.openTool(tool);
+            console.log('✅ Calling openTool for:', tool);
+            try {
+                window.openTool(tool);
+                console.log('✅ openTool call completed');
+            } catch (error) {
+                console.error('❌ Error in openTool:', error);
+            }
         } else {
             console.error('❌ openTool function not available');
         }
