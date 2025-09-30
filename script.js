@@ -2,6 +2,12 @@
 
 $(document).ready(function() {
     
+    // Prevent multiple initializations
+    if (window.devSpaceInitialized) {
+        return;
+    }
+    window.devSpaceInitialized = true;
+    
     // Original function for the button
     function firstButton() {
         $("#firstButton").addClass("list-group-item-success");
@@ -19,6 +25,12 @@ $(document).ready(function() {
     
     // Simple and reliable dropdown functionality
     function initDropdowns() {
+        // Remove any existing event handlers first
+        $('.dropdown-toggle').off('click.dropdown');
+        $(document).off('click.dropdown');
+        $('.dropdown-menu').off('click');
+        $('.dropdown-item').off('click.dropdown');
+        
         // Close all dropdowns
         function closeAllDropdowns() {
             $('.dropdown-menu').removeClass('show').hide();
@@ -41,40 +53,40 @@ $(document).ready(function() {
         }
         
         // Languages dropdown
-        $('#languagesDropdown').off('click').on('click', function(e) {
+        $('#languagesDropdown').on('click.dropdown', function(e) {
             e.preventDefault();
             e.stopPropagation();
             toggleDropdown($(this));
         });
         
         // Dev Tools dropdown
-        $('#devToolsDropdown').off('click').on('click', function(e) {
+        $('#devToolsDropdown').on('click.dropdown', function(e) {
             e.preventDefault();
             e.stopPropagation();
             toggleDropdown($(this));
         });
         
         // Profile dropdown
-        $('#profileDropdown').off('click').on('click', function(e) {
+        $('#profileDropdown').on('click.dropdown', function(e) {
             e.preventDefault();
             e.stopPropagation();
             toggleDropdown($(this));
         });
         
         // Close dropdowns when clicking outside
-        $(document).off('click.dropdown').on('click.dropdown', function(e) {
+        $(document).on('click.dropdown', function(e) {
             if (!$(e.target).closest('.dropdown').length) {
                 closeAllDropdowns();
             }
         });
         
         // Prevent dropdown from closing when clicking inside
-        $('.dropdown-menu').off('click').on('click', function(e) {
+        $('.dropdown-menu').on('click', function(e) {
             e.stopPropagation();
         });
         
-        // Close dropdown when clicking menu items
-        $('.dropdown-item').off('click.dropdown').on('click.dropdown', function() {
+        // Close dropdown when clicking menu items (except tools)
+        $('.dropdown-item:not([data-tool])').on('click.dropdown', function() {
             closeAllDropdowns();
         });
         
@@ -408,6 +420,18 @@ $(document).ready(function() {
     // Welcome message
     showNotification('Welcome to DevSpace! Your awesome programming hub is ready! 🚀', 'success');
     
+    // Debug: Test if buttons are clickable
+    console.log('🔍 DevSpace Debug Info:');
+    console.log('- jQuery loaded:', typeof $ !== 'undefined');
+    console.log('- Start Coding button exists:', $('#startCodingBtn').length > 0);
+    console.log('- Explore Projects button exists:', $('#exploreProjectsBtn').length > 0);
+    console.log('- Dev Tools dropdown exists:', $('#devToolsDropdown').length > 0);
+    
+    // Add simple click test
+    $(document).on('click', '*', function(e) {
+        console.log('Click detected on:', e.target.tagName, e.target.id, e.target.className);
+    });
+    
     // ===== HOMEPAGE FUNCTIONALITY =====
     
     // Initialize homepage animations
@@ -466,19 +490,23 @@ function startTypingAnimation() {
     let lineIndex = 0;
     let charIndex = 0;
     
+    // Clear any existing content and intervals
+    codeElement.empty();
+    
     function typeNextChar() {
         if (lineIndex < codeLines.length) {
             const currentLine = codeLines[lineIndex];
             
             if (charIndex < currentLine.length) {
-                codeElement.append(currentLine.charAt(charIndex));
+                const currentText = codeElement.text();
+                codeElement.text(currentText + currentLine.charAt(charIndex));
                 charIndex++;
-                setTimeout(typeNextChar, 50);
+                setTimeout(typeNextChar, 30); // Faster typing speed
             } else {
                 codeElement.append('\n');
                 lineIndex++;
                 charIndex = 0;
-                setTimeout(typeNextChar, 200);
+                setTimeout(typeNextChar, 100); // Shorter line delay
             }
         } else {
             // Restart animation after delay
@@ -487,7 +515,7 @@ function startTypingAnimation() {
                 lineIndex = 0;
                 charIndex = 0;
                 typeNextChar();
-            }, 3000);
+            }, 2000);
         }
     }
     
@@ -513,7 +541,14 @@ function animateCounters() {
 }
 
 function setupHeroButtons() {
-    $('#startCodingBtn').click(function() {
+    // Remove any existing handlers first
+    $('#startCodingBtn').off('click');
+    $('#exploreProjectsBtn').off('click');
+    
+    $('#startCodingBtn').on('click', function(e) {
+        e.preventDefault();
+        console.log('🚀 Start Coding button clicked!');
+        
         showLoadingIndicator();
         
         $(this).html('<i class="fas fa-spinner fa-spin"></i> Opening VS Code...');
@@ -534,7 +569,10 @@ function setupHeroButtons() {
         }, 1200);
     });
     
-    $('#exploreProjectsBtn').click(function() {
+    $('#exploreProjectsBtn').on('click', function(e) {
+        e.preventDefault();
+        console.log('👁️ Explore Projects button clicked!');
+        
         showLoadingIndicator();
         
         $(this).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
@@ -550,6 +588,8 @@ function setupHeroButtons() {
             }, 1000);
         }, 800);
     });
+    
+    console.log('✅ Hero buttons initialized');
 }
 
 // Function to open VS Code
@@ -698,7 +738,16 @@ function setupContactLinks() {
 // ===== DEV TOOLS FUNCTIONALITY =====
 
 function setupDevTools() {
-    // Update the existing dev tools dropdown to include new tools
+    // Check if tools are already added to prevent duplicates
+    if ($('.dropdown-item[data-tool="json"]').length > 0) {
+        return; // Tools already added
+    }
+    
+    // Clear any existing tools first
+    $('.dropdown-menu.programming-dropdown').first().find('.dropdown-item[data-tool]').remove();
+    $('.dropdown-menu.programming-dropdown').first().find('.dropdown-divider').first().remove();
+    
+    // Add new tools at the beginning of the dropdown
     const newToolsHtml = `
         <li><a class="dropdown-item" href="#" data-tool="json">
             <i class="fas fa-code text-info"></i> JSON Formatter
@@ -721,13 +770,17 @@ function setupDevTools() {
         <li><hr class="dropdown-divider"></li>
     `;
     
-    // Insert new tools at the beginning of the dropdown
     $('.dropdown-menu.programming-dropdown').first().prepend(newToolsHtml);
     
-    // Make sure dropdown tool clicks work
-    $(document).on('click', '.dropdown-item[data-tool]', function(e) {
+    // Remove any existing event handlers to prevent duplicates
+    $(document).off('click.devtools', '.dropdown-item[data-tool]');
+    
+    // Add single event handler for all tool clicks
+    $(document).on('click.devtools', '.dropdown-item[data-tool]', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         const tool = $(this).data('tool');
+        console.log('Opening tool:', tool);
         openTool(tool);
     });
 }
@@ -1462,20 +1515,30 @@ function updateContactLinksWithGitHub() {
 
 // Initialize GitHub profile integration on page load
 $(document).ready(function() {
+    // Prevent multiple GitHub initializations
+    if (window.githubInitialized) {
+        return;
+    }
+    window.githubInitialized = true;
+    
     // Update contact links
     updateContactLinksWithGitHub();
     
     // Add option to profile dropdown to view GitHub profile
     const profileDropdownMenu = $('#profileDropdown').siblings('.dropdown-menu');
-    const githubProfileItem = `
-        <li><a class="dropdown-item" href="#" id="viewGithubProfile">
-            <i class="fab fa-github"></i> GitHub Profile
-        </a></li>
-    `;
-    profileDropdownMenu.find('li:first').after(githubProfileItem);
+    
+    // Check if GitHub profile item already exists
+    if ($('#viewGithubProfile').length === 0) {
+        const githubProfileItem = `
+            <li><a class="dropdown-item" href="#" id="viewGithubProfile">
+                <i class="fab fa-github"></i> GitHub Profile
+            </a></li>
+        `;
+        profileDropdownMenu.find('li:first').after(githubProfileItem);
+    }
     
     // Handle GitHub profile menu item click
-    $(document).on('click', '#viewGithubProfile', function(e) {
+    $(document).off('click', '#viewGithubProfile').on('click', '#viewGithubProfile', function(e) {
         e.preventDefault();
         if (githubProfileData) {
             displayGitHubProfile(githubProfileData);
@@ -1490,11 +1553,17 @@ $(document).ready(function() {
 
 // Initialize GitHub preview section
 function initializeGitHubPreview() {
+    // Prevent multiple initializations
+    if (window.githubPreviewInitialized) {
+        return;
+    }
+    window.githubPreviewInitialized = true;
+    
     // Load basic GitHub stats for preview
     loadGitHubPreviewStats('stephenolaussen');
     
     // Handle load GitHub profile button click
-    $('#loadGithubProfile').click(function() {
+    $('#loadGithubProfile').off('click').on('click', function() {
         if (githubProfileData) {
             displayGitHubProfile(githubProfileData);
         } else {
