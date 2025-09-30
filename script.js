@@ -1060,170 +1060,207 @@ function setupDevTools() {
     // Remove any existing event handlers to prevent duplicates
     $(document).off('click.devtools', '.dropdown-item[data-tool]');
     
-    // Add single event handler for all tool clicks
+    // Add single event handler for all tool clicks using direct event delegation
     $(document).on('click.devtools', '.dropdown-item[data-tool]', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        const tool = $(this).data('tool');
-        console.log('🔧 Dropdown tool clicked:', tool);
-        console.log('🔧 Element:', this);
-        console.log('🔧 Parent dropdown:', $(this).closest('.dropdown-menu').prev().attr('id'));
-        console.log('🔧 window.openTool available:', typeof window.openTool);
         
-        if (window.openTool) {
+        const tool = $(this).data('tool');
+        const itemText = $(this).text().trim();
+        const parentDropdown = $(this).closest('.dropdown-menu').prev().attr('id');
+        
+        console.log('🔧 Nav dropdown tool clicked:', {
+            tool: tool,
+            text: itemText,
+            parentDropdown: parentDropdown,
+            element: this
+        });
+        
+        // Close dropdown first
+        $(this).closest('.dropdown-menu').removeClass('show').hide();
+        $(this).closest('.dropdown').find('.dropdown-toggle').removeClass('active');
+        
+        // Handle the tool
+        if (tool && typeof window.openTool === 'function') {
             console.log('✅ Calling openTool for:', tool);
-            try {
-                window.openTool(tool);
-                console.log('✅ openTool call completed');
-            } catch (error) {
-                console.error('❌ Error in openTool:', error);
-            }
+            window.openTool(tool);
         } else {
-            console.error('❌ openTool function not available');
+            console.error('❌ openTool not available, tool:', tool);
+            alert(`${itemText} tool is being loaded...`);
         }
     });
     
     console.log('✅ Dev tools setup complete');
+    
+    // Add manual test function for debugging
+    window.testDevTool = function(toolName) {
+        console.log('🧪 Manual test for tool:', toolName);
+        if (typeof window.openTool === 'function') {
+            window.openTool(toolName);
+        } else {
+            console.error('❌ openTool function not available');
+        }
+    };
+    
+    console.log('🧪 Test function added: Use window.testDevTool("json") to test manually');
 }
 
 // Make openTool function globally accessible
 window.openTool = function(toolType) {
+    console.log('🔧 openTool called with:', toolType);
+    
     // Close any open dropdowns first
     $('.dropdown-menu').removeClass('show').hide();
+    $('.dropdown-toggle').removeClass('active');
     
-    const toolModal = new bootstrap.Modal(document.getElementById('devToolModal'));
-    const modalTitle = $('#toolModalTitle');
-    const modalBody = $('#toolModalBody');
-    const actionBtn = $('#toolActionBtn');
-    
-    // Tool configurations
-    const tools = {
-        json: {
-            title: '<i class="fas fa-code"></i> JSON Formatter & Validator',
-            content: `
-                <div class="tool-input-group">
-                    <label for="jsonInput">Enter JSON to format:</label>
-                    <textarea id="jsonInput" class="form-control" rows="8" placeholder='{"name": "John", "age": 30, "city": "New York"}'></textarea>
-                </div>
-                <div class="tool-output" id="jsonOutput" style="display: none;"></div>
-            `,
-            action: 'Format JSON'
-        },
-        color: {
-            title: '<i class="fas fa-palette"></i> Color Picker & Palette Generator',
-            content: `
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="tool-input-group">
-                            <label for="colorPicker">Pick a Color:</label>
-                            <input type="color" id="colorPicker" class="form-control" value="#4CAF50" style="height: 60px;">
+    // Small delay to ensure dropdown closes
+    setTimeout(() => {
+        const toolModal = new bootstrap.Modal(document.getElementById('devToolModal'));
+        const modalTitle = $('#toolModalTitle');
+        const modalBody = $('#toolModalBody');
+        const actionBtn = $('#toolActionBtn');
+        
+        console.log('🔧 Modal elements found:', {
+            modal: toolModal,
+            title: modalTitle.length,
+            body: modalBody.length,
+            button: actionBtn.length
+        });
+        
+        // Tool configurations
+        const tools = {
+            json: {
+                title: '<i class="fas fa-code"></i> JSON Formatter & Validator',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="jsonInput">Enter JSON to format:</label>
+                        <textarea id="jsonInput" class="form-control" rows="8" placeholder='{"name": "John", "age": 30, "city": "New York"}'></textarea>
+                    </div>
+                    <div class="tool-output" id="jsonOutput" style="display: none;"></div>
+                `,
+                action: 'Format JSON'
+            },
+            color: {
+                title: '<i class="fas fa-palette"></i> Color Picker & Palette Generator',
+                content: `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tool-input-group">
+                                <label for="colorPicker">Pick a Color:</label>
+                                <input type="color" id="colorPicker" class="form-control" value="#4CAF50" style="height: 60px;">
+                            </div>
+                            <div class="tool-input-group">
+                                <label for="hexInput">Or Enter Hex Code:</label>
+                                <input type="text" id="hexInput" class="form-control" placeholder="#4CAF50" value="#4CAF50">
+                            </div>
                         </div>
-                        <div class="tool-input-group">
-                            <label for="hexInput">Or Enter Hex Code:</label>
-                            <input type="text" id="hexInput" class="form-control" placeholder="#4CAF50" value="#4CAF50">
+                        <div class="col-md-6">
+                            <div class="tool-output" id="colorOutput">
+                                <h6>Color Information:</h6>
+                                <div id="colorInfo"></div>
+                                <h6 class="mt-3">Color Palette:</h6>
+                                <div id="colorPalette" class="d-flex flex-wrap gap-2"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="tool-output" id="colorOutput">
-                            <h6>Color Information:</h6>
-                            <div id="colorInfo"></div>
-                            <h6 class="mt-3">Color Palette:</h6>
-                            <div id="colorPalette" class="d-flex flex-wrap gap-2"></div>
-                        </div>
+                `,
+                action: 'Generate Palette'
+            },
+            base64: {
+                title: '<i class="fas fa-key"></i> Base64 Encoder/Decoder',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="base64Input">Enter text to encode/decode:</label>
+                        <textarea id="base64Input" class="form-control" rows="6" placeholder="Hello World!"></textarea>
                     </div>
-                </div>
-            `,
-            action: 'Generate Palette'
-        },
-        base64: {
-            title: '<i class="fas fa-key"></i> Base64 Encoder/Decoder',
-            content: `
-                <div class="tool-input-group">
-                    <label for="base64Input">Enter text to encode/decode:</label>
-                    <textarea id="base64Input" class="form-control" rows="6" placeholder="Hello World!"></textarea>
-                </div>
-                <div class="d-flex gap-2 mb-3">
-                    <button class="btn btn-success" onclick="encodeBase64()">Encode</button>
-                    <button class="btn btn-warning" onclick="decodeBase64()">Decode</button>
-                </div>
-                <div class="tool-output" id="base64Output" style="display: none;"></div>
-            `,
-            action: 'Encode'
-        },
-        url: {
-            title: '<i class="fas fa-link"></i> URL Encoder/Decoder',
-            content: `
-                <div class="tool-input-group">
-                    <label for="urlInput">Enter URL or text:</label>
-                    <textarea id="urlInput" class="form-control" rows="6" placeholder="https://example.com/search?q=hello world"></textarea>
-                </div>
-                <div class="d-flex gap-2 mb-3">
-                    <button class="btn btn-success" onclick="encodeURL()">Encode</button>
-                    <button class="btn btn-warning" onclick="decodeURL()">Decode</button>
-                </div>
-                <div class="tool-output" id="urlOutput" style="display: none;"></div>
-            `,
-            action: 'Encode'
-        },
-        qr: {
-            title: '<i class="fas fa-qrcode"></i> QR Code Generator',
-            content: `
-                <div class="tool-input-group">
-                    <label for="qrInput">Enter text or URL for QR code:</label>
-                    <textarea id="qrInput" class="form-control" rows="4" placeholder="https://yourwebsite.com"></textarea>
-                </div>
-                <div class="tool-input-group">
-                    <label for="qrSize">QR Code Size:</label>
-                    <select id="qrSize" class="form-control">
-                        <option value="200">200x200</option>
-                        <option value="300" selected>300x300</option>
-                        <option value="400">400x400</option>
-                        <option value="500">500x500</option>
-                    </select>
-                </div>
-                <div class="tool-output" id="qrOutput" style="display: none;">
-                    <div id="qrCodeContainer" class="text-center"></div>
-                </div>
-            `,
-            action: 'Generate QR'
-        },
-        hash: {
-            title: '<i class="fas fa-hashtag"></i> Hash Generator',
-            content: `
-                <div class="tool-input-group">
-                    <label for="hashInput">Enter text to hash:</label>
-                    <textarea id="hashInput" class="form-control" rows="6" placeholder="Your text here..."></textarea>
-                </div>
-                <div class="tool-input-group">
-                    <label for="hashType">Hash Type:</label>
-                    <select id="hashType" class="form-control">
-                        <option value="md5">MD5</option>
-                        <option value="sha1">SHA-1</option>
-                        <option value="sha256" selected>SHA-256</option>
-                    </select>
-                </div>
-                <div class="tool-output" id="hashOutput" style="display: none;"></div>
-            `,
-            action: 'Generate Hash'
+                    <div class="d-flex gap-2 mb-3">
+                        <button class="btn btn-success" onclick="encodeBase64()">Encode</button>
+                        <button class="btn btn-warning" onclick="decodeBase64()">Decode</button>
+                    </div>
+                    <div class="tool-output" id="base64Output" style="display: none;"></div>
+                `,
+                action: 'Encode'
+            },
+            url: {
+                title: '<i class="fas fa-link"></i> URL Encoder/Decoder',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="urlInput">Enter URL or text:</label>
+                        <textarea id="urlInput" class="form-control" rows="6" placeholder="https://example.com/search?q=hello world"></textarea>
+                    </div>
+                    <div class="d-flex gap-2 mb-3">
+                        <button class="btn btn-success" onclick="encodeURL()">Encode</button>
+                        <button class="btn btn-warning" onclick="decodeURL()">Decode</button>
+                    </div>
+                    <div class="tool-output" id="urlOutput" style="display: none;"></div>
+                `,
+                action: 'Encode'
+            },
+            qr: {
+                title: '<i class="fas fa-qrcode"></i> QR Code Generator',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="qrInput">Enter text or URL for QR code:</label>
+                        <textarea id="qrInput" class="form-control" rows="4" placeholder="https://yourwebsite.com"></textarea>
+                    </div>
+                    <div class="tool-input-group">
+                        <label for="qrSize">QR Code Size:</label>
+                        <select id="qrSize" class="form-control">
+                            <option value="200">200x200</option>
+                            <option value="300" selected>300x300</option>
+                            <option value="400">400x400</option>
+                            <option value="500">500x500</option>
+                        </select>
+                    </div>
+                    <div class="tool-output" id="qrOutput" style="display: none;">
+                        <div id="qrCodeContainer" class="text-center"></div>
+                    </div>
+                `,
+                action: 'Generate QR'
+            },
+            hash: {
+                title: '<i class="fas fa-hashtag"></i> Hash Generator',
+                content: `
+                    <div class="tool-input-group">
+                        <label for="hashInput">Enter text to hash:</label>
+                        <textarea id="hashInput" class="form-control" rows="6" placeholder="Your text here..."></textarea>
+                    </div>
+                    <div class="tool-input-group">
+                        <label for="hashType">Hash Type:</label>
+                        <select id="hashType" class="form-control">
+                            <option value="md5">MD5</option>
+                            <option value="sha1">SHA-1</option>
+                            <option value="sha256" selected>SHA-256</option>
+                        </select>
+                    </div>
+                    <div class="tool-output" id="hashOutput" style="display: none;"></div>
+                `,
+                action: 'Generate Hash'
+            }
+        };
+        
+        const tool = tools[toolType];
+        if (!tool) {
+            console.error('❌ Tool not found:', toolType);
+            return;
         }
-    };
-    
-    const tool = tools[toolType];
-    if (!tool) return;
-    
-    modalTitle.html(tool.title);
-    modalBody.html(tool.content);
-    actionBtn.text(tool.action);
-    
-    // Set up tool-specific functionality
-    actionBtn.off('click').on('click', () => processToolAction(toolType));
-    
-    // Initialize tool-specific features
-    if (toolType === 'color') {
-        initColorTool();
-    }
-    
-    toolModal.show();
+        
+        console.log('✅ Setting up tool:', toolType);
+        modalTitle.html(tool.title);
+        modalBody.html(tool.content);
+        actionBtn.text(tool.action);
+        
+        // Set up tool-specific functionality
+        actionBtn.off('click').on('click', () => processToolAction(toolType));
+        
+        // Initialize tool-specific features
+        if (toolType === 'color') {
+            initColorTool();
+        }
+        
+        console.log('✅ Showing modal for:', toolType);
+        toolModal.show();
+    }, 100);
 };
 
 function processToolAction(toolType) {
