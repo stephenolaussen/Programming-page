@@ -809,9 +809,6 @@ function setupHeroButtons() {
         e.preventDefault();
         console.log('🚀 START CODING BUTTON CLICKED!');
         
-        // Show immediate feedback
-        showNotification('Opening VS Code setup...', 'info');
-        
         const $btn = $(this);
         const originalHtml = $btn.html();
         $btn.html('<i class="fas fa-spinner fa-spin"></i> Opening VS Code...');
@@ -820,7 +817,6 @@ function setupHeroButtons() {
         setTimeout(() => {
             $btn.html(originalHtml);
             $('#vscodeModal').modal('show');
-            showNotification('VS Code setup ready!', 'success');
             console.log('✅ VS Code modal opened');
         }, 800);
     });
@@ -830,16 +826,12 @@ function setupHeroButtons() {
         e.preventDefault();
         console.log('👁️ EXPLORE PROJECTS BUTTON CLICKED!');
         
-        // Show immediate feedback
-        showNotification('Loading projects...', 'info');
-        
         const $btn = $(this);
         const originalHtml = $btn.html();
         $btn.html('<i class="fas fa-spinner fa-spin"></i> Loading...');
         
         setTimeout(() => {
             $btn.html(originalHtml);
-            showNotification('Project gallery loaded!', 'success');
             
             // Scroll to GitHub preview section
             const $target = $('#github-preview');
