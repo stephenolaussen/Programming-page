@@ -569,10 +569,14 @@ Testing URLs:
 • HTTP Bin: https://httpbin.org/`);
             } else {
                 // Handle other dev tools (json, color, base64, url, qr, hash)
+                console.log('🔧 Attempting to open dev tool:', tool);
+                console.log('🔧 window.openTool available:', typeof window.openTool);
                 if (window.openTool) {
+                    console.log('✅ Calling openTool for:', tool);
                     window.openTool(tool);
-                    return; // Don't close dropdown yet, let the modal handle it
+                    // Don't return early - let dropdown close normally
                 } else {
+                    console.log('❌ openTool function not available');
                     alert(`${tool} tool coming soon!`);
                 }
             }
