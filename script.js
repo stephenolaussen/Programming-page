@@ -8,6 +8,12 @@ $(document).ready(function() {
     }
     window.devSpaceInitialized = true;
     
+    // Clear any existing typing intervals
+    if (window.typingInterval) {
+        clearInterval(window.typingInterval);
+        clearTimeout(window.typingInterval);
+    }
+    
     // Original function for the button
     function firstButton() {
         $("#firstButton").addClass("list-group-item-success");
@@ -447,6 +453,14 @@ $(document).ready(function() {
 // ===== HOMEPAGE FUNCTIONS =====
 
 function initializeHomepage() {
+    // Prevent multiple initializations
+    if (window.homepageInitialized) {
+        return;
+    }
+    window.homepageInitialized = true;
+    
+    console.log('🏠 Initializing homepage...');
+    
     // Typing animation for code window
     startTypingAnimation();
     
@@ -461,6 +475,8 @@ function initializeHomepage() {
     
     // Setup contact links
     setupContactLinks();
+    
+    console.log('✅ Homepage initialized successfully');
 }
 
 function startTypingAnimation() {
@@ -487,39 +503,50 @@ function startTypingAnimation() {
     ];
     
     const codeElement = $('#typingCode');
-    let lineIndex = 0;
-    let charIndex = 0;
+    let currentLineIndex = 0;
+    let currentCharIndex = 0;
+    let fullText = "";
     
-    // Clear any existing content and intervals
+    // Clear any existing intervals and content
+    if (window.typingInterval) {
+        clearInterval(window.typingInterval);
+    }
     codeElement.empty();
     
-    function typeNextChar() {
-        if (lineIndex < codeLines.length) {
-            const currentLine = codeLines[lineIndex];
+    function typeNextCharacter() {
+        if (currentLineIndex < codeLines.length) {
+            const currentLine = codeLines[currentLineIndex];
             
-            if (charIndex < currentLine.length) {
-                const currentText = codeElement.text();
-                codeElement.text(currentText + currentLine.charAt(charIndex));
-                charIndex++;
-                setTimeout(typeNextChar, 30); // Faster typing speed
+            if (currentCharIndex < currentLine.length) {
+                // Add one character to our full text
+                fullText += currentLine.charAt(currentCharIndex);
+                codeElement.text(fullText);
+                currentCharIndex++;
             } else {
-                codeElement.append('\n');
-                lineIndex++;
-                charIndex = 0;
-                setTimeout(typeNextChar, 100); // Shorter line delay
+                // End of line - add newline and move to next line
+                fullText += '\n';
+                codeElement.text(fullText);
+                currentLineIndex++;
+                currentCharIndex = 0;
             }
         } else {
-            // Restart animation after delay
+            // Animation complete - restart after delay
             setTimeout(() => {
+                fullText = "";
+                currentLineIndex = 0;
+                currentCharIndex = 0;
                 codeElement.empty();
-                lineIndex = 0;
-                charIndex = 0;
-                typeNextChar();
-            }, 2000);
+                startTypingAnimation();
+            }, 3000);
+            return;
         }
+        
+        // Continue typing
+        window.typingInterval = setTimeout(typeNextCharacter, 50);
     }
     
-    typeNextChar();
+    // Start the animation
+    typeNextCharacter();
 }
 
 function animateCounters() {
