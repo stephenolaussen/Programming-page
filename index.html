@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap-5.3.8-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <title>DevSpace - Programming Hub</title>
+</head>
+<body>
+    <!-- Awesome Programming Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark programming-navbar">
+        <div class="container-fluid">
+            <!-- Brand with animated code icon -->
+            <a class="navbar-brand" href="#" id="brand-link">
+                <i class="fas fa-code brand-icon"></i>
+                <span class="brand-text">DevSpace</span>
+            </a>
+            
+            <!-- Mobile toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#programmingNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation content -->
+            <div class="collapse navbar-collapse" id="programmingNav">
+                <!-- Main navigation -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-section="home">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    
+                    <!-- Programming Languages Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="languagesDropdown">
+                            <i class="fas fa-code"></i> Languages
+                        </a>
+                        <ul class="dropdown-menu programming-dropdown">
+                            <li><a class="dropdown-item" href="#" data-lang="javascript">
+                                <i class="fab fa-js-square text-warning"></i> JavaScript
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="python">
+                                <i class="fab fa-python text-success"></i> Python
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="java">
+                                <i class="fab fa-java text-danger"></i> Java
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="react">
+                                <i class="fab fa-react text-info"></i> React
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="php">
+                                <i class="fab fa-php text-primary"></i> PHP
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="more-languages">
+                                <i class="fas fa-plus text-success"></i> View All Languages
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="projects">
+                            <i class="fas fa-folder-open"></i> Projects
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="tutorials">
+                            <i class="fas fa-graduation-cap"></i> Tutorials
+                        </a>
+                    </li>
+                    
+                    <!-- Tools Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="devToolsDropdown">
+                            <i class="fas fa-tools"></i> Dev Tools
+                        </a>
+                        <ul class="dropdown-menu programming-dropdown">
+                            <li><a class="dropdown-item" href="#" data-tool="vscode">
+                                <i class="fas fa-code text-info"></i> VS Code Extensions
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-tool="git">
+                                <i class="fab fa-git-alt text-warning"></i> Git Commands
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-tool="docker">
+                                <i class="fab fa-docker text-primary"></i> Docker Tools
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-tool="api">
+                                <i class="fas fa-plug text-success"></i> API Testing
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <!-- Search functionality -->
+                <div class="d-flex align-items-center me-3">
+                    <div class="search-container">
+                        <input type="text" class="form-control search-input" placeholder="Search documentation..." id="searchInput">
+                        <button class="btn search-btn" type="button" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-success me-2 github-btn" type="button" id="githubBtn">
+                        <i class="fab fa-github"></i> GitHub
+                    </button>
+                    
+                    <!-- Theme toggle -->
+                    <button class="btn btn-outline-light me-2 theme-toggle" type="button" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <!-- User dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle profile-btn" type="button" id="profileDropdown">
+                            <i class="fas fa-user-circle"></i> Developer
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end programming-dropdown">
+                            <li><a class="dropdown-item" href="#" data-profile="profile">
+                                <i class="fas fa-user"></i> My Profile
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-profile="repos">
+                                <i class="fas fa-code-branch"></i> My Repositories
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-profile="settings">
+                                <i class="fas fa-cog"></i> Settings
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-profile="achievements">
+                                <i class="fas fa-trophy"></i> Achievements
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Loading indicator for navbar actions -->
+    <div class="loading-indicator" id="loadingIndicator">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <!-- Main content area -->
+    <main id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="row align-items-center min-vh-100">
+                    <div class="col-lg-6">
+                        <div class="hero-content">
+                            <h1 class="hero-title">
+                                Welcome to <span class="text-gradient">DevSpace</span>
+                                <i class="fas fa-rocket hero-rocket"></i>
+                            </h1>
+                            <p class="hero-subtitle">Your ultimate coding hub for development, learning, and innovation</p>
+                            <div class="hero-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number" data-target="50">0</span>
+                                    <span class="stat-label">Projects</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" data-target="15">0</span>
+                                    <span class="stat-label">Languages</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" data-target="100">0</span>
+                                    <span class="stat-label">Tools</span>
+                                </div>
+                            </div>
+                            <div class="hero-buttons">
+                                <button class="btn btn-primary btn-lg me-3" id="startCodingBtn">
+                                    <i class="fas fa-code"></i> Start Coding
+                                </button>
+                                <button class="btn btn-outline-light btn-lg" id="exploreProjectsBtn">
+                                    <i class="fas fa-eye"></i> Explore Projects
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="hero-animation">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-controls">
+                                        <span class="control close"></span>
+                                        <span class="control minimize"></span>
+                                        <span class="control maximize"></span>
+                                    </div>
+                                    <span class="window-title">main.js</span>
+                                </div>
+                                <div class="code-content">
+                                    <pre id="typingCode"></pre>
+                                    <span class="cursor">|</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Tools Section -->
+        <section class="quick-tools-section py-5">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">
+                    <i class="fas fa-tools"></i> Quick Dev Tools
+                </h2>
+                <div class="row g-4">
+                    <!-- JSON Formatter -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="tool-card" data-tool="json">
+                            <div class="tool-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h4>JSON Formatter</h4>
+                            <p>Format and validate your JSON data instantly</p>
+                            <button class="btn btn-primary" onclick="openTool('json')">
+                                <i class="fas fa-external-link-alt"></i> Open Tool
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Color Picker -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="tool-card" data-tool="color">
+                            <div class="tool-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <h4>Color Picker</h4>
+                            <p>Generate perfect color schemes for your projects</p>
+                            <button class="btn btn-primary" onclick="openTool('color')">
+                                <i class="fas fa-external-link-alt"></i> Open Tool
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Base64 Encoder -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="tool-card" data-tool="base64">
+                            <div class="tool-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <h4>Base64 Encoder</h4>
+                            <p>Encode and decode Base64 strings</p>
+                            <button class="btn btn-primary" onclick="openTool('base64')">
+                                <i class="fas fa-external-link-alt"></i> Open Tool
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- URL Encoder -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="tool-card" data-tool="url">
+                            <div class="tool-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <h4>URL Encoder</h4>
+                            <p>Encode and decode URLs safely</p>
+                            <button class="btn btn-primary" onclick="openTool('url')">
+                                <i class="fas fa-external-link-alt"></i> Open Tool
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- QR Code Generator -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="tool-card" data-tool="qr">
+                            <div class="tool-icon">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <h4>QR Generator</h4>
+                            <p>Create QR codes for any text or URL</p>
+                            <button class="btn btn-primary" onclick="openTool('qr')">
+                                <i class="fas fa-external-link-alt"></i> Open Tool
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hash Generator -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="tool-card" data-tool="hash">
+                            <div class="tool-icon">
+                                <i class="fas fa-hashtag"></i>
+                            </div>
+                            <h4>Hash Generator</h4>
+                            <p>Generate MD5, SHA1, SHA256 hashes</p>
+                            <button class="btn btn-primary" onclick="openTool('hash')">
+                                <i class="fas fa-external-link-alt"></i> Open Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Projects Section -->
+        <section class="projects-section py-5">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">
+                    <i class="fas fa-folder-open"></i> Featured Projects
+                </h2>
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fab fa-react project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>React Dashboard</h4>
+                                <p>Modern admin dashboard built with React and TypeScript</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">React</span>
+                                    <span class="tech-tag">TypeScript</span>
+                                    <span class="tech-tag">Bootstrap</span>
+                                </div>
+                                <div class="project-actions">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fab fa-github"></i> View Code
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-external-link-alt"></i> Live Demo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fab fa-python project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>API Management</h4>
+                                <p>RESTful API built with Python Flask and PostgreSQL</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Flask</span>
+                                    <span class="tech-tag">PostgreSQL</span>
+                                </div>
+                                <div class="project-actions">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fab fa-github"></i> View Code
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-play"></i> Try API
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fab fa-js-square project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>DevTools Suite</h4>
+                                <p>Collection of developer utilities and tools</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">JavaScript</span>
+                                    <span class="tech-tag">Node.js</span>
+                                    <span class="tech-tag">Express</span>
+                                </div>
+                                <div class="project-actions">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fab fa-github"></i> View Code
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-tools"></i> Use Tools
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills & Technologies -->
+        <section class="skills-section py-5">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">
+                    <i class="fas fa-brain"></i> Technologies & Skills
+                </h2>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="skill-category">
+                            <h4><i class="fas fa-laptop-code"></i> Frontend</h4>
+                            <div class="skill-items">
+                                <span class="skill-item">HTML5</span>
+                                <span class="skill-item">CSS3</span>
+                                <span class="skill-item">JavaScript</span>
+                                <span class="skill-item">React</span>
+                                <span class="skill-item">Vue.js</span>
+                                <span class="skill-item">Bootstrap</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="skill-category">
+                            <h4><i class="fas fa-server"></i> Backend</h4>
+                            <div class="skill-items">
+                                <span class="skill-item">Node.js</span>
+                                <span class="skill-item">Python</span>
+                                <span class="skill-item">PHP</span>
+                                <span class="skill-item">Express</span>
+                                <span class="skill-item">Django</span>
+                                <span class="skill-item">FastAPI</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="skill-category">
+                            <h4><i class="fas fa-database"></i> Database</h4>
+                            <div class="skill-items">
+                                <span class="skill-item">MySQL</span>
+                                <span class="skill-item">PostgreSQL</span>
+                                <span class="skill-item">MongoDB</span>
+                                <span class="skill-item">Redis</span>
+                                <span class="skill-item">SQLite</span>
+                                <span class="skill-item">Firebase</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="skill-category">
+                            <h4><i class="fas fa-tools"></i> DevOps</h4>
+                            <div class="skill-items">
+                                <span class="skill-item">Docker</span>
+                                <span class="skill-item">Git</span>
+                                <span class="skill-item">Linux</span>
+                                <span class="skill-item">AWS</span>
+                                <span class="skill-item">Nginx</span>
+                                <span class="skill-item">CI/CD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <h2 class="section-title mb-4">
+                            <i class="fas fa-handshake"></i> Let's Connect
+                        </h2>
+                        <p class="mb-4">Ready to collaborate on amazing projects? Let's build something incredible together!</p>
+                        <div class="contact-links">
+                            <a href="#" class="contact-link" data-platform="github">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="#" class="contact-link" data-platform="linkedin">
+                                <i class="fab fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="#" class="contact-link" data-platform="email">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </a>
+                            <a href="#" class="contact-link" data-platform="discord">
+                                <i class="fab fa-discord"></i>
+                                <span>Discord</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Dev Tools Modal -->
+    <div class="modal fade" id="devToolModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="toolModalTitle">
+                        <i class="fas fa-tools"></i> Developer Tool
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="toolModalBody">
+                    <!-- Tool content will be loaded here -->
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="toolActionBtn">Process</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
