@@ -192,7 +192,9 @@ $(document).ready(function() {
     });
     
     // GitHub button functionality
-    $('#githubBtn').click(function() {
+    $('#githubBtn').off('click').on('click', function(e) {
+        e.preventDefault();
+        console.log('🐙 GitHub button clicked!');
         showLoadingIndicator();
         
         $(this).html('<i class="fab fa-github fa-spin"></i> Loading Profile...');
@@ -432,6 +434,11 @@ $(document).ready(function() {
     console.log('- Start Coding button exists:', $('#startCodingBtn').length > 0);
     console.log('- Explore Projects button exists:', $('#exploreProjectsBtn').length > 0);
     console.log('- Dev Tools dropdown exists:', $('#devToolsDropdown').length > 0);
+    console.log('- Tool cards found:', $('.tool-card').length);
+    console.log('- Tool buttons found:', $('.tool-btn').length);
+    
+    // Add comprehensive button handlers
+    setupAllButtonHandlers();
     
     // Add simple click test
     $(document).on('click', '*', function(e) {
@@ -767,8 +774,11 @@ function setupContactLinks() {
 function setupDevTools() {
     // Check if tools are already added to prevent duplicates
     if ($('.dropdown-item[data-tool="json"]').length > 0) {
+        console.log('ℹ️ Dev tools already added, skipping...');
         return; // Tools already added
     }
+    
+    console.log('🛠️ Setting up dev tools...');
     
     // Clear any existing tools first
     $('.dropdown-menu.programming-dropdown').first().find('.dropdown-item[data-tool]').remove();
@@ -807,9 +817,15 @@ function setupDevTools() {
         e.preventDefault();
         e.stopPropagation();
         const tool = $(this).data('tool');
-        console.log('Opening tool:', tool);
-        openTool(tool);
+        console.log('🔧 Dropdown tool clicked:', tool);
+        if (window.openTool) {
+            window.openTool(tool);
+        } else {
+            console.error('❌ openTool function not available');
+        }
     });
+    
+    console.log('✅ Dev tools setup complete');
 }
 
 // Make openTool function globally accessible
@@ -1772,4 +1788,144 @@ function showExtensions() {
 // Refresh page function
 function refreshPage() {
     location.reload();
+}
+
+// ===== COMPREHENSIVE BUTTON HANDLERS =====
+
+function setupAllButtonHandlers() {
+    console.log('🔧 Setting up all button handlers...');
+    
+    // Remove all existing handlers first
+    $(document).off('click', '#startCodingBtn');
+    $(document).off('click', '#exploreProjectsBtn');
+    $(document).off('click', '.tool-btn');
+    $(document).off('click', '.tool-card');
+    $(document).off('click', '#loadGithubProfile');
+    
+    // Hero buttons - multiple approaches
+    $('#startCodingBtn').on('click', function(e) {
+        e.preventDefault();
+        console.log('🚀 Start Coding clicked via jQuery!');
+        handleStartCoding();
+    });
+    
+    $(document).on('click', '#startCodingBtn', function(e) {
+        e.preventDefault();
+        console.log('🚀 Start Coding clicked via delegation!');
+        handleStartCoding();
+    });
+    
+    $('#exploreProjectsBtn').on('click', function(e) {
+        e.preventDefault();
+        console.log('👁️ Explore Projects clicked via jQuery!');
+        handleExploreProjects();
+    });
+    
+    $(document).on('click', '#exploreProjectsBtn', function(e) {
+        e.preventDefault();
+        console.log('👁️ Explore Projects clicked via delegation!');
+        handleExploreProjects();
+    });
+    
+    // Tool buttons - multiple approaches
+    $('.tool-btn').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const tool = $(this).data('tool');
+        console.log('🛠️ Tool button clicked:', tool);
+        if (tool && window.openTool) {
+            window.openTool(tool);
+        }
+    });
+    
+    $(document).on('click', '.tool-btn', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const tool = $(this).data('tool');
+        console.log('🛠️ Tool button clicked via delegation:', tool);
+        if (tool && window.openTool) {
+            window.openTool(tool);
+        }
+    });
+    
+    // Tool cards
+    $('.tool-card').on('click', function(e) {
+        if ($(e.target).hasClass('btn')) return; // Don't trigger if button clicked
+        const tool = $(this).data('tool');
+        console.log('📦 Tool card clicked:', tool);
+        if (tool && window.openTool) {
+            window.openTool(tool);
+        }
+    });
+    
+    $(document).on('click', '.tool-card', function(e) {
+        if ($(e.target).hasClass('btn')) return; // Don't trigger if button clicked
+        const tool = $(this).data('tool');
+        console.log('📦 Tool card clicked via delegation:', tool);
+        if (tool && window.openTool) {
+            window.openTool(tool);
+        }
+    });
+    
+    // GitHub profile button
+    $('#loadGithubProfile').on('click', function(e) {
+        e.preventDefault();
+        console.log('📱 GitHub profile button clicked!');
+        if (githubProfileData) {
+            displayGitHubProfile(githubProfileData);
+        } else {
+            loadGitHubProfile('stephenolaussen');
+        }
+    });
+    
+    $(document).on('click', '#loadGithubProfile', function(e) {
+        e.preventDefault();
+        console.log('📱 GitHub profile button clicked via delegation!');
+        if (githubProfileData) {
+            displayGitHubProfile(githubProfileData);
+        } else {
+            loadGitHubProfile('stephenolaussen');
+        }
+    });
+    
+    console.log('✅ All button handlers set up successfully');
+}
+
+// Individual handler functions
+function handleStartCoding() {
+    showLoadingIndicator();
+    
+    $('#startCodingBtn').html('<i class="fas fa-spinner fa-spin"></i> Opening VS Code...');
+    
+    setTimeout(() => {
+        hideLoadingIndicator();
+        $('#startCodingBtn').html('<i class="fas fa-code"></i> Start Coding');
+        
+        // Try to open VS Code
+        openVSCode();
+        
+        showNotification('Opening VS Code with your project...', 'success');
+        
+        // Scroll to tools section
+        $('html, body').animate({
+            scrollTop: $('.quick-tools-section').offset().top - 100
+        }, 1000);
+    }, 1200);
+}
+
+function handleExploreProjects() {
+    showLoadingIndicator();
+    
+    $('#exploreProjectsBtn').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+    
+    setTimeout(() => {
+        hideLoadingIndicator();
+        $('#exploreProjectsBtn').html('<i class="fas fa-eye"></i> Explore Projects');
+        showNotification('Loading project gallery...', 'info');
+        
+        // Scroll to projects section
+        $('html, body').animate({
+            scrollTop: $('.projects-section').offset().top - 100
+        }, 1000);
+    }, 800);
 }
