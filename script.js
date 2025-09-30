@@ -192,13 +192,19 @@ $(document).ready(function() {
     // GitHub button functionality
     $('#githubBtn').off('click').on('click', function(e) {
         e.preventDefault();
-        console.log('🐙 GitHub button clicked!');
-        showLoadingIndicator();
+        console.log('🐙 GitHub button clicked - Opening GitHub profile!');
         
-        $(this).html('<i class="fab fa-github fa-spin"></i> Loading Profile...');
+        // Open GitHub profile in new tab
+        window.open('https://github.com/stephenolaussen', '_blank');
         
-        // Load GitHub profile
-        loadGitHubProfile('stephenolaussen');
+        // Visual feedback
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+        $btn.html('<i class="fab fa-github"></i> Opening...');
+        
+        setTimeout(() => {
+            $btn.html(originalHtml);
+        }, 1000);
     });
     
     // Theme toggle functionality
@@ -610,6 +616,74 @@ Testing URLs:
             return;
         }
     });
+    
+    // Make skill items clickable with hover effects
+    $('.skill-item').on('click', function(e) {
+        e.preventDefault();
+        const skillName = $(this).text().trim();
+        console.log('🎯 Skill clicked:', skillName);
+        
+        // Technology documentation URLs
+        const techLinks = {
+            // Frontend
+            'HTML5': 'https://developer.mozilla.org/en-US/docs/Web/HTML',
+            'CSS3': 'https://developer.mozilla.org/en-US/docs/Web/CSS',
+            'JavaScript': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+            'React': 'https://reactjs.org/docs/',
+            'Vue.js': 'https://vuejs.org/guide/',
+            'Bootstrap': 'https://getbootstrap.com/docs/',
+            
+            // Backend
+            'Node.js': 'https://nodejs.org/en/docs/',
+            'Python': 'https://docs.python.org/3/',
+            'PHP': 'https://www.php.net/docs.php',
+            'Express': 'https://expressjs.com/en/starter/installing.html',
+            'Django': 'https://docs.djangoproject.com/',
+            'FastAPI': 'https://fastapi.tiangolo.com/',
+            
+            // Database
+            'MySQL': 'https://dev.mysql.com/doc/',
+            'PostgreSQL': 'https://www.postgresql.org/docs/',
+            'MongoDB': 'https://docs.mongodb.com/',
+            'Redis': 'https://redis.io/documentation',
+            'SQLite': 'https://sqlite.org/docs.html',
+            'Firebase': 'https://firebase.google.com/docs',
+            
+            // DevOps
+            'Docker': 'https://docs.docker.com/',
+            'Git': 'https://git-scm.com/doc',
+            'Linux': 'https://www.linux.org/pages/download/',
+            'AWS': 'https://docs.aws.amazon.com/',
+            'Nginx': 'https://nginx.org/en/docs/',
+            'CI/CD': 'https://about.gitlab.com/topics/ci-cd/'
+        };
+        
+        if (techLinks[skillName]) {
+            window.open(techLinks[skillName], '_blank');
+            console.log(`✅ Opening ${skillName} documentation`);
+        } else {
+            alert(`${skillName} documentation coming soon!`);
+        }
+    });
+    
+    // Add hover effect to skill items
+    $('.skill-item').hover(
+        function() {
+            $(this).css({
+                'cursor': 'pointer',
+                'transform': 'scale(1.05)',
+                'transition': 'all 0.2s ease'
+            });
+        },
+        function() {
+            $(this).css({
+                'transform': 'scale(1)',
+                'transition': 'all 0.2s ease'
+            });
+        }
+    );
+    
+    console.log('✅ Skill items made clickable:', $('.skill-item').length, 'items found');
     
     // Typing animation for code window
     startTypingAnimation();
