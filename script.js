@@ -213,27 +213,296 @@ $(document).ready(function() {
         }, 1000);
     });
     
-    // Theme toggle functionality
-    let isDarkTheme = false;
+    // Enhanced theme toggle functionality with cool animations
+    let isDarkTheme = localStorage.getItem('darkTheme') === 'true' || false;
+    
+    // Initialize theme on page load
+    function initializeTheme() {
+        if (isDarkTheme) {
+            $('body').addClass('dark-theme');
+            $('#themeToggle').html('<i class="fas fa-sun"></i>');
+        } else {
+            $('body').removeClass('dark-theme');
+            $('#themeToggle').html('<i class="fas fa-moon"></i>');
+        }
+    }
+    
+    // Initialize theme
+    initializeTheme();
+    
     $('#themeToggle').click(function() {
         isDarkTheme = !isDarkTheme;
+        localStorage.setItem('darkTheme', isDarkTheme);
+        
+        // Cool theme transition with ripple effect
+        const $btn = $(this);
+        $btn.addClass('theme-switching');
         
         if (isDarkTheme) {
             $('body').addClass('dark-theme');
-            $(this).html('<i class="fas fa-sun"></i>');
-            showNotification('Dark theme activated!', 'info');
+            $btn.html('<i class="fas fa-sun"></i>');
+            showNotification('🌙 Dark mode activated! Your eyes will thank you.', 'dark');
+            
+            // Add stars animation
+            createStarsAnimation();
         } else {
             $('body').removeClass('dark-theme');
-            $(this).html('<i class="fas fa-moon"></i>');
-            showNotification('Light theme activated!', 'info');
+            $btn.html('<i class="fas fa-moon"></i>');
+            showNotification('☀️ Light mode activated! Rise and shine!', 'warning');
+            
+            // Remove stars
+            $('.stars-container').remove();
         }
         
-        // Animate the theme change
+        // Enhanced theme transition with ripple effect
         $('body').addClass('theme-transition');
-        setTimeout(function() {
+        
+        setTimeout(() => {
             $('body').removeClass('theme-transition');
-        }, 500);
+            $btn.removeClass('theme-switching');
+        }, 600);
     });
+    
+    // Create cool stars animation for dark mode
+    function createStarsAnimation() {
+        if ($('.stars-container').length > 0) return; // Don't create if already exists
+        
+        const starsHTML = `
+            <div class="stars-container">
+                <div class="stars"></div>
+                <div class="stars2"></div>
+                <div class="stars3"></div>
+            </div>
+        `;
+        $('body').append(starsHTML);
+    }
+
+// Settings Modal Function
+function openSettingsModal() {
+    const settingsModal = $(`
+        <div class="modal fade" id="settingsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-cog text-primary me-2"></i>Developer Settings
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="settings-container">
+                            <div class="setting-group">
+                                <h6><i class="fas fa-palette me-2"></i>Theme Preferences</h6>
+                                <div class="setting-item">
+                                    <label>Auto Dark Mode</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="autoDarkMode">
+                                        <label class="form-check-label" for="autoDarkMode">
+                                            Enable automatic dark mode (6 PM - 6 AM)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <label>Theme Animation</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="themeAnimation" checked>
+                                        <label class="form-check-label" for="themeAnimation">
+                                            Enable smooth theme transitions
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <h6><i class="fas fa-code me-2"></i>Developer Preferences</h6>
+                                <div class="setting-item">
+                                    <label>Code Syntax</label>
+                                    <select class="form-select" id="codeSyntax">
+                                        <option value="javascript">JavaScript</option>
+                                        <option value="python">Python</option>
+                                        <option value="java">Java</option>
+                                        <option value="cpp">C++</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label>Notifications</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notifications" checked>
+                                        <label class="form-check-label" for="notifications">
+                                            Enable notifications
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <h6><i class="fas fa-tools me-2"></i>Quick Tools</h6>
+                                <div class="setting-item">
+                                    <label>Auto-save Tool Settings</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="autoSave" checked>
+                                        <label class="form-check-label" for="autoSave">
+                                            Remember tool preferences
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-success" onclick="saveSettings()">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#settingsModal').remove();
+    $('body').append(settingsModal);
+    const modal = new bootstrap.Modal(document.getElementById('settingsModal'));
+    modal.show();
+    
+    $('#settingsModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Achievements Modal Function
+function openAchievementsModal() {
+    const achievements = [
+        { icon: 'fas fa-rocket', title: 'First Launch', desc: 'Opened DevSpace for the first time', unlocked: true },
+        { icon: 'fas fa-code', title: 'Code Explorer', desc: 'Used dev tools 5 times', unlocked: true },
+        { icon: 'fas fa-moon', title: 'Night Owl', desc: 'Activated dark mode', unlocked: isDarkTheme },
+        { icon: 'fas fa-star', title: 'Tech Enthusiast', desc: 'Clicked on 10 different technologies', unlocked: false },
+        { icon: 'fas fa-github', title: 'GitHub Explorer', desc: 'Visited GitHub profile', unlocked: false },
+        { icon: 'fas fa-trophy', title: 'Master Developer', desc: 'Used all dev tools', unlocked: false }
+    ];
+    
+    const achievementsList = achievements.map(achievement => `
+        <div class="achievement-item ${achievement.unlocked ? 'unlocked' : 'locked'}">
+            <div class="achievement-icon">
+                <i class="${achievement.icon} ${achievement.unlocked ? 'text-warning' : 'text-muted'}"></i>
+            </div>
+            <div class="achievement-info">
+                <h6 class="${achievement.unlocked ? 'text-light' : 'text-muted'}">${achievement.title}</h6>
+                <p class="text-muted">${achievement.desc}</p>
+            </div>
+            <div class="achievement-status">
+                ${achievement.unlocked ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-lock text-muted"></i>'}
+            </div>
+        </div>
+    `).join('');
+    
+    const achievementsModal = $(`
+        <div class="modal fade" id="achievementsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-trophy text-warning me-2"></i>Developer Achievements
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="achievements-container">
+                            ${achievementsList}
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#achievementsModal').remove();
+    $('body').append(achievementsModal);
+    const modal = new bootstrap.Modal(document.getElementById('achievementsModal'));
+    modal.show();
+    
+    $('#achievementsModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Enhanced Logout Function
+function handleLogout() {
+    const logoutModal = $(`
+        <div class="modal fade" id="logoutModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fas fa-sign-out-alt text-warning me-2"></i>Confirm Logout
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to logout from DevSpace?</p>
+                        <div class="logout-options">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="clearData">
+                                <label class="form-check-label" for="clearData">
+                                    Clear local settings and preferences
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-danger" onclick="performLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#logoutModal').remove();
+    $('body').append(logoutModal);
+    const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+    modal.show();
+    
+    $('#logoutModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Save Settings Function
+function saveSettings() {
+    const settings = {
+        autoDarkMode: $('#autoDarkMode').prop('checked'),
+        themeAnimation: $('#themeAnimation').prop('checked'),
+        codeSyntax: $('#codeSyntax').val(),
+        notifications: $('#notifications').prop('checked'),
+        autoSave: $('#autoSave').prop('checked')
+    };
+    
+    localStorage.setItem('devSpaceSettings', JSON.stringify(settings));
+    $('#settingsModal').modal('hide');
+    showNotification('⚙️ Settings saved successfully!', 'success');
+}
+
+// Perform Logout Function
+function performLogout() {
+    if ($('#clearData').prop('checked')) {
+        localStorage.clear();
+        showNotification('🧹 Local data cleared!', 'warning');
+    }
+    
+    $('#logoutModal').modal('hide');
+    showNotification('👋 Logged out successfully! See you next time!', 'info');
+    
+    // Simulate logout by reloading page after a delay
+    setTimeout(() => {
+        location.reload();
+    }, 2000);
+}
     
     // Profile dropdown actions
     $('.dropdown-item[data-profile]').click(function(e) {
@@ -1233,8 +1502,12 @@ function setupDevTools() {
                     window.open('https://github.com/stephenolaussen', '_blank');
                 } else if (profile === 'repos') {
                     window.open('https://github.com/stephenolaussen?tab=repositories', '_blank');
+                } else if (profile === 'settings') {
+                    openSettingsModal();
+                } else if (profile === 'achievements') {
+                    openAchievementsModal();
                 } else if (itemId === 'logoutBtn') {
-                    alert('Logout functionality coming soon!');
+                    handleLogout();
                 } else {
                     alert(`${itemText} coming soon!`);
                 }
