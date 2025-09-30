@@ -568,7 +568,13 @@ Testing URLs:
 • Postman Echo: https://postman-echo.com/
 • HTTP Bin: https://httpbin.org/`);
             } else {
-                alert(`${tool} tool coming soon!`);
+                // Handle other dev tools (json, color, base64, url, qr, hash)
+                if (window.openTool) {
+                    window.openTool(tool);
+                    return; // Don't close dropdown yet, let the modal handle it
+                } else {
+                    alert(`${tool} tool coming soon!`);
+                }
             }
             return;
         }
@@ -1058,6 +1064,9 @@ function setupDevTools() {
 
 // Make openTool function globally accessible
 window.openTool = function(toolType) {
+    // Close any open dropdowns first
+    $('.dropdown-menu').removeClass('show').hide();
+    
     const toolModal = new bootstrap.Modal(document.getElementById('devToolModal'));
     const modalTitle = $('#toolModalTitle');
     const modalBody = $('#toolModalBody');
