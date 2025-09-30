@@ -1013,17 +1013,22 @@ function setupContactLinks() {
 // ===== DEV TOOLS FUNCTIONALITY =====
 
 function setupDevTools() {
-    // Check if tools are already added to prevent duplicates
-    if ($('.dropdown-item[data-tool="json"]').length > 0) {
-        console.log('ℹ️ Dev tools already added, skipping...');
-        return; // Tools already added
-    }
+    console.log('🛠️ Setting up dev tools in navbar dropdown...');
     
-    console.log('🛠️ Setting up dev tools...');
+    // Debug: Check if navbar dropdown exists
+    const $navDropdown = $('#devToolsDropdown');
+    const $navDropdownMenu = $navDropdown.siblings('.dropdown-menu');
     
-    // Clear any existing tools first from the Dev Tools dropdown
-    $('#devToolsDropdown').siblings('.dropdown-menu').find('.dropdown-item[data-tool]').remove();
-    $('#devToolsDropdown').siblings('.dropdown-menu').find('.dropdown-divider').first().remove();
+    console.log('🔍 Navbar dropdown debug:', {
+        'devToolsDropdown exists': $navDropdown.length > 0,
+        'dropdown menu exists': $navDropdownMenu.length > 0,
+        'existing tools in navbar': $navDropdownMenu.find('[data-tool]').length,
+        'dropdown menu HTML': $navDropdownMenu.length > 0 ? $navDropdownMenu[0].outerHTML : 'Not found'
+    });
+    
+    // Clear any existing tools first from the navbar Dev Tools dropdown only
+    $navDropdownMenu.find('.dropdown-item[data-tool]').parent().remove();
+    $navDropdownMenu.find('.dropdown-divider').first().remove();
     
     // Add new tools at the beginning of the Dev Tools dropdown
     const newToolsHtml = `
@@ -1048,44 +1053,43 @@ function setupDevTools() {
         <li><hr class="dropdown-divider"></li>
     `;
     
-    $('#devToolsDropdown').siblings('.dropdown-menu').prepend(newToolsHtml);
+    $navDropdownMenu.prepend(newToolsHtml);
     
-    console.log('✅ Dev tools added to dropdown');
-    console.log('- Dropdown menu element:', $('#devToolsDropdown').siblings('.dropdown-menu')[0]);
-    console.log('- Total tool items in dropdown:', $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').length);
-    console.log('- Tool items:', $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').map(function() { 
+    console.log('✅ Dev tools added to navbar dropdown');
+    console.log('- Navbar dropdown menu element:', $navDropdownMenu[0]);
+    console.log('- Total tool items in navbar dropdown:', $navDropdownMenu.find('[data-tool]').length);
+    console.log('- Navbar tool items:', $navDropdownMenu.find('[data-tool]').map(function() { 
         return $(this).data('tool'); 
     }).get());
     
-    // Remove any existing event handlers to prevent duplicates
-    $(document).off('click.devtools', '.dropdown-item[data-tool]');
+    // Remove any existing navbar dropdown event handlers to prevent duplicates
+    $(document).off('click.navdevtools', '#devToolsDropdown ~ .dropdown-menu .dropdown-item[data-tool]');
     
-    // Add single event handler for all tool clicks using direct event delegation
-    $(document).on('click.devtools', '.dropdown-item[data-tool]', function(e) {
+    // Add specific event handler for navbar dropdown tools only
+    $(document).on('click.navdevtools', '#devToolsDropdown ~ .dropdown-menu .dropdown-item[data-tool]', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
         const tool = $(this).data('tool');
         const itemText = $(this).text().trim();
-        const parentDropdown = $(this).closest('.dropdown-menu').prev().attr('id');
         
-        console.log('🔧 Nav dropdown tool clicked:', {
+        console.log('🔧 Navbar dropdown tool clicked:', {
             tool: tool,
             text: itemText,
-            parentDropdown: parentDropdown,
-            element: this
+            element: this,
+            isNavbarDropdown: true
         });
         
-        // Close dropdown first
-        $(this).closest('.dropdown-menu').removeClass('show').hide();
-        $(this).closest('.dropdown').find('.dropdown-toggle').removeClass('active');
+        // Close navbar dropdown first
+        $('#devToolsDropdown').siblings('.dropdown-menu').removeClass('show').hide();
+        $('#devToolsDropdown').removeClass('active');
         
         // Handle the tool
         if (tool && typeof window.openTool === 'function') {
-            console.log('✅ Calling openTool for:', tool);
+            console.log('✅ Calling openTool for navbar tool:', tool);
             window.openTool(tool);
         } else {
-            console.error('❌ openTool not available, tool:', tool);
+            console.error('❌ openTool not available for navbar tool:', tool);
             alert(`${itemText} tool is being loaded...`);
         }
     });
