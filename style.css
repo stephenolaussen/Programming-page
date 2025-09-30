@@ -580,6 +580,64 @@ body.dark-theme .skill-item:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
+/* Project Demo Modal Styles */
+.demo-container {
+    padding: 1rem;
+}
+
+.demo-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-content {
+    margin-bottom: 1rem;
+}
+
+.demo-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.demo-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.demo-list li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #64ffda;
+    font-weight: bold;
+}
+
+.demo-list li:last-child {
+    border-bottom: none;
+}
+
+/* Enhanced project card hover effects */
+.project-card {
+    transition: all 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.project-actions .btn {
+    transition: all 0.3s ease;
+    margin: 0.25rem;
+}
+
+.project-actions .btn:hover {
+    transform: scale(1.05);
+}
+
 /* Animation for navbar items */
 .nav-item {
     animation: slideInDown 0.5s ease forwards;

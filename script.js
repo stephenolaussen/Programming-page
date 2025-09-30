@@ -1019,6 +1019,9 @@ Testing URLs:
     // Setup contact links
     setupContactLinks();
     
+    // Setup project buttons
+    setupProjectButtons();
+    
     console.log('✅ Homepage initialized successfully');
 }
 
@@ -1308,6 +1311,197 @@ function setupContactLinks() {
     });
 }
 
+function setupProjectButtons() {
+    console.log('🚀 Setting up project buttons...');
+    
+    // Add click handlers to project buttons
+    $('.project-actions .btn').each(function() {
+        const $btn = $(this);
+        const text = $btn.text().trim();
+        const icon = $btn.find('i').attr('class');
+        
+        $btn.off('click').on('click', function(e) {
+            e.preventDefault();
+            
+            const $projectCard = $(this).closest('.project-card');
+            const projectTitle = $projectCard.find('h4').text().trim();
+            
+            console.log('📁 Project button clicked:', {
+                project: projectTitle,
+                action: text,
+                icon: icon
+            });
+            
+            if (text.includes('View Code') || icon && icon.includes('github')) {
+                // GitHub links for different projects
+                const githubLinks = {
+                    'React Dashboard': 'https://github.com/stephenolaussen/react-dashboard',
+                    'API Management': 'https://github.com/stephenolaussen/api-management',
+                    'DevTools Suite': 'https://github.com/stephenolaussen/Programming-page'
+                };
+                
+                const link = githubLinks[projectTitle] || 'https://github.com/stephenolaussen';
+                window.open(link, '_blank');
+                showNotification(`🔗 Opening ${projectTitle} repository...`, 'info');
+                
+            } else if (text.includes('Live Demo') || text.includes('Try API') || text.includes('Use Tools')) {
+                // Handle demo/live links
+                if (projectTitle === 'React Dashboard') {
+                    showProjectDemo('react-dashboard');
+                } else if (projectTitle === 'API Management') {
+                    showProjectDemo('api-management');
+                } else if (projectTitle === 'DevTools Suite') {
+                    // Scroll to dev tools section since this page IS the DevTools Suite
+                    $('html, body').animate({
+                        scrollTop: $('.quick-tools-section').offset().top - 100
+                    }, 1000);
+                    showNotification('🛠️ Here are the DevTools! You\'re already using them!', 'success');
+                } else {
+                    showProjectDemo('general');
+                }
+            }
+        });
+    });
+    
+    console.log('✅ Project buttons setup complete');
+}
+
+function showProjectDemo(projectType) {
+    const demos = {
+        'react-dashboard': {
+            title: 'React Dashboard Demo',
+            content: `
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <h5><i class="fab fa-react text-info"></i> React Dashboard Features</h5>
+                    </div>
+                    <div class="demo-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-chart-bar"></i> Dashboard Features:</h6>
+                                <ul class="demo-list">
+                                    <li>Interactive Charts & Graphs</li>
+                                    <li>Real-time Data Updates</li>
+                                    <li>Responsive Design</li>
+                                    <li>Dark/Light Theme Toggle</li>
+                                    <li>User Authentication</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-code"></i> Tech Stack:</h6>
+                                <ul class="demo-list">
+                                    <li>React 18 with Hooks</li>
+                                    <li>TypeScript for type safety</li>
+                                    <li>Bootstrap 5 for styling</li>
+                                    <li>Chart.js for visualizations</li>
+                                    <li>JWT Authentication</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            demoUrl: 'https://stephenolaussen.github.io/react-dashboard'
+        },
+        'api-management': {
+            title: 'API Management Demo',
+            content: `
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <h5><i class="fab fa-python text-warning"></i> API Management System</h5>
+                    </div>
+                    <div class="demo-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-server"></i> API Features:</h6>
+                                <ul class="demo-list">
+                                    <li>RESTful API Endpoints</li>
+                                    <li>JWT Authentication</li>
+                                    <li>Rate Limiting</li>
+                                    <li>API Documentation</li>
+                                    <li>Database Integration</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-tools"></i> Backend Stack:</h6>
+                                <ul class="demo-list">
+                                    <li>Python Flask Framework</li>
+                                    <li>PostgreSQL Database</li>
+                                    <li>Redis for Caching</li>
+                                    <li>Docker Containerization</li>
+                                    <li>Swagger Documentation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            demoUrl: 'https://api.stephenolaussen.dev'
+        },
+        'general': {
+            title: 'Project Demo',
+            content: `
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <h5><i class="fas fa-rocket"></i> Project Showcase</h5>
+                    </div>
+                    <div class="demo-content">
+                        <p>This project demonstrates modern web development practices and technologies.</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6><i class="fas fa-star"></i> Key Highlights:</h6>
+                                <ul class="demo-list">
+                                    <li>Clean, maintainable code</li>
+                                    <li>Responsive design</li>
+                                    <li>Modern development practices</li>
+                                    <li>Cross-browser compatibility</li>
+                                    <li>Performance optimized</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            demoUrl: '#'
+        }
+    };
+    
+    const demo = demos[projectType] || demos['general'];
+    
+    const demoModal = $(`
+        <div class="modal fade" id="projectDemoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">${demo.title}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ${demo.content}
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        ${demo.demoUrl !== '#' ? `
+                            <button type="button" class="btn btn-success" onclick="window.open('${demo.demoUrl}', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> Visit Live Demo
+                            </button>
+                        ` : ''}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('#projectDemoModal').remove();
+    $('body').append(demoModal);
+    const modal = new bootstrap.Modal(document.getElementById('projectDemoModal'));
+    modal.show();
+    
+    $('#projectDemoModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
 // ===== DEV TOOLS FUNCTIONALITY =====
 
 function setupDevTools() {
@@ -1492,6 +1686,11 @@ function setupDevTools() {
                 e.stopImmediatePropagation();
                 
                 console.log('🚨 EMERGENCY PROFILE: Item clicked:', profile || itemId);
+                console.log('🚨 Available functions:', {
+                    openSettingsModal: typeof openSettingsModal,
+                    openAchievementsModal: typeof openAchievementsModal,
+                    handleLogout: typeof handleLogout
+                });
                 
                 // Close dropdown
                 $('#profileDropdown').siblings('.dropdown-menu').removeClass('show').hide();
@@ -1503,11 +1702,26 @@ function setupDevTools() {
                 } else if (profile === 'repos') {
                     window.open('https://github.com/stephenolaussen?tab=repositories', '_blank');
                 } else if (profile === 'settings') {
-                    openSettingsModal();
+                    console.log('🚨 Calling openSettingsModal...');
+                    if (typeof openSettingsModal === 'function') {
+                        openSettingsModal();
+                    } else {
+                        alert('Settings functionality is loading...');
+                    }
                 } else if (profile === 'achievements') {
-                    openAchievementsModal();
+                    console.log('🚨 Calling openAchievementsModal...');
+                    if (typeof openAchievementsModal === 'function') {
+                        openAchievementsModal();
+                    } else {
+                        alert('Achievements functionality is loading...');
+                    }
                 } else if (itemId === 'logoutBtn') {
-                    handleLogout();
+                    console.log('🚨 Calling handleLogout...');
+                    if (typeof handleLogout === 'function') {
+                        handleLogout();
+                    } else {
+                        alert('Logout functionality is loading...');
+                    }
                 } else {
                     alert(`${itemText} coming soon!`);
                 }
