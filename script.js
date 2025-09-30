@@ -68,6 +68,10 @@ $(document).ready(function() {
             e.preventDefault();
             e.stopPropagation();
             console.log('🛠️ Dev Tools dropdown clicked');
+            
+            // Prevent Bootstrap from managing this dropdown
+            e.stopImmediatePropagation();
+            
             toggleDropdown($(this));
         });
         
@@ -1133,30 +1137,56 @@ function setupDevTools() {
     setTimeout(() => {
         console.log('🚨 Adding emergency direct handlers for navbar dev tools...');
         
+        // Disable Bootstrap dropdown for dev tools specifically
+        $('#devToolsDropdown').removeAttr('data-bs-toggle').removeAttr('aria-expanded');
+        
         // Direct click handlers for each tool in navbar
         $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').each(function() {
             const tool = $(this).data('tool');
-            $(this).off('click.emergency').on('click.emergency', function(e) {
+            
+            // Remove all existing handlers first
+            $(this).off('click');
+            
+            // Add our handler
+            $(this).on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                e.stopImmediatePropagation();
+                
                 console.log('🚨 EMERGENCY HANDLER: Navbar tool clicked:', tool);
                 
-                // Close dropdown
-                $('#devToolsDropdown').siblings('.dropdown-menu').removeClass('show').hide();
+                // Close dropdown immediately
+                const $dropdown = $('#devToolsDropdown').siblings('.dropdown-menu');
+                $dropdown.removeClass('show').hide();
                 $('#devToolsDropdown').removeClass('active');
                 
-                if (typeof window.openTool === 'function') {
-                    console.log('✅ EMERGENCY: Calling openTool for:', tool);
-                    window.openTool(tool);
-                } else {
-                    console.error('❌ EMERGENCY: openTool not available');
-                    alert(`${tool} tool clicked but openTool not available!`);
-                }
+                // Small delay then open tool
+                setTimeout(() => {
+                    if (typeof window.openTool === 'function') {
+                        console.log('✅ EMERGENCY: Calling openTool for:', tool);
+                        window.openTool(tool);
+                    } else {
+                        console.error('❌ EMERGENCY: openTool not available');
+                        alert(`${tool} tool clicked but openTool not available!`);
+                    }
+                }, 100);
             });
         });
         
         const handlerCount = $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').length;
         console.log(`🚨 Emergency handlers added: ${handlerCount} tools`);
+        
+        // Also add a direct test for the dropdown itself
+        window.testNavDropdown = function() {
+            console.log('🧪 Testing nav dropdown...');
+            const $dropdown = $('#devToolsDropdown').siblings('.dropdown-menu');
+            const tools = $dropdown.find('[data-tool]');
+            console.log('Tools found:', tools.length);
+            tools.each(function() {
+                console.log('- Tool:', $(this).data('tool'), 'Text:', $(this).text().trim());
+            });
+        };
+        
     }, 1000);
     
     console.log('🧪 Test function added: Use window.testDevTool("json") to test manually');
