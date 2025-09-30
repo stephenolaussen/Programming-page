@@ -466,6 +466,21 @@ function initializeHomepage() {
     
     console.log('🏠 Initializing homepage...');
     
+    // Initialize basic dropdowns
+    $('.dropdown-toggle').on('click', function(e) {
+        e.preventDefault();
+        const $menu = $(this).siblings('.dropdown-menu');
+        $('.dropdown-menu').not($menu).removeClass('show').hide();
+        $menu.toggleClass('show').toggle();
+    });
+    
+    // Close dropdowns when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown-menu').removeClass('show').hide();
+        }
+    });
+    
     // Typing animation for code window
     startTypingAnimation();
     
