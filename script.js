@@ -2,11 +2,7 @@
 
 $(document).ready(function() {
     
-    // Prevent multiple initializations
-    if (window.devSpaceInitialized) {
-        return;
-    }
-    window.devSpaceInitialized = true;
+    console.log('🚀 DevSpace initializing...');
     
     // Clear any existing typing intervals
     if (window.typingInterval) {
@@ -31,11 +27,11 @@ $(document).ready(function() {
     
     // Simple and reliable dropdown functionality
     function initDropdowns() {
+        console.log('🔧 Initializing dropdowns...');
+        
         // Remove any existing event handlers first
-        $('.dropdown-toggle').off('click.dropdown');
+        $('.dropdown-toggle').off('click');
         $(document).off('click.dropdown');
-        $('.dropdown-menu').off('click');
-        $('.dropdown-item').off('click.dropdown');
         
         // Close all dropdowns
         function closeAllDropdowns() {
@@ -55,27 +51,31 @@ $(document).ready(function() {
             if (!isOpen) {
                 $menu.addClass('show').show();
                 $toggle.addClass('active');
+                console.log('✅ Dropdown opened:', $toggle.attr('id'));
             }
         }
         
         // Languages dropdown
-        $('#languagesDropdown').on('click.dropdown', function(e) {
+        $('#languagesDropdown').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            console.log('🗣️ Languages dropdown clicked');
             toggleDropdown($(this));
         });
         
         // Dev Tools dropdown
-        $('#devToolsDropdown').on('click.dropdown', function(e) {
+        $('#devToolsDropdown').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            console.log('🛠️ Dev Tools dropdown clicked');
             toggleDropdown($(this));
         });
         
         // Profile dropdown
-        $('#profileDropdown').on('click.dropdown', function(e) {
+        $('#profileDropdown').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            console.log('👤 Profile dropdown clicked');
             toggleDropdown($(this));
         });
         
@@ -91,12 +91,10 @@ $(document).ready(function() {
             e.stopPropagation();
         });
         
-        // Close dropdown when clicking menu items (except tools)
-        $('.dropdown-item:not([data-tool])').on('click.dropdown', function() {
-            closeAllDropdowns();
-        });
-        
-        console.log('✅ Dropdowns initialized successfully');
+        console.log('✅ Dropdowns initialized');
+        console.log('- Languages dropdown:', $('#languagesDropdown').length > 0 ? 'Found' : 'NOT FOUND');
+        console.log('- Dev Tools dropdown:', $('#devToolsDropdown').length > 0 ? 'Found' : 'NOT FOUND');
+        console.log('- Profile dropdown:', $('#profileDropdown').length > 0 ? 'Found' : 'NOT FOUND');
     }
     
     // Initialize dropdowns
@@ -575,55 +573,66 @@ function animateCounters() {
 }
 
 function setupHeroButtons() {
+    console.log('🔧 Setting up hero buttons...');
+    
     // Remove any existing handlers first
     $('#startCodingBtn').off('click');
     $('#exploreProjectsBtn').off('click');
     
+    // Start Coding Button - Direct VS Code modal
     $('#startCodingBtn').on('click', function(e) {
         e.preventDefault();
-        console.log('🚀 Start Coding button clicked!');
+        console.log('🚀 START CODING BUTTON CLICKED!');
         
-        showLoadingIndicator();
+        // Show immediate feedback
+        showNotification('Opening VS Code setup...', 'info');
         
-        $(this).html('<i class="fas fa-spinner fa-spin"></i> Opening VS Code...');
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+        $btn.html('<i class="fas fa-spinner fa-spin"></i> Opening VS Code...');
         
+        // Open VS Code modal directly
         setTimeout(() => {
-            hideLoadingIndicator();
-            $(this).html('<i class="fas fa-code"></i> Start Coding');
-            
-            // Try to open VS Code with the current project
-            openVSCode();
-            
-            showNotification('Opening VS Code with your project...', 'success');
-            
-            // Scroll to tools section
-            $('html, body').animate({
-                scrollTop: $('.quick-tools-section').offset().top - 100
-            }, 1000);
-        }, 1200);
-    });
-    
-    $('#exploreProjectsBtn').on('click', function(e) {
-        e.preventDefault();
-        console.log('👁️ Explore Projects button clicked!');
-        
-        showLoadingIndicator();
-        
-        $(this).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
-        
-        setTimeout(() => {
-            hideLoadingIndicator();
-            $(this).html('<i class="fas fa-eye"></i> Explore Projects');
-            showNotification('Loading project gallery...', 'info');
-            
-            // Scroll to projects section
-            $('html, body').animate({
-                scrollTop: $('.projects-section').offset().top - 100
-            }, 1000);
+            $btn.html(originalHtml);
+            $('#vscodeModal').modal('show');
+            showNotification('VS Code setup ready!', 'success');
+            console.log('✅ VS Code modal opened');
         }, 800);
     });
     
-    console.log('✅ Hero buttons initialized');
+    // Explore Projects Button  
+    $('#exploreProjectsBtn').on('click', function(e) {
+        e.preventDefault();
+        console.log('👁️ EXPLORE PROJECTS BUTTON CLICKED!');
+        
+        // Show immediate feedback
+        showNotification('Loading projects...', 'info');
+        
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+        $btn.html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+        
+        setTimeout(() => {
+            $btn.html(originalHtml);
+            showNotification('Project gallery loaded!', 'success');
+            
+            // Scroll to GitHub preview section
+            const $target = $('#github-preview');
+            if ($target.length > 0) {
+                $('html, body').animate({
+                    scrollTop: $target.offset().top - 100
+                }, 1000);
+                console.log('✅ Scrolled to GitHub preview section');
+            } else {
+                console.log('❌ GitHub preview section not found');
+            }
+        }, 800);
+    });
+    
+    console.log('✅ Hero buttons setup complete');
+    console.log('- Start Coding button:', $('#startCodingBtn').length > 0 ? 'Found' : 'NOT FOUND');
+    console.log('- Explore Projects button:', $('#exploreProjectsBtn').length > 0 ? 'Found' : 'NOT FOUND');
+    console.log('- VS Code modal:', $('#vscodeModal').length > 0 ? 'Found' : 'NOT FOUND');
 }
 
 // Function to open VS Code

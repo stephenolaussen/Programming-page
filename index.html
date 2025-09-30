@@ -553,6 +553,95 @@
         </div>
     </div>
 
+    <!-- VS Code Modal -->
+    <div class="modal fade" id="vscodeModal" tabindex="-1" aria-labelledby="vscodeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="vscodeModalLabel">
+                        <i class="fas fa-code"></i> VS Code Online Integration
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-cloud"></i> Start Coding Online</h6>
+                            <p class="text-muted">Launch VS Code in your browser instantly</p>
+                            <div class="d-grid gap-2">
+                                <a href="https://vscode.dev" target="_blank" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-external-link-alt"></i> Open VS Code Web
+                                </a>
+                                <a href="https://github.dev/stephenolaussen/programming-page" target="_blank" class="btn btn-outline-primary">
+                                    <i class="fab fa-github"></i> Edit This Project
+                                </a>
+                                <a href="https://codepen.io" target="_blank" class="btn btn-outline-info">
+                                    <i class="fab fa-codepen"></i> Try CodePen
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-download"></i> Local Development</h6>
+                            <p class="text-muted">Set up your local coding environment</p>
+                            <div class="code-block bg-secondary p-3 rounded mb-3">
+                                <code class="text-light">
+                                    # Clone this project<br>
+                                    git clone https://github.com/stephenolaussen/programming-page.git<br><br>
+                                    # Install VS Code (if not already installed)<br>
+                                    # Download from: https://code.visualstudio.com<br><br>
+                                    # Open in VS Code<br>
+                                    code programming-page
+                                </code>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a href="https://code.visualstudio.com/download" target="_blank" class="btn btn-success">
+                                    <i class="fas fa-download"></i> Download VS Code
+                                </a>
+                                <button class="btn btn-outline-secondary" onclick="copyToClipboard('git clone https://github.com/stephenolaussen/programming-page.git')">
+                                    <i class="fas fa-copy"></i> Copy Clone Command
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-secondary my-4">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <h6><i class="fas fa-extensions"></i> Recommended Extensions</h6>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <div class="extension-card p-2 border border-secondary rounded">
+                                        <strong>Live Server</strong><br>
+                                        <small class="text-muted">Preview your projects instantly</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="extension-card p-2 border border-secondary rounded">
+                                        <strong>Prettier</strong><br>
+                                        <small class="text-muted">Code formatter</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="extension-card p-2 border border-secondary rounded">
+                                        <strong>GitLens</strong><br>
+                                        <small class="text-muted">Git supercharged</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="https://vscode.dev" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Start Coding Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="./bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
