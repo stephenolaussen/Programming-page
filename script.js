@@ -174,16 +174,10 @@ $(document).ready(function() {
     $('#githubBtn').click(function() {
         showLoadingIndicator();
         
-        $(this).html('<i class="fab fa-github fa-spin"></i> Connecting...');
+        $(this).html('<i class="fab fa-github fa-spin"></i> Loading Profile...');
         
-        setTimeout(function() {
-            hideLoadingIndicator();
-            $('#githubBtn').html('<i class="fab fa-github"></i> GitHub');
-            showNotification('Opening GitHub repositories...', 'success');
-            
-            // Simulate opening GitHub (in real app, you'd redirect)
-            console.log('Redirecting to GitHub...');
-        }, 1500);
+        // Load GitHub profile
+        loadGitHubProfile('stephenolaussen');
     });
     
     // Theme toggle functionality
@@ -1022,4 +1016,407 @@ function simpleHash(str, length) {
     
     const hex = Math.abs(hash).toString(16);
     return hex.padStart(length, '0').substring(0, length);
+}
+
+// ===== GITHUB PROFILE INTEGRATION =====
+
+// GitHub API configuration
+const GITHUB_API_BASE = 'https://api.github.com';
+let githubProfileData = null;
+
+// Load GitHub profile data
+async function loadGitHubProfile(username) {
+    try {
+        showLoadingIndicator();
+        $('#githubBtn').html('<i class="fab fa-github fa-spin"></i> Loading Profile...');
+        
+        // Fetch user profile
+        const profileResponse = await fetch(`${GITHUB_API_BASE}/users/${username}`);
+        if (!profileResponse.ok) {
+            throw new Error('Profile not found');
+        }
+        const profileData = await profileResponse.json();
+        
+        // Fetch user repositories
+        const reposResponse = await fetch(`${GITHUB_API_BASE}/users/${username}/repos?sort=updated&per_page=6`);
+        const reposData = await reposResponse.json();
+        
+        // Store profile data
+        githubProfileData = {
+            profile: profileData,
+            repos: reposData
+        };
+        
+        // Display profile
+        displayGitHubProfile(githubProfileData);
+        
+        // Update button
+        $('#githubBtn').html('<i class="fab fa-github"></i> Profile Loaded');
+        
+        hideLoadingIndicator();
+        showNotification('GitHub profile loaded successfully!', 'success');
+        
+    } catch (error) {
+        console.error('GitHub API Error:', error);
+        hideLoadingIndicator();
+        $('#githubBtn').html('<i class="fab fa-github"></i> GitHub');
+        showNotification('Failed to load GitHub profile. Please try again.', 'danger');
+    }
+}
+
+// Display GitHub profile in modal
+function displayGitHubProfile(data) {
+    const { profile, repos } = data;
+    
+    // Create GitHub profile modal
+    const githubModal = $(`
+        <div class="modal fade" id="githubProfileModal" tabindex="-1" data-bs-backdrop="static">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">
+                            <i class="fab fa-github text-success me-2"></i>GitHub Profile - ${profile.login}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="githubModalBody">
+                        ${generateGitHubProfileHTML(profile, repos)}
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-outline-success" onclick="refreshGitHubProfile('${profile.login}')">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <a href="${profile.html_url}" target="_blank" class="btn btn-success">
+                            <i class="fab fa-github"></i> View on GitHub
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    // Remove existing modal if any
+    $('#githubProfileModal').remove();
+    
+    // Add modal to body
+    $('body').append(githubModal);
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('githubProfileModal'));
+    modal.show();
+    
+    // Remove modal from DOM when hidden
+    $('#githubProfileModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Generate GitHub profile HTML
+function generateGitHubProfileHTML(profile, repos) {
+    const joinedDate = new Date(profile.created_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    const lastUpdate = new Date(profile.updated_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+    
+    return `
+        <div class="github-profile-container">
+            <!-- Profile Header -->
+            <div class="row mb-4">
+                <div class="col-md-3 text-center">
+                    <img src="${profile.avatar_url}" alt="${profile.login}" 
+                         class="github-avatar rounded-circle mb-3" width="150" height="150">
+                    <h4 class="text-success">${profile.name || profile.login}</h4>
+                    <p class="text-muted">@${profile.login}</p>
+                    ${profile.bio ? `<p class="github-bio">"${profile.bio}"</p>` : ''}
+                </div>
+                <div class="col-md-9">
+                    <div class="github-stats-grid">
+                        <div class="github-stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-code text-primary"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>${profile.public_repos}</h3>
+                                <p>Public Repositories</p>
+                            </div>
+                        </div>
+                        <div class="github-stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users text-success"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>${profile.followers}</h3>
+                                <p>Followers</p>
+                            </div>
+                        </div>
+                        <div class="github-stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-friends text-warning"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>${profile.following}</h3>
+                                <p>Following</p>
+                            </div>
+                        </div>
+                        <div class="github-stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-star text-info"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>${calculateTotalStars(repos)}</h3>
+                                <p>Total Stars</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="github-info mt-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                ${profile.location ? `
+                                    <p><i class="fas fa-map-marker-alt text-danger me-2"></i>${profile.location}</p>
+                                ` : ''}
+                                ${profile.company ? `
+                                    <p><i class="fas fa-building text-primary me-2"></i>${profile.company}</p>
+                                ` : ''}
+                                ${profile.blog ? `
+                                    <p><i class="fas fa-link text-success me-2"></i>
+                                        <a href="${profile.blog}" target="_blank" class="text-success">${profile.blog}</a>
+                                    </p>
+                                ` : ''}
+                            </div>
+                            <div class="col-md-6">
+                                <p><i class="fas fa-calendar-alt text-warning me-2"></i>Joined ${joinedDate}</p>
+                                <p><i class="fas fa-clock text-info me-2"></i>Last updated ${lastUpdate}</p>
+                                ${profile.email ? `
+                                    <p><i class="fas fa-envelope text-secondary me-2"></i>${profile.email}</p>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Repositories Section -->
+            <div class="github-repos-section">
+                <h5 class="mb-3">
+                    <i class="fas fa-folder-open text-primary me-2"></i>Recent Repositories
+                </h5>
+                <div class="row">
+                    ${generateRepositoriesHTML(repos)}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Generate repositories HTML
+function generateRepositoriesHTML(repos) {
+    if (!repos || repos.length === 0) {
+        return '<div class="col-12"><p class="text-muted">No public repositories found.</p></div>';
+    }
+    
+    return repos.map(repo => {
+        const updatedDate = new Date(repo.updated_at).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        
+        return `
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="github-repo-card">
+                    <div class="repo-header">
+                        <h6 class="repo-name">
+                            <i class="fas fa-book text-primary me-2"></i>
+                            <a href="${repo.html_url}" target="_blank" class="text-light">${repo.name}</a>
+                        </h6>
+                        ${repo.private ? '<span class="badge bg-warning">Private</span>' : '<span class="badge bg-success">Public</span>'}
+                    </div>
+                    
+                    ${repo.description ? `<p class="repo-description">${repo.description}</p>` : ''}
+                    
+                    <div class="repo-stats">
+                        <div class="repo-stat">
+                            <i class="fas fa-star text-warning"></i>
+                            <span>${repo.stargazers_count}</span>
+                        </div>
+                        <div class="repo-stat">
+                            <i class="fas fa-code-branch text-info"></i>
+                            <span>${repo.forks_count}</span>
+                        </div>
+                        ${repo.language ? `
+                            <div class="repo-stat">
+                                <i class="fas fa-circle text-success"></i>
+                                <span>${repo.language}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="repo-footer">
+                        <small class="text-muted">Updated ${updatedDate}</small>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Calculate total stars across all repositories
+function calculateTotalStars(repos) {
+    if (!repos || repos.length === 0) return 0;
+    return repos.reduce((total, repo) => total + (repo.stargazers_count || 0), 0);
+}
+
+// Refresh GitHub profile
+async function refreshGitHubProfile(username) {
+    const refreshBtn = $('.btn-outline-success');
+    const originalText = refreshBtn.html();
+    
+    refreshBtn.html('<i class="fas fa-spinner fa-spin"></i> Refreshing...');
+    refreshBtn.prop('disabled', true);
+    
+    try {
+        await loadGitHubProfile(username);
+        refreshBtn.html('<i class="fas fa-check"></i> Refreshed');
+        
+        setTimeout(() => {
+            refreshBtn.html(originalText);
+            refreshBtn.prop('disabled', false);
+        }, 2000);
+        
+    } catch (error) {
+        refreshBtn.html('<i class="fas fa-exclamation-triangle"></i> Failed');
+        refreshBtn.prop('disabled', false);
+        
+        setTimeout(() => {
+            refreshBtn.html(originalText);
+        }, 2000);
+    }
+}
+
+// Add GitHub profile link to contact section
+function updateContactLinksWithGitHub() {
+    const githubContactLink = $('.contact-link[data-platform="github"]');
+    if (githubContactLink.length > 0) {
+        githubContactLink.off('click').on('click', function(e) {
+            e.preventDefault();
+            if (githubProfileData) {
+                displayGitHubProfile(githubProfileData);
+            } else {
+                loadGitHubProfile('stephenolaussen');
+            }
+        });
+    }
+}
+
+// Initialize GitHub profile integration on page load
+$(document).ready(function() {
+    // Update contact links
+    updateContactLinksWithGitHub();
+    
+    // Add option to profile dropdown to view GitHub profile
+    const profileDropdownMenu = $('#profileDropdown').siblings('.dropdown-menu');
+    const githubProfileItem = `
+        <li><a class="dropdown-item" href="#" id="viewGithubProfile">
+            <i class="fab fa-github"></i> GitHub Profile
+        </a></li>
+    `;
+    profileDropdownMenu.find('li:first').after(githubProfileItem);
+    
+    // Handle GitHub profile menu item click
+    $(document).on('click', '#viewGithubProfile', function(e) {
+        e.preventDefault();
+        if (githubProfileData) {
+            displayGitHubProfile(githubProfileData);
+        } else {
+            loadGitHubProfile('stephenolaussen');
+        }
+    });
+    
+    // Initialize GitHub preview section
+    initializeGitHubPreview();
+});
+
+// Initialize GitHub preview section
+function initializeGitHubPreview() {
+    // Load basic GitHub stats for preview
+    loadGitHubPreviewStats('stephenolaussen');
+    
+    // Handle load GitHub profile button click
+    $('#loadGithubProfile').click(function() {
+        if (githubProfileData) {
+            displayGitHubProfile(githubProfileData);
+        } else {
+            loadGitHubProfile('stephenolaussen');
+        }
+    });
+}
+
+// Load GitHub preview stats (lightweight version)
+async function loadGitHubPreviewStats(username) {
+    try {
+        // Add loading state
+        $('#githubPreviewStats').addClass('github-preview-loading');
+        
+        const response = await fetch(`${GITHUB_API_BASE}/users/${username}`);
+        if (response.ok) {
+            const data = await response.json();
+            
+            // Update preview stats
+            $('#previewRepos').text(data.public_repos);
+            $('#previewFollowers').text(data.followers);
+            
+            // For stars, we'll show a placeholder since we need to fetch repos
+            $('#previewStars').text('~');
+            
+            // Remove loading state
+            $('#githubPreviewStats').removeClass('github-preview-loading');
+            
+            // Animate the numbers
+            animatePreviewNumbers();
+            
+        } else {
+            throw new Error('Failed to load GitHub stats');
+        }
+    } catch (error) {
+        console.error('GitHub Preview Error:', error);
+        $('#previewRepos').text('--');
+        $('#previewFollowers').text('--');
+        $('#previewStars').text('--');
+        $('#githubPreviewStats').removeClass('github-preview-loading');
+    }
+}
+
+// Animate preview numbers
+function animatePreviewNumbers() {
+    $('.preview-stat-number').each(function() {
+        const $this = $(this);
+        const text = $this.text();
+        
+        // Skip if not a number
+        if (text === '--' || text === '~' || isNaN(parseInt(text))) return;
+        
+        const target = parseInt(text);
+        let current = 0;
+        const increment = Math.max(1, Math.ceil(target / 50));
+        
+        $this.text('0');
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            $this.text(current);
+        }, 30);
+    });
 }
