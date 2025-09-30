@@ -1006,11 +1006,11 @@ function setupDevTools() {
     
     console.log('🛠️ Setting up dev tools...');
     
-    // Clear any existing tools first
-    $('.dropdown-menu.programming-dropdown').first().find('.dropdown-item[data-tool]').remove();
-    $('.dropdown-menu.programming-dropdown').first().find('.dropdown-divider').first().remove();
+    // Clear any existing tools first from the Dev Tools dropdown
+    $('#devToolsDropdown').siblings('.dropdown-menu').find('.dropdown-item[data-tool]').remove();
+    $('#devToolsDropdown').siblings('.dropdown-menu').find('.dropdown-divider').first().remove();
     
-    // Add new tools at the beginning of the dropdown
+    // Add new tools at the beginning of the Dev Tools dropdown
     const newToolsHtml = `
         <li><a class="dropdown-item" href="#" data-tool="json">
             <i class="fas fa-code text-info"></i> JSON Formatter
@@ -1033,7 +1033,7 @@ function setupDevTools() {
         <li><hr class="dropdown-divider"></li>
     `;
     
-    $('.dropdown-menu.programming-dropdown').first().prepend(newToolsHtml);
+    $('#devToolsDropdown').siblings('.dropdown-menu').prepend(newToolsHtml);
     
     // Remove any existing event handlers to prevent duplicates
     $(document).off('click.devtools', '.dropdown-item[data-tool]');
