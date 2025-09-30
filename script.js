@@ -501,7 +501,25 @@ function initializeHomepage() {
             if (tool === 'vscode') {
                 $('#vscodeModal').modal('show');
             } else if (tool === 'git') {
-                window.open('https://github.com/stephenolaussen', '_blank');
+                alert(`📋 Git Commands:
+
+Basic Commands:
+• git init - Initialize repository
+• git clone <url> - Clone repository
+• git add . - Stage all changes
+• git commit -m "message" - Commit changes
+• git push - Push to remote
+• git pull - Pull from remote
+• git status - Check status
+• git log - View commit history
+
+Branching:
+• git branch - List branches
+• git checkout -b <name> - Create new branch
+• git merge <branch> - Merge branch
+• git branch -d <name> - Delete branch
+
+More at: https://git-scm.com/docs`);
             } else {
                 alert(`${tool} tool coming soon!`);
             }
