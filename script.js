@@ -59,6 +59,7 @@ $(document).ready(function() {
         $('#languagesDropdown').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
             console.log('🗣️ Languages dropdown clicked');
             toggleDropdown($(this));
         });
@@ -79,6 +80,7 @@ $(document).ready(function() {
         $('#profileDropdown').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
             console.log('👤 Profile dropdown clicked');
             toggleDropdown($(this));
         });
@@ -1135,12 +1137,12 @@ function setupDevTools() {
     
     // Add emergency direct click handlers for navbar dropdown as backup
     setTimeout(() => {
-        console.log('🚨 Adding emergency direct handlers for navbar dev tools...');
+        console.log('🚨 Adding emergency direct handlers for ALL navbar dropdowns...');
         
-        // Disable Bootstrap dropdown for dev tools specifically
-        $('#devToolsDropdown').removeAttr('data-bs-toggle').removeAttr('aria-expanded');
+        // Disable Bootstrap dropdown for ALL navbar dropdowns
+        $('#devToolsDropdown, #languagesDropdown, #profileDropdown').removeAttr('data-bs-toggle').removeAttr('aria-expanded');
         
-        // Direct click handlers for each tool in navbar
+        // Fix Dev Tools dropdown
         $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').each(function() {
             const tool = $(this).data('tool');
             
@@ -1153,7 +1155,7 @@ function setupDevTools() {
                 e.stopPropagation();
                 e.stopImmediatePropagation();
                 
-                console.log('🚨 EMERGENCY HANDLER: Navbar tool clicked:', tool);
+                console.log('🚨 EMERGENCY DEV TOOLS: Tool clicked:', tool);
                 
                 // Close dropdown immediately
                 const $dropdown = $('#devToolsDropdown').siblings('.dropdown-menu');
@@ -1173,8 +1175,81 @@ function setupDevTools() {
             });
         });
         
-        const handlerCount = $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').length;
-        console.log(`🚨 Emergency handlers added: ${handlerCount} tools`);
+        // Fix Languages dropdown
+        $('#languagesDropdown').siblings('.dropdown-menu').find('[data-lang]').each(function() {
+            const lang = $(this).data('lang');
+            const langName = $(this).text().trim();
+            
+            $(this).off('click');
+            $(this).on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                console.log('🚨 EMERGENCY LANGUAGES: Language clicked:', lang);
+                
+                // Close dropdown
+                $('#languagesDropdown').siblings('.dropdown-menu').removeClass('show').hide();
+                $('#languagesDropdown').removeClass('active');
+                
+                // Handle language selection
+                const langUrls = {
+                    javascript: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+                    python: 'https://docs.python.org/3/',
+                    java: 'https://docs.oracle.com/en/java/',
+                    react: 'https://reactjs.org/docs/',
+                    php: 'https://www.php.net/docs.php'
+                };
+                
+                if (langUrls[lang]) {
+                    window.open(langUrls[lang], '_blank');
+                    console.log(`✅ Opening ${lang} documentation`);
+                } else {
+                    alert(`${langName} resources coming soon!`);
+                }
+            });
+        });
+        
+        // Fix Profile dropdown
+        $('#profileDropdown').siblings('.dropdown-menu').find('[data-profile], #logoutBtn').each(function() {
+            const profile = $(this).data('profile');
+            const itemId = $(this).attr('id');
+            const itemText = $(this).text().trim();
+            
+            $(this).off('click');
+            $(this).on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                console.log('🚨 EMERGENCY PROFILE: Item clicked:', profile || itemId);
+                
+                // Close dropdown
+                $('#profileDropdown').siblings('.dropdown-menu').removeClass('show').hide();
+                $('#profileDropdown').removeClass('active');
+                
+                // Handle profile actions
+                if (profile === 'profile') {
+                    window.open('https://github.com/stephenolaussen', '_blank');
+                } else if (profile === 'repos') {
+                    window.open('https://github.com/stephenolaussen?tab=repositories', '_blank');
+                } else if (itemId === 'logoutBtn') {
+                    alert('Logout functionality coming soon!');
+                } else {
+                    alert(`${itemText} coming soon!`);
+                }
+            });
+        });
+        
+        const devToolsCount = $('#devToolsDropdown').siblings('.dropdown-menu').find('[data-tool]').length;
+        const languagesCount = $('#languagesDropdown').siblings('.dropdown-menu').find('[data-lang]').length;
+        const profileCount = $('#profileDropdown').siblings('.dropdown-menu').find('[data-profile], #logoutBtn').length;
+        
+        console.log(`🚨 Emergency handlers added:`, {
+            'Dev Tools': devToolsCount,
+            'Languages': languagesCount,
+            'Profile': profileCount
+        });
         
         // Also add a direct test for the dropdown itself
         window.testNavDropdown = function() {
