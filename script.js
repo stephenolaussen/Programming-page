@@ -127,13 +127,49 @@ $(document).ready(function() {
         $(this).addClass('active');
         
         const section = $(this).data('section');
-        showLoadingIndicator();
         
-        // Simulate loading content
-        setTimeout(function() {
-            hideLoadingIndicator();
-            showNotification(`Loading ${section.charAt(0).toUpperCase() + section.slice(1)} section...`, 'success');
-        }, 1000);
+        // Handle tutorials section
+        if (section === 'tutorials') {
+            // Show tutorials section
+            $('#tutorials').show();
+            
+            // Scroll to tutorials section smoothly
+            $('html, body').animate({
+                scrollTop: $('#tutorials').offset().top - 100
+            }, 800);
+            
+            showNotification('📚 Noroff Development Tutorials loaded!', 'success');
+        } else {
+            // Handle other sections with loading simulation
+            showLoadingIndicator();
+            
+            // Simulate loading content
+            setTimeout(function() {
+                hideLoadingIndicator();
+                showNotification(`Loading ${section.charAt(0).toUpperCase() + section.slice(1)} section...`, 'success');
+            }, 1000);
+        }
+    });
+    
+    // Tutorial category filter
+    $(document).on('click', '.tutorial-filter', function(e) {
+        e.preventDefault();
+        
+        const category = $(this).data('category');
+        
+        // Update active button
+        $('.tutorial-filter').removeClass('active');
+        $(this).addClass('active');
+        
+        // Filter tutorials
+        if (category === 'all') {
+            $('.tutorial-item').fadeIn(300);
+        } else {
+            $('.tutorial-item').hide();
+            $(`.tutorial-item[data-category*="${category}"]`).fadeIn(300);
+        }
+        
+        console.log('Tutorial filter:', category);
     });
     
     // Programming language selection
