@@ -139,6 +139,13 @@ $(document).ready(function() {
             }, 800);
             
             showNotification('📚 Noroff Development Tutorials loaded!', 'success');
+        } else if (section === 'ai-tools') {
+            // Scroll to AI Tools section smoothly
+            $('html, body').animate({
+                scrollTop: $('.ai-section').offset().top - 100
+            }, 800);
+            
+            showNotification('🤖 AI Development Tools ready!', 'success');
         } else {
             // Handle other sections with loading simulation
             showLoadingIndicator();

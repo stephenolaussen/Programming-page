@@ -967,6 +967,81 @@ body.dark-theme .skill-item:hover {
     font-size: 4rem;
 }
 
+/* AI Tools Section */
+.ai-section {
+    background: #1a1a2e;
+    padding: 4rem 0;
+}
+
+.ai-card {
+    background: linear-gradient(135deg, #2d2d44 0%, #3d3d5c 100%);
+    border: 2px solid #9C27B0;
+    border-radius: 15px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ai-card:hover {
+    border-color: #E91E63;
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(156, 39, 176, 0.4);
+}
+
+.ai-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, #9C27B0, #E91E63);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.ai-card:hover .ai-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 30px rgba(156, 39, 176, 0.6);
+}
+
+.ai-card h5 {
+    color: #E91E63;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+}
+
+.ai-card p {
+    color: #B0BEC5;
+    flex: 1;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-ai {
+    background: linear-gradient(45deg, #9C27B0, #E91E63);
+    border: none;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-ai:hover {
+    background: linear-gradient(45deg, #E91E63, #9C27B0);
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(156, 39, 176, 0.5);
+    color: white;
+}
+
 /* Skills Section */
 .skills-section {
     background: #121212;
