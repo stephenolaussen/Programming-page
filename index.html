@@ -74,6 +74,12 @@
                         </a>
                     </li>
                     
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="ai-tools">
+                            <i class="fas fa-robot"></i> AI Tools
+                        </a>
+                    </li>
+                    
                     <!-- Tools Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="devToolsDropdown">
@@ -183,9 +189,9 @@
                                 <button class="btn btn-primary btn-lg me-3" id="startCodingBtn">
                                     <i class="fas fa-code"></i> Start Coding
                                 </button>
-                                <button class="btn btn-outline-light btn-lg" id="exploreProjectsBtn">
-                                    <i class="fas fa-eye"></i> Explore Projects
-                                </button>
+                                <a href="https://github.com/public-apis/public-apis" target="_blank" class="btn btn-outline-light btn-lg">
+                                    <i class="fas fa-rocket"></i> Explore Project Ideas
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -311,79 +317,413 @@
                 <h2 class="section-title text-center mb-5">
                     <i class="fas fa-folder-open"></i> Featured Projects
                 </h2>
+                <p class="text-center text-muted mb-4">
+                    Check out my Noroff backend development projects on GitHub
+                </p>
                 <div class="row g-4">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="project-card">
-                            <div class="project-image">
-                                <i class="fab fa-react project-tech-icon"></i>
-                            </div>
-                            <div class="project-content">
-                                <h4>React Dashboard</h4>
-                                <p>Modern admin dashboard built with React and TypeScript</p>
-                                <div class="project-tech">
-                                    <span class="tech-tag">React</span>
-                                    <span class="tech-tag">TypeScript</span>
-                                    <span class="tech-tag">Bootstrap</span>
-                                </div>
-                                <div class="project-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fab fa-github"></i> View Code
-                                    </button>
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-external-link-alt"></i> Live Demo
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="project-card">
-                            <div class="project-image">
-                                <i class="fab fa-python project-tech-icon"></i>
-                            </div>
-                            <div class="project-content">
-                                <h4>API Management</h4>
-                                <p>RESTful API built with Python Flask and PostgreSQL</p>
-                                <div class="project-tech">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">Flask</span>
-                                    <span class="tech-tag">PostgreSQL</span>
-                                </div>
-                                <div class="project-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fab fa-github"></i> View Code
-                                    </button>
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-play"></i> Try API
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <!-- Programming Page Project -->
                     <div class="col-lg-4 col-md-6">
                         <div class="project-card">
                             <div class="project-image">
                                 <i class="fab fa-js-square project-tech-icon"></i>
                             </div>
                             <div class="project-content">
-                                <h4>DevTools Suite</h4>
-                                <p>Collection of developer utilities and tools</p>
+                                <h4>Programming Hub</h4>
+                                <p>Personal programming portfolio with tutorials and dev tools</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">JavaScript</span>
+                                    <span class="tech-tag">jQuery</span>
+                                    <span class="tech-tag">Bootstrap</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://github.com/stephenolaussen/Programming-page" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fab fa-github"></i> View Code
+                                    </a>
+                                    <a href="https://stephenolaussen.github.io/Programming-page/" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-external-link-alt"></i> Live Demo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Backend API Project -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fas fa-server project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>REST API Resources</h4>
+                                <p>Learn REST API design patterns and best practices</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">C#</span>
+                                    <span class="tech-tag">ASP.NET</span>
+                                    <span class="tech-tag">REST</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-book"></i> ASP.NET Tutorial
+                                    </a>
+                                    <a href="https://restfulapi.net/" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-graduation-cap"></i> Learn REST
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Full Stack Project -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fas fa-layer-group project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>Node.js & Express</h4>
+                                <p>Build powerful backends with Node.js and Express framework</p>
                                 <div class="project-tech">
                                     <span class="tech-tag">JavaScript</span>
                                     <span class="tech-tag">Node.js</span>
                                     <span class="tech-tag">Express</span>
                                 </div>
                                 <div class="project-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fab fa-github"></i> View Code
-                                    </button>
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-tools"></i> Use Tools
-                                    </button>
+                                    <a href="https://nodejs.org/en/learn/getting-started/introduction-to-nodejs" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fab fa-node-js"></i> Node.js Docs
+                                    </a>
+                                    <a href="https://expressjs.com/en/starter/installing.html" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-rocket"></i> Express Guide
+                                    </a>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Database Project -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fas fa-database project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>SQL & Databases</h4>
+                                <p>Master SQL queries and database design principles</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">SQL</span>
+                                    <span class="tech-tag">PostgreSQL</span>
+                                    <span class="tech-tag">MySQL</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://www.postgresql.org/docs/current/tutorial.html" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-database"></i> PostgreSQL
+                                    </a>
+                                    <a href="https://sqlzoo.net/wiki/SQL_Tutorial" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-graduation-cap"></i> SQL Practice
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DevTools Project -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fas fa-tools project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>Developer Tools</h4>
+                                <p>Essential tools: API testing, regex tester, formatters & more</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Postman</span>
+                                    <span class="tech-tag">Regex</span>
+                                    <span class="tech-tag">JSON</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://www.postman.com/" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-paper-plane"></i> Postman
+                                    </a>
+                                    <a href="https://regex101.com/" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-search"></i> Regex Tester
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VS Code Extensions -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fas fa-code project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>VS Code Extensions</h4>
+                                <p>Best extensions for JavaScript, C# and backend development</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">VS Code</span>
+                                    <span class="tech-tag">Extensions</span>
+                                    <span class="tech-tag">IDE</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://marketplace.visualstudio.com/vscode" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-puzzle-piece"></i> Marketplace
+                                    </a>
+                                    <a href="https://code.visualstudio.com/docs" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-book"></i> VS Code Docs
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Git & GitHub -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fab fa-git-alt project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>Git & Version Control</h4>
+                                <p>Master Git commands, workflows and collaboration</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Git</span>
+                                    <span class="tech-tag">GitHub</span>
+                                    <span class="tech-tag">CLI</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://git-scm.com/doc" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fab fa-git"></i> Git Docs
+                                    </a>
+                                    <a href="https://learngitbranching.js.org/" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-code-branch"></i> Practice Git
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- C# Resources -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fas fa-hashtag project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>C# & .NET</h4>
+                                <p>Learn C# programming and .NET framework development</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">C#</span>
+                                    <span class="tech-tag">.NET</span>
+                                    <span class="tech-tag">ASP.NET</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://learn.microsoft.com/en-us/dotnet/csharp/" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-book"></i> C# Docs
+                                    </a>
+                                    <a href="https://dotnet.microsoft.com/learn" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-graduation-cap"></i> .NET Learn
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bootstrap & jQuery -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fab fa-bootstrap project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>Bootstrap & jQuery</h4>
+                                <p>Build responsive UIs with Bootstrap and jQuery</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Bootstrap</span>
+                                    <span class="tech-tag">jQuery</span>
+                                    <span class="tech-tag">CSS</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://getbootstrap.com/docs/" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fab fa-bootstrap"></i> Bootstrap
+                                    </a>
+                                    <a href="https://api.jquery.com/" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-book"></i> jQuery API
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- JavaScript Practice -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <i class="fab fa-js project-tech-icon"></i>
+                            </div>
+                            <div class="project-content">
+                                <h4>JavaScript Practice</h4>
+                                <p>Coding challenges and exercises to improve your JS skills</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">JavaScript</span>
+                                    <span class="tech-tag">Algorithms</span>
+                                    <span class="tech-tag">ES6+</span>
+                                </div>
+                                <div class="project-actions">
+                                    <a href="https://www.codewars.com/" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-trophy"></i> Codewars
+                                    </a>
+                                    <a href="https://javascript30.com/" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-code"></i> JS30 Projects
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GitHub Profile Link -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="project-card project-card-cta">
+                            <div class="project-image bg-gradient">
+                                <i class="fab fa-github project-tech-icon"></i>
+                            </div>
+                            <div class="project-content text-center">
+                                <h4>My GitHub Profile</h4>
+                                <p>Check out all my projects and contributions</p>
+                                <a href="https://github.com/stephenolaussen" target="_blank" class="btn btn-success btn-lg mt-3">
+                                    <i class="fab fa-github"></i> Visit My GitHub
+                                </a>
+                                <div class="mt-3">
+                                    <small class="text-muted">@stephenolaussen</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Tools Section -->
+        <section class="ai-section py-5" style="background: #1a1a2e;">
+            <div class="container">
+                <h2 class="section-title text-center mb-4">
+                    <i class="fas fa-robot"></i> AI Development Tools
+                </h2>
+                <p class="text-center text-muted mb-5">
+                    Supercharge your development with cutting-edge AI assistants
+                </p>
+                <div class="row g-4">
+                    <!-- ChatGPT -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h5>ChatGPT</h5>
+                            <p class="text-muted">AI-powered code assistant and problem solver</p>
+                            <a href="https://chat.openai.com/" target="_blank" class="btn btn-ai btn-sm">
+                                <i class="fas fa-external-link-alt"></i> Try ChatGPT
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- GitHub Copilot -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <h5>GitHub Copilot</h5>
+                            <p class="text-muted">AI pair programmer for VS Code</p>
+                            <a href="https://github.com/features/copilot" target="_blank" class="btn btn-ai btn-sm">
+                                <i class="fas fa-external-link-alt"></i> Get Copilot
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Claude -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h5>Claude AI</h5>
+                            <p class="text-muted">Advanced AI for coding and analysis</p>
+                            <a href="https://claude.ai/" target="_blank" class="btn btn-ai btn-sm">
+                                <i class="fas fa-external-link-alt"></i> Try Claude
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Cursor -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h5>Cursor IDE</h5>
+                            <p class="text-muted">AI-first code editor</p>
+                            <a href="https://cursor.sh/" target="_blank" class="btn btn-ai btn-sm">
+                                <i class="fas fa-external-link-alt"></i> Get Cursor
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Google Gemini -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">
+                                <i class="fab fa-google"></i>
+                            </div>
+                            <h5>Google Gemini</h5>
+                            <p class="text-muted">Google's multimodal AI</p>
+                            <a href="https://gemini.google.com/" target="_blank" class="btn btn-ai btn-sm">
+                                <i class="fas fa-external-link-alt"></i> Try Gemini
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tabnine -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">
+                                <i class="fas fa-keyboard"></i>
+                            </div>
+                            <h5>Tabnine</h5>
+                            <p class="text-muted">AI code completion</p>
+                            <a href="https://www.tabnine.com/" target="_blank" class="btn btn-ai btn-sm">
+                                <i class="fas fa-external-link-alt"></i> Get Tabnine
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Replit AI -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <h5>Replit AI</h5>
+                            <p class="text-muted">AI-powered online IDE</p>
+                            <a href="https://replit.com/" target="_blank" class="btn btn-ai btn-sm">
+                                <i class="fas fa-external-link-alt"></i> Try Replit
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Phind -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ai-card">
+                            <div class="ai-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h5>Phind</h5>
+                            <p class="text-muted">AI search for developers</p>
+                            <a href="https://www.phind.com/" target="_blank" class="btn btn-ai btn-sm">
+                                <i class="fas fa-external-link-alt"></i> Try Phind
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -525,6 +865,269 @@
                                 <i class="fab fa-discord"></i>
                                 <span>Discord</span>
                             </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tutorials Section - Noroff Backend Development -->
+        <section class="tutorials-section py-5 bg-dark" id="tutorials" style="display: none;">
+            <div class="container">
+                <h2 class="text-center mb-3 text-gradient">
+                    <i class="fas fa-graduation-cap"></i> Noroff Backend Development Tutorials
+                </h2>
+                <p class="text-center text-muted mb-5">
+                    High-quality courses to master backend & frontend development
+                </p>
+                
+                <!-- Category Tabs -->
+                <div class="tutorial-categories text-center mb-4">
+                    <button class="btn btn-outline-primary me-2 mb-2 tutorial-filter active" data-category="all">All Courses</button>
+                    <button class="btn btn-outline-primary me-2 mb-2 tutorial-filter" data-category="javascript">JavaScript</button>
+                    <button class="btn btn-outline-primary me-2 mb-2 tutorial-filter" data-category="backend">Backend</button>
+                    <button class="btn btn-outline-primary me-2 mb-2 tutorial-filter" data-category="tools">Tools</button>
+                    <button class="btn btn-outline-primary me-2 mb-2 tutorial-filter" data-category="frontend">Frontend</button>
+                </div>
+                
+                <div class="row" id="tutorialsContainer">
+                    <!-- JavaScript Full Course -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="javascript">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/PkZNo7MFNFg" 
+                                    title="JavaScript Full Course" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fab fa-js-square text-warning"></i> JavaScript Full Course</h5>
+                                <p class="text-muted">Complete JavaScript Tutorial - Learn JS in 8 Hours</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Beginner</span>
+                                    <span class="badge bg-info">⭐ 4.9/5</span>
+                                    <span class="badge bg-secondary">8h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 10M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- JavaScript ES6+ -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="javascript">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/NCwa_xi0Uuc" 
+                                    title="JavaScript ES6" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fab fa-js-square text-warning"></i> Modern JavaScript ES6+</h5>
+                                <p class="text-muted">Learn modern JS features: Arrow Functions, Promises, Async/Await</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning">Intermediate</span>
+                                    <span class="badge bg-info">⭐ 4.8/5</span>
+                                    <span class="badge bg-secondary">2h</span>
+                                </div>
+                                <small class="text-muted">Traversy Media - 2M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VS Code Full Course -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="tools">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/B-s71n0dHUk" 
+                                    title="VS Code Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fas fa-code text-info"></i> VS Code Full Course</h5>
+                                <p class="text-muted">Master Visual Studio Code - Tips, Tricks & Extensions</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Beginner</span>
+                                    <span class="badge bg-info">⭐ 4.9/5</span>
+                                    <span class="badge bg-secondary">1.5h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 3M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Git & GitHub Complete -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="tools">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/RGOj5yH7evk" 
+                                    title="Git GitHub Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fab fa-git-alt text-danger"></i> Git & GitHub Complete</h5>
+                                <p class="text-muted">Full Git & GitHub Tutorial - From Beginner to Advanced</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Beginner</span>
+                                    <span class="badge bg-info">⭐ 4.9/5</span>
+                                    <span class="badge bg-secondary">4h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 5M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- jQuery Full Course -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="javascript frontend">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/BWXggB-T1jQ" 
+                                    title="jQuery Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fas fa-j text-primary"></i> jQuery Full Course</h5>
+                                <p class="text-muted">Complete jQuery Tutorial - DOM Manipulation & AJAX</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning">Intermediate</span>
+                                    <span class="badge bg-info">⭐ 4.7/5</span>
+                                    <span class="badge bg-secondary">3h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 1M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bootstrap 5 -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="frontend">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/-qfEOE4vtxE" 
+                                    title="Bootstrap Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fab fa-bootstrap text-purple"></i> Bootstrap 5 Complete</h5>
+                                <p class="text-muted">Learn Bootstrap 5 - Build Responsive Websites Fast</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Beginner</span>
+                                    <span class="badge bg-info">⭐ 4.8/5</span>
+                                    <span class="badge bg-secondary">2.5h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 2M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- C# Full Course -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="backend">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/GhQdlIFylQ8" 
+                                    title="C# Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fas fa-hashtag text-success"></i> C# Full Course</h5>
+                                <p class="text-muted">Complete C# Programming - From Basics to Advanced</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Beginner</span>
+                                    <span class="badge bg-info">⭐ 4.9/5</span>
+                                    <span class="badge bg-secondary">4h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 8M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ASP.NET Core Web API -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="backend">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/_8nLSsK5NDo" 
+                                    title="ASP.NET Core API" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fas fa-server text-primary"></i> ASP.NET Core Web API</h5>
+                                <p class="text-muted">Build RESTful APIs with C# and ASP.NET Core</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning">Intermediate</span>
+                                    <span class="badge bg-info">⭐ 4.9/5</span>
+                                    <span class="badge bg-secondary">3h</span>
+                                </div>
+                                <small class="text-muted">Les Jackson - 1M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Node.js & Express -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="backend javascript">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/Oe421EPjeBE" 
+                                    title="Node.js Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fab fa-node-js text-success"></i> Node.js & Express</h5>
+                                <p class="text-muted">Backend Development with Node.js and Express.js</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning">Intermediate</span>
+                                    <span class="badge bg-info">⭐ 4.9/5</span>
+                                    <span class="badge bg-secondary">8h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 6M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REST API Design -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="backend">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/-MTSQjw5DrM" 
+                                    title="REST API Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fas fa-plug text-warning"></i> REST API Design</h5>
+                                <p class="text-muted">Learn REST API Best Practices & Design Principles</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning">Intermediate</span>
+                                    <span class="badge bg-info">⭐ 4.8/5</span>
+                                    <span class="badge bg-secondary">1h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 1M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SQL Database -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="backend">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/HXV3zeQKqGY" 
+                                    title="SQL Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fas fa-database text-info"></i> SQL Full Course</h5>
+                                <p class="text-muted">Complete SQL Tutorial - Database Management</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Beginner</span>
+                                    <span class="badge bg-info">⭐ 4.9/5</span>
+                                    <span class="badge bg-secondary">4h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 15M+ views</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Full Stack Development -->
+                    <div class="col-md-6 col-lg-4 mb-4 tutorial-item" data-category="backend frontend">
+                        <div class="tutorial-card">
+                            <div class="tutorial-thumbnail">
+                                <iframe width="100%" height="200" src="https://www.youtube.com/embed/nu_pCVPKzTk" 
+                                    title="Full Stack Tutorial" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="tutorial-content p-3">
+                                <h5><i class="fas fa-layer-group text-danger"></i> Full Stack Development</h5>
+                                <p class="text-muted">Complete Full Stack Course - Frontend to Backend</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-danger">Advanced</span>
+                                    <span class="badge bg-info">⭐ 4.9/5</span>
+                                    <span class="badge bg-secondary">12h</span>
+                                </div>
+                                <small class="text-muted">freeCodeCamp - 4M+ views</small>
+                            </div>
                         </div>
                     </div>
                 </div>

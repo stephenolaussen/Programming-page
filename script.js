@@ -127,13 +127,56 @@ $(document).ready(function() {
         $(this).addClass('active');
         
         const section = $(this).data('section');
-        showLoadingIndicator();
         
-        // Simulate loading content
-        setTimeout(function() {
-            hideLoadingIndicator();
-            showNotification(`Loading ${section.charAt(0).toUpperCase() + section.slice(1)} section...`, 'success');
-        }, 1000);
+        // Handle tutorials section
+        if (section === 'tutorials') {
+            // Show tutorials section
+            $('#tutorials').show();
+            
+            // Scroll to tutorials section smoothly
+            $('html, body').animate({
+                scrollTop: $('#tutorials').offset().top - 100
+            }, 800);
+            
+            showNotification('📚 Noroff Development Tutorials loaded!', 'success');
+        } else if (section === 'ai-tools') {
+            // Scroll to AI Tools section smoothly
+            $('html, body').animate({
+                scrollTop: $('.ai-section').offset().top - 100
+            }, 800);
+            
+            showNotification('🤖 AI Development Tools ready!', 'success');
+        } else {
+            // Handle other sections with loading simulation
+            showLoadingIndicator();
+            
+            // Simulate loading content
+            setTimeout(function() {
+                hideLoadingIndicator();
+                showNotification(`Loading ${section.charAt(0).toUpperCase() + section.slice(1)} section...`, 'success');
+            }, 1000);
+        }
+    });
+    
+    // Tutorial category filter
+    $(document).on('click', '.tutorial-filter', function(e) {
+        e.preventDefault();
+        
+        const category = $(this).data('category');
+        
+        // Update active button
+        $('.tutorial-filter').removeClass('active');
+        $(this).addClass('active');
+        
+        // Filter tutorials
+        if (category === 'all') {
+            $('.tutorial-item').fadeIn(300);
+        } else {
+            $('.tutorial-item').hide();
+            $(`.tutorial-item[data-category*="${category}"]`).fadeIn(300);
+        }
+        
+        console.log('Tutorial filter:', category);
     });
     
     // Programming language selection
@@ -1028,8 +1071,8 @@ Testing URLs:
     // Setup contact links
     setupContactLinks();
     
-    // Setup project buttons
-    setupProjectButtons();
+    // Setup project buttons - DISABLED: Let HTML handle the links directly
+    // setupProjectButtons();
     
     console.log('✅ Homepage initialized successfully');
 }
@@ -1320,6 +1363,8 @@ function setupContactLinks() {
     });
 }
 
+// DISABLED: Let HTML handle project links directly with target="_blank"
+/* 
 function setupProjectButtons() {
     console.log('🚀 Setting up project buttons...');
     
@@ -1374,6 +1419,7 @@ function setupProjectButtons() {
     
     console.log('✅ Project buttons setup complete');
 }
+*/
 
 function showProjectDemo(projectType) {
     const demos = {
