@@ -2931,3 +2931,16 @@ function handleExploreProjects() {
         }, 1000);
     }, 800);
 }
+// Back to Top Button
+$(window).scroll(function() {
+    if ($(this).scrollTop() > 300) {
+        $('#backToTopBtn').addClass('show');
+    } else {
+        $('#backToTopBtn').removeClass('show');
+    }
+});
+
+$('#backToTopBtn').click(function() {
+    $('html, body').animate({scrollTop: 0}, 600);
+    return false;
+});
