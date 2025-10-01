@@ -1965,6 +1965,11 @@ kbd {
 .tutorial-content p {
     flex: 1;
     margin-bottom: 0.75rem;
+    color: #E0E0E0 !important;
+}
+
+.tutorial-content .text-muted {
+    color: #B0BEC5 !important;
 }
 
 .tutorial-content .badge {
@@ -1978,6 +1983,11 @@ kbd {
     display: block;
     margin-top: 0.5rem;
     font-size: 0.75rem;
+    color: #90A4AE !important;
+}
+
+.tutorial-content small.text-muted {
+    color: #90A4AE !important;
 }
 
 /* Badge Colors */

@@ -1064,8 +1064,8 @@ Testing URLs:
     // Setup contact links
     setupContactLinks();
     
-    // Setup project buttons
-    setupProjectButtons();
+    // Setup project buttons - DISABLED: Let HTML handle the links directly
+    // setupProjectButtons();
     
     console.log('✅ Homepage initialized successfully');
 }
@@ -1356,6 +1356,8 @@ function setupContactLinks() {
     });
 }
 
+// DISABLED: Let HTML handle project links directly with target="_blank"
+/* 
 function setupProjectButtons() {
     console.log('🚀 Setting up project buttons...');
     
@@ -1410,6 +1412,7 @@ function setupProjectButtons() {
     
     console.log('✅ Project buttons setup complete');
 }
+*/
 
 function showProjectDemo(projectType) {
     const demos = {
