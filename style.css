@@ -2089,6 +2089,7 @@ kbd {
         height: 180px;
     }
 }
+
 /* Back to Top Button */
 /* Back to Top Button */
 .back-to-top-btn {
@@ -2122,15 +2123,13 @@ kbd {
 
 /* API gifs */
 .responsive-gif {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 250px;
+  position: static;
+  margin: 0;
+  display: block;
+  width: 300px;
   max-width: 40vw;
   height: auto;
   z-index: 9999;
-  margin-top: 210px;
-  margin-left: 30px;
 }
 
 @media (max-width: 600px) {
@@ -2138,4 +2137,17 @@ kbd {
     width: 80px;
     max-width: 30vw;
   }
+}
+
+.gif-container {
+  background: transparent ;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+body, main, .container, .hero-section {
+  background: #18182a !important;
 }
