@@ -1061,6 +1061,8 @@ body.dark-theme .skill-item:hover {
 .skill-category:hover {
     border-color: #FF9800;
     transform: translateY(-5px);
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(235, 151, 41, 0.5);
 }
 
 .skill-category h4 {
