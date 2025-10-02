@@ -2151,3 +2151,8 @@ kbd {
 body, main, .container, .hero-section {
   background: #18182a !important;
 }
+
+/* Weather API styling */
+#navbar-weather {
+    margin-right: 20px;
+}
