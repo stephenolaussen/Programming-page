@@ -2931,6 +2931,7 @@ function handleExploreProjects() {
         }, 1000);
     }, 800);
 }
+
 // Back to Top Button
 $(window).scroll(function() {
     if ($(this).scrollTop() > 300) {
@@ -2951,7 +2952,11 @@ $.ajax ({
     success: function(response) {
         console.log(response)
         let originalUrl = response.data.images.original.url;
-        $("body").append(`<img class="responsive-gif" src="${originalUrl}" alt="Random Programming GIF">`);
+        // Ensure gif-container exists
+        if ($('.gif-container').length === 0) {
+            $('body').prepend('<div class="gif-container"></div>');
+        }
+        $('.gif-container').empty().append(`<img class="responsive-gif" src="${originalUrl}" alt="Random Programming GIF">`);
     },
     error: function() {
         console.log("Something went wrong!");
