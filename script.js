@@ -625,7 +625,7 @@ function performLogout() {
         
         const notification = $(`
             <div class="custom-notification alert alert-${type} alert-dismissible fade show" 
-                 style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px;">
+                 style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; display: none;">
                 ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
