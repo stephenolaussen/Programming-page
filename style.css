@@ -2135,7 +2135,7 @@ kbd {
 
 @media (max-width: 600px) {
   .responsive-gif {
-    width: 80px;
-    max-width: 30vw;
+    width: 80px !important;
+    max-width: 30vw !important;
   }
 }
