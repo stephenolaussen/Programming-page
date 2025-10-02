@@ -1140,6 +1140,16 @@ body.dark-theme .skill-item:hover {
     font-weight: 600;
 }
 
+#collaborate {
+    color: #4CAF50
+    /* text-shadow: #4CAF50 0 0 5px;
+    background: linear-gradient(45deg, #4CAF50, #2196F3);
+    border: 1px solid transparent;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease; */
+}
 /* GitHub Preview Section */
 .github-preview-section {
     background: #121212;
@@ -1148,6 +1158,7 @@ body.dark-theme .skill-item:hover {
 
 .github-preview-card {
     background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    color: white;
     border: 2px solid #4CAF50;
     border-radius: 20px;
     padding: 3rem 2rem;
