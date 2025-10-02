@@ -2119,3 +2119,23 @@ kbd {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
 }
+
+/* API gifs */
+.responsive-gif {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  max-width: 40vw;
+  height: auto;
+  z-index: 9999;
+  margin-top: 210px;
+  margin-left: 30px;
+}
+
+@media (max-width: 600px) {
+  .responsive-gif {
+    width: 80px;
+    max-width: 30vw;
+  }
+}
