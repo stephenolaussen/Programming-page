@@ -1,7 +1,7 @@
 // Awesome Programming Navbar jQuery Functionality
 
 $(document).ready(function() {
-    // Weather Navbar
+    // Weather info in Navbar
 $.get('https://api.open-meteo.com/v1/forecast?latitude=58.7702&longitude=5.8536&current_weather=true', function(data) {
     var weather = data.current_weather;
     if (weather) {
