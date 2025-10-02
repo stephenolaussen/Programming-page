@@ -1,7 +1,16 @@
 // Awesome Programming Navbar jQuery Functionality
 
 $(document).ready(function() {
-    
+    // Weather Navbar
+$.get('https://api.open-meteo.com/v1/forecast?latitude=58.7702&longitude=5.8536&current_weather=true', function(data) {
+    var weather = data.current_weather;
+    if (weather) {
+        var description = weather.weathercode === 0 ? 'Clear' : 'Cloudy';
+        $('#navbar-weather').text('Ålgård: ' + weather.temperature + '°C, ' + description);
+    }
+}).fail(function() {
+    $('#navbar-weather').text('Weather unavailable');
+});
     console.log('🚀 DevSpace initializing...');
     
     // Clear any existing typing intervals
@@ -2962,3 +2971,4 @@ $.ajax ({
         console.log("Something went wrong!");
     }
 });
+
