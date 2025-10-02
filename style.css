@@ -833,7 +833,7 @@ body.dark-theme .skill-item:hover {
 
 /* Quick Tools Section */
 .quick-tools-section {
-    background: #121212;
+    background: transparent;
     padding: 4rem 0;
 }
 
@@ -845,7 +845,7 @@ body.dark-theme .skill-item:hover {
 }
 
 .tool-card {
-    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    background: transparent;
     border: 2px solid #333;
     border-radius: 15px;
     padding: 2rem;
@@ -881,12 +881,12 @@ body.dark-theme .skill-item:hover {
 
 /* Projects Section */
 .projects-section {
-    background: #1a1a1a;
+    background: transparent;
     padding: 4rem 0;
 }
 
 .project-card {
-    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    background: transparent;
     border: 2px solid #333;
     border-radius: 15px;
     overflow: hidden;
@@ -969,12 +969,12 @@ body.dark-theme .skill-item:hover {
 
 /* AI Tools Section */
 .ai-section {
-    background: #1a1a2e;
+    background: transparent;
     padding: 4rem 0;
 }
 
 .ai-card {
-    background: linear-gradient(135deg, #2d2d44 0%, #3d3d5c 100%);
+    background: transparent;
     border: 2px solid #9C27B0;
     border-radius: 15px;
     padding: 2rem 1.5rem;
@@ -1050,12 +1050,12 @@ body.dark-theme .skill-item:hover {
 
 /* featured projects */
 .skills-section {
-    background: #121212;
+    background: transparent;
     padding: 4rem 0;
 }
 
 .skill-category {
-    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    background: transparent;
     border: 2px solid #333;
     border-radius: 15px;
     padding: 2rem;
@@ -1112,7 +1112,7 @@ body.dark-theme .skill-item:hover {
 
 /* Contact Section */
 .contact-section {
-    background: #1a1a1a;
+    background: transparent;
     padding: 4rem 0;
 }
 
@@ -1128,7 +1128,7 @@ body.dark-theme .skill-item:hover {
     flex-direction: column;
     align-items: center;
     padding: 1.5rem;
-    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    background: transparent;
     border: 2px solid #333;
     border-radius: 15px;
     color: #fff;
@@ -1170,12 +1170,12 @@ body.dark-theme .skill-item:hover {
 }
 /* GitHub Preview Section */
 .github-preview-section {
-    background: #121212;
+    background: transparent;
     padding: 4rem 0;
 }
 
 .github-preview-card {
-    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    background: transparent;
     color: white;
     border: 2px solid #4CAF50;
     border-radius: 20px;
@@ -1455,7 +1455,7 @@ body.dark-theme .skill-item:hover {
 }
 
 .github-stat-card {
-    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    background: transparent;
     border: 2px solid #333;
     border-radius: 12px;
     padding: 1.5rem;
@@ -1512,7 +1512,7 @@ body.dark-theme .skill-item:hover {
 }
 
 .github-repo-card {
-    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    background: transparent;
     border: 2px solid #333;
     border-radius: 12px;
     padding: 1.5rem;
@@ -1983,7 +1983,7 @@ kbd {
 
 /* ===== TUTORIALS SECTION ===== */
 .tutorials-section {
-    background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+    background: transparent;
     min-height: 100vh;
 }
 
@@ -2021,7 +2021,7 @@ kbd {
 }
 
 .tutorial-card {
-    background: #2d2d44;
+    background: transparent;
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -2052,7 +2052,7 @@ kbd {
 }
 
 .tutorial-content {
-    background: #2d2d44;
+    background: transparent;
     color: white;
     flex: 1;
     display: flex;
