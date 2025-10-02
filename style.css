@@ -1041,8 +1041,14 @@ body.dark-theme .skill-item:hover {
     box-shadow: 0 5px 20px rgba(156, 39, 176, 0.5);
     color: white;
 }
+#ai-tools-description {
+    background: linear-gradient(45deg, #64ffda, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
-/* Skills Section */
+/* featured projects */
 .skills-section {
     background: #121212;
     padding: 4rem 0;
@@ -1097,6 +1103,12 @@ body.dark-theme .skill-item:hover {
     color: #000;
     transform: scale(1.05);
 }
+#featured-projects {
+    background: linear-gradient(45deg, #64ffda, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 /* Contact Section */
 .contact-section {
@@ -1143,7 +1155,11 @@ body.dark-theme .skill-item:hover {
 }
 
 #collaborate {
-    color: #4CAF50
+    background: linear-gradient(45deg, #64ffda, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* color: #4CAF50 */
     /* text-shadow: #4CAF50 0 0 5px;
     background: linear-gradient(45deg, #4CAF50, #2196F3);
     border: 1px solid transparent;
@@ -2076,6 +2092,13 @@ kbd {
 
 .tutorial-content small.text-muted {
     color: #90A4AE !important;
+}
+
+#tutorials-description {
+        background: linear-gradient(45deg, #64ffda, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Badge Colors */
