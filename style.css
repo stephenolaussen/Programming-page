@@ -1047,6 +1047,13 @@ body.dark-theme .skill-item:hover {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+/* ai text gradient added all id's */
+#ai-chat1, #ai-chat2, #ai-chat3, #ai-chat4, #ai-chat5, #ai-chat6, #ai-chat7, #ai-chat8 {
+    background: linear-gradient(45deg, #9C27B0, #E91E63, #FF5722);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 /* featured projects */
 .skills-section {
@@ -2192,3 +2199,4 @@ body, main, .container, .hero-section {
 #navbar-weather {
     margin-right: 20px;
 }
+
