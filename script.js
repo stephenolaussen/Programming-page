@@ -2957,7 +2957,7 @@ $('#backToTopBtn').click(function() {
 
 //Gif API
 $.ajax ({
-    url: 'https://api.giphy.com/v1/gifs/random?api_key=I3R5GCbpMlHABIcVDQzGU1DgeIRmzdyv&tag=programming&transparent=true&rating=g',
+    url: 'https://api.giphy.com/v1/gifs/random?api_key=I3R5GCbpMlHABIcVDQzGU1DgeIRmzdyv&tag=transparent&programming=&rating=g',
     success: function(response) {
         console.log(response)
         let originalUrl = response.data.images.original.url;
